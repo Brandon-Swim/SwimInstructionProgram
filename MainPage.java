@@ -2,7 +2,7 @@
  * TODO
  * 1.finish layout
  * 2.make main window scrollable
- * 3.Add tabs
+ * 3.Add tabs JTabbedPane
  */
 
 
@@ -15,15 +15,19 @@ import java.awt.event.*;
 
 public class MainPage {
      static JFrame mainWindow;
-     JLabel table1; //TODO
-     JLabel panel1; //TODO
-     JLabel panel2; //TODO
-     JLabel panel3; //TODO
-     JLabel panel4; //TODO
-     JButton tab1;  //TODO
-     JButton tab2;  //TODO
-     JButton tab3;  //TODO
-     Font labels = new Font("Fuse", Font.BOLD, 32); //TODO
+     //Labels
+     static JLabel table1; //TODO
+     static JLabel panel1; //TODO
+     static JLabel panel2; //TODO
+     static JLabel panel3; //TODO
+     static JLabel panel4; //TODO
+     //Panels
+     static JPanel tab1;
+     static JPanel tab2;
+     //Buttons
+     //Special
+     static JScrollPane scrollBar;
+     static Font labels = new Font("Fuse", Font.BOLD, 32); //TODO
     
     public static void main(String args[]) {
         MainPage program = new MainPage();
@@ -48,8 +52,13 @@ public class MainPage {
         table1.setFont(labels);
         table1.setSize(1200,700);
         table1.setLocation(300,100);
-        table1.setBorder(BorderFactory.createLineBorder(Color.black, 2));
-
+        table1.setBorder(BorderFactory.createLineBorder(Color.black, 2));   
+        
+        tab1 = new JPanel();
+        tab1.setLayout(null);
+        tab1.setPreferredSize(new Dimension(2000,2000));
+        //tab1.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
+       
         panel1 = new JLabel("<html>" + "Side Information" + "</html>");
         panel1.setHorizontalAlignment(SwingConstants.CENTER);
         panel1.setVerticalAlignment(SwingConstants.CENTER);
@@ -82,10 +91,19 @@ public class MainPage {
         panel4.setLocation(50,0);
         panel4.setBorder(BorderFactory.createLineBorder(Color.black, 2));
         
-        mainWindow.add(table1);
-        mainWindow.add(panel1);
-        mainWindow.add(panel2);
-        mainWindow.add(panel3);
+        tab1.add(table1);
+        tab1.add(panel1);
+        tab1.add(panel2);
+        tab1.add(panel3);
+        
+        scrollBar = new JScrollPane(tab1, 
+            JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
+            JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollBar.setSize(1650,800);
+        scrollBar.setLocation(0,100);
+        scrollBar.setBorder(BorderFactory.createLineBorder(Color.PINK, 2));
+        
+        mainWindow.getContentPane().add(scrollBar);
         mainWindow.add(panel4);
     }
     

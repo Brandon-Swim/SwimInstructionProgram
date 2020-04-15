@@ -1,6 +1,6 @@
 /*
  * Displays Welcome message, contains file reader method
- * 
+ * TODO change to BoxLayout to be Centered
  */
 
 import javax.jws.soap.SOAPBinding.Style;
