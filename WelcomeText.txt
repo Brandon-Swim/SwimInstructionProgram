@@ -1,0 +1,5 @@
+Hello! This is the a place holder for now but will eventually 
+be where the information about the program will be found.
+Here, information will be provided about the developers,
+what the program is for, and any special links or controls. 
+For now, this is a test of importing text into a JFrame window. 
