@@ -24,10 +24,12 @@ public class MainPage {
      //Panels
      static JPanel tab1;
      static JPanel tab2;
+     static JPanel tab3;
      //Buttons
      //Special
      static JScrollPane scrollBar;
      static Font labels = new Font("Fuse", Font.BOLD, 32); //TODO
+     static JTabbedPane tabbedPane;
     
     public static void main(String args[]) {
         MainPage program = new MainPage();
@@ -40,71 +42,65 @@ public class MainPage {
         mainWindow = new JFrame("Swim Program");
         mainWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
         mainWindow.setMinimumSize(new Dimension(1650,800));
-        mainWindow.setLayout(null);
+        mainWindow.setLayout(new BorderLayout());
         mainWindow.setVisible(false);
         mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
-    public void PrepareGUI() {
-        table1 = new JLabel("Main Table Goes Here");
+    public void PrepareGUI() { 
+        table1 = new JLabel("Main Table");
+        table1.setFont(labels);
         table1.setHorizontalAlignment(SwingConstants.CENTER);
         table1.setVerticalAlignment(SwingConstants.CENTER);
-        table1.setFont(labels);
-        table1.setSize(1200,700);
-        table1.setLocation(300,100);
-        table1.setBorder(BorderFactory.createLineBorder(Color.black, 2));   
+        table1.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        table1.setPreferredSize(new Dimension(1250,800)); //TODO
         
-        tab1 = new JPanel();
-        tab1.setLayout(null);
-        tab1.setPreferredSize(new Dimension(2000,2000));
-        //tab1.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
-       
-        panel1 = new JLabel("<html>" + "Side Information" + "</html>");
+        panel1 = new JLabel("<html>" + "Side Information Panel" + "</html>");
         panel1.setHorizontalAlignment(SwingConstants.CENTER);
         panel1.setVerticalAlignment(SwingConstants.CENTER);
+        panel1.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
         panel1.setFont(labels);
-        panel1.setSize(250,700);
-        panel1.setLocation(25,100);
-        panel1.setBorder(BorderFactory.createLineBorder(Color.black, 2));
-
+        panel1.setPreferredSize(new Dimension(300,800));    //TODO
+        
         panel2 = new JLabel("<html>" + "Graphs" + "</html>");
         panel2.setHorizontalAlignment(SwingConstants.CENTER);
         panel2.setVerticalAlignment(SwingConstants.CENTER);
+        panel2.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
         panel2.setFont(labels);
-        panel2.setSize(800,1000);
-        panel2.setLocation(1550,100);
-        panel2.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+        panel2.setPreferredSize(new Dimension(300,800));    //TODO
         
-        panel3 = new JLabel("<html>" + "Text" + "</html>");
-        panel3.setHorizontalAlignment(SwingConstants.CENTER);
-        panel3.setVerticalAlignment(SwingConstants.CENTER);
-        panel3.setFont(labels);
-        panel3.setSize(1450,1000);
-        panel3.setLocation(50,850);
-        panel3.setBorder(BorderFactory.createLineBorder(Color.black, 2));
-        
-        panel4 = new JLabel("<html>" + "Header" + "</html>");
+        panel4 = new JLabel("Header");
+        panel4.setFont(labels);
         panel4.setHorizontalAlignment(SwingConstants.CENTER);
         panel4.setVerticalAlignment(SwingConstants.CENTER);
-        panel4.setFont(labels);
-        panel4.setSize(1450,75);
-        panel4.setLocation(50,0);
-        panel4.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+        panel4.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         
-        tab1.add(table1);
+        tabbedPane = new JTabbedPane();
+        tabbedPane.setPreferredSize(new Dimension(1000,800));   //TDOD
+        
+        tab1 = new JPanel();
+        tab1.setLayout(new FlowLayout());
+        tab1.setPreferredSize(new Dimension(1650,2000));    //TODO
         tab1.add(panel1);
+        tab1.add(table1);  
         tab1.add(panel2);
-        tab1.add(panel3);
-        
-        scrollBar = new JScrollPane(tab1, 
+        tab2 =  new JPanel();
+        tab3 = new JPanel();
+    
+        scrollBar = new JScrollPane(tab1,       //TODO Set layout for multiple panels
             JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
-            JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollBar.setSize(1650,800);
         scrollBar.setLocation(0,100);
-        scrollBar.setBorder(BorderFactory.createLineBorder(Color.PINK, 2));
+        scrollBar.setBorder(BorderFactory.createLineBorder(Color.PINK, 10));
+        scrollBar.getVerticalScrollBar().setUnitIncrement(25);
         
-        mainWindow.getContentPane().add(scrollBar);
-        mainWindow.add(panel4);
+        tabbedPane.addTab("Practice", scrollBar);
+        tabbedPane.addTab("Meet Times", tab2);
+        tabbedPane.addTab("Settings", tab3);
+        
+        mainWindow.getContentPane().add(tabbedPane, BorderLayout.CENTER);
+        mainWindow.add(panel4, BorderLayout.NORTH);
     }
     
 }
