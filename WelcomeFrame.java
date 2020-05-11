@@ -11,6 +11,13 @@ import java.io.*;
 import java.awt.event.*;
 
 public class WelcomeFrame {
+    
+    public static void main(String arg[]) {
+        //Test:
+        //WelcomeFrame Intro = new WelcomeFrame();
+        //Intro.Initialize();
+    }
+
     JFrame introPage;
     JLabel mainHeader1;
     JLabel mainText1;
@@ -25,20 +32,13 @@ public class WelcomeFrame {
             introPage.dispose();
         }
   };
-
-    
-    
+ 
     public WelcomeFrame() {
         introPage = new JFrame("Swim Program");
         introPage.setSize(1000,800);
         introPage.setLayout(null);
         introPage.setLocationRelativeTo(null);
         introPage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
-    public static void main(String arg[]) {
-        //Test:
-        //WelcomeFrame Intro = new WelcomeFrame();
-        //Intro.Initialize();
     }
     
     public void Initialize() {
