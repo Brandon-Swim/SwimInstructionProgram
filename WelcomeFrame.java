@@ -12,11 +12,11 @@ import java.awt.event.*;
 
 public class WelcomeFrame {
     
-    public static void main(String arg[]) {
+    //public static void main(String arg[]) {
         //Test:
         //WelcomeFrame Intro = new WelcomeFrame();
         //Intro.Initialize();
-    }
+    //}
 
     JFrame introPage;
     JLabel mainHeader1;

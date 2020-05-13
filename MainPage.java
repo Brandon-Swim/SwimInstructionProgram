@@ -24,17 +24,11 @@ import java.util.*;
 import java.io.*;
 import java.awt.event.*;
 import javax.swing.table.*;
+import javax.swing.event.*;
 
-public class MainPage {
-     
-    public static void main(String args[]) {
-        //MainPage program = new MainPage();
-        //program.PrepareGUI();
-        //WelcomeFrame introduction = new WelcomeFrame();
-        //introduction.Initialize();
-    }
+public class MainPage implements TableModelListener{
 
-    static JFrame mainWindow;
+     static JFrame mainWindow;
      //Labels
      static JLabel panel1; //TODO
      static JLabel panel2; //TODO
@@ -51,7 +45,7 @@ public class MainPage {
      static JScrollPane tableScrollArea;
      String[] columnNames = {"Set","Rounds","Reps","Distance",  //TODO
          "Description","Minutes","Seconds","Total Distance", "Total Time"}; 
-     Object[][] data = new Object[30][9];
+     static Object[][] data = new Object[30][9];
      static Font tableFont = new Font("Arial", Font.PLAIN, 16);
      //Side Panel
      static JPanel sidePanel;
@@ -59,14 +53,15 @@ public class MainPage {
      static JLabel side2;
      static JLabel side3;
      static JLabel side4;
-     static String side1Data;
-     static String side2Data;
-     static String side3Data;
-     static String side4Data;
+     static String side1Data = "0";
+     static String side2Data = "0";
+     static String side3Data = "0";
+     static String side4Data = "0";
+     static Integer[] side1Column;
      
      //Special
      static JScrollPane mainScrollArea;
-     static Font labels = new Font("Fuse", Font.BOLD, 32); //TODO
+     static Font labels = new Font("Fuse", Font.BOLD, 24); //TODO
      static JTabbedPane tabbedPane;
     
     public MainPage() {
@@ -125,6 +120,8 @@ public class MainPage {
             mainTable.getColumnModel().getColumn(i).setCellEditor(dce);
         }
 
+        model.addTableModelListener(this);
+        //model.fireTableChanged(this);
         //mainTableR.setFocusable(true);
        // mainTableR.addKeyListener(null);
         
@@ -133,6 +130,48 @@ public class MainPage {
         mainTab.add(tableScrollArea);
     }
 
+    public void tableChanged(TableModelEvent e) {
+        int row = e.getFirstRow();
+        int column = e.getColumn();
+        int tempInt = 0;
+        TableModel model = (TableModel)e.getSource();
+        Object dataPoint = model.getValueAt(row, column);
+        data[row][column] = dataPoint;  //updates Data
+        System.out.println(Arrays.deepToString(data));
+        int ttlDistance = 0;
+        
+        if (column == 2 && !dataPoint.equals(null) &&   //Setting side1Data 
+                !dataPoint.equals("") && data[row][3] != null && 
+                data[row][3] != "") {
+            data[row][3] = Integer.valueOf(data[row][3].toString()) * 
+                Integer.valueOf(data[row][2].toString());
+            tempInt = Integer.valueOf(data[row][3].toString());
+            side1Data = Integer.toString(tempInt);
+            tempInt = 0;
+        }
+       
+        if (column == 3 && !dataPoint.equals(null) &&   //Setting side1Data 
+                !dataPoint.equals("")){ 
+            if (data[row][2] != null && !data[row][2].equals("")) {
+                ttlDistance = Integer.valueOf(dataPoint.toString()) * 
+                Integer.valueOf(data[row][2].toString());
+            } else {
+                ttlDistance = Integer.valueOf(dataPoint.toString());
+            }
+                tempInt = (Integer.valueOf(side1Data) + //Addition
+                    ttlDistance);
+                side1Data = Integer.toString(tempInt);
+                tempInt = 0;
+            } else if (!dataPoint.equals(null) && dataPoint.equals("")) {
+                tempInt = Integer.valueOf(side1Data) - //Subtraction
+                    (Integer.valueOf(side1Data) - 
+                        Integer.valueOf(average(getColumn(data,3)).toString()));
+                side1Data = Integer.toString(tempInt);
+                tempInt = 0;
+            }
+        side1.setText("Total Distance: " + side1Data + "yds");
+    }
+    
     public void SidePanelLabels(JLabel sideName) {
         sideName.setFont(labels);
         sideName.setBorder(BorderFactory.createLineBorder(Color.red, 2));
@@ -142,12 +181,33 @@ public class MainPage {
         sidePanel.add(sideName);
     }
     
+    public static Object[] getColumn(Object[][] array, int index){
+        Object[] column = new Object[array.length];
+        for(int i = 0; i < column.length; i++){
+               column[i] = array[i][index];
+        }
+        return column;
+    }
+    
+    public static Object average(Object[] array) {
+        Object sum = 0;
+        for (int i = 0; i < array.length - 1; i++) {
+            if (array[i] != null && 
+                array[i].getClass().equals(String.class) && 
+                array[i].toString().length() != 0) {
+                sum = Integer.valueOf(sum.toString()) + 
+                    Integer.valueOf(array[i].toString());
+            }
+        }
+        return sum;
+    }
+    
     public void SidePanelSetUp() {
         sidePanel = new JPanel();
         sidePanel.setPreferredSize(new Dimension(300,800));
         sidePanel.setLayout(new FlowLayout());
         sidePanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
-        side1 = new JLabel();
+        side1 = new JLabel("Total Distance: " + side1Data + "yds");
         side2 = new JLabel();
         side3 = new JLabel();
         side4 = new JLabel();
@@ -155,22 +215,14 @@ public class MainPage {
         SidePanelLabels(side2);
         SidePanelLabels(side3);
         SidePanelLabels(side4);
-        
-        side1.setText(side1Data);
-        
+
+        side1.setText("Total Distance: " + side1Data + "yds");
+        side2.setText(side2Data);
+        side3.setText(side3Data);
+        side4.setText(side4Data);
         mainTab.add(sidePanel);
     }
-    
-    public void SidePanelSetUpOld() {
-        panel1 = new JLabel("<html>" + "Side Information Panel" + "</html>");
-        panel1.setHorizontalAlignment(SwingConstants.CENTER);
-        panel1.setVerticalAlignment(SwingConstants.CENTER);
-        panel1.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
-        panel1.setFont(labels);
-        panel1.setPreferredSize(new Dimension(300,800));    //TODO
-        mainTab.add(panel1);
-    }
-    
+
     public void GraphSetUp() {
         panel2 = new JLabel("<html>" + "Graphs" + "</html>");
         panel2.setHorizontalAlignment(SwingConstants.CENTER);
@@ -197,7 +249,6 @@ public class MainPage {
         mainTab.setPreferredSize(new Dimension(1650,2000));  //TODO
         tabbedPane = new JTabbedPane();
         tabbedPane.setPreferredSize(new Dimension(1000,800));   //TDOD
-        //SidePanelSetUpOld();
         SidePanelSetUp();
         TableSetUp();
         GraphSetUp();
@@ -222,5 +273,6 @@ public class MainPage {
     }
     
 }
+
 
 
