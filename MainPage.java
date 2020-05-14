@@ -13,7 +13,7 @@
  * Add File memory
  * Update welcome Frame
  * Finalize loadout
- * 
+ * Bus Break Line in table, changeable
  */
 
 
@@ -39,23 +39,28 @@ public class MainPage implements TableModelListener{
      static JPanel pastPracticeTab;
      static JPanel settingsTab;
      //Buttons
+     
      //Main Table
      Dimension T = new Dimension(1650,800);
      static JTable mainTable;
      static JScrollPane tableScrollArea;
      String[] columnNames = {"Set","Rounds","Reps","Distance",  //TODO
-         "Description","Minutes","Seconds","Total Distance", "Total Time"}; 
+         "Description","Type","Minutes","Seconds", "Intensity"}; 
      static Object[][] data = new Object[30][9];
+     static Object[][] storage = new Object[30][9];
+     
      static Font tableFont = new Font("Arial", Font.PLAIN, 16);
+     
      //Side Panel
      static JPanel sidePanel;
-     static JLabel side1;
-     static JLabel side2;
-     static JLabel side3;
+     static JLabel ttlDistancePanel;
+     static JLabel ttlTimePanel;
+     static JLabel avgIntensityPanel;
      static JLabel side4;
-     static String side1Data = "0";
-     static String side2Data = "0";
-     static String side3Data = "0";
+     static String ttlDistance = "0";
+     static String ttlTimeMin = "0";
+     static String ttlTimeSec = "0";
+     static String avgIntensity = "0";
      static String side4Data = "0";
      static Integer[] side1Column;
      
@@ -71,6 +76,11 @@ public class MainPage implements TableModelListener{
         mainWindow.setLayout(new BorderLayout());
         mainWindow.setVisible(false);
         mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        for (int i = 0; i < storage.length; i++) {   //Sets all to 0.
+            for (int j = 0; j < storage[i].length; j++) {
+                storage[i][j] = 0;
+            }
+        }
     }
     
     public static void setJTableColumnsWidth(JTable table, int tablePreferredWidth,
@@ -108,15 +118,15 @@ public class MainPage implements TableModelListener{
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment( JLabel.CENTER );
         mainTable.getColumnModel().getColumn(0).setCellRenderer( centerRenderer );
-        for(int x = 0 ;x < columnNames.length - 1; x++){
+        for(int x = 0 ;x < columnNames.length; x++){
             mainTable.getColumnModel().getColumn(x).setCellRenderer( centerRenderer );
            }    //TODO for each data type
         
         JTextField textField = new JTextField();
         textField.setFont(tableFont);
-        textField.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        textField.setBorder(BorderFactory.createLineBorder(Color.red, 2));
         DefaultCellEditor dce = new DefaultCellEditor( textField );
-        for(int i = 0; i < columnNames.length - 1; i++) {
+        for(int i = 0; i < columnNames.length; i++) {
             mainTable.getColumnModel().getColumn(i).setCellEditor(dce);
         }
 
@@ -130,48 +140,110 @@ public class MainPage implements TableModelListener{
         mainTab.add(tableScrollArea);
     }
 
-    public void tableChanged(TableModelEvent e) {
+    public void tableChanged(TableModelEvent e) {	
         int row = e.getFirstRow();
         int column = e.getColumn();
         int tempInt = 0;
+        int tempInt2 = 0;
+        int count = 1;
         TableModel model = (TableModel)e.getSource();
         Object dataPoint = model.getValueAt(row, column);
         data[row][column] = dataPoint;  //updates Data
-        System.out.println(Arrays.deepToString(data));
-        int ttlDistance = 0;
+        System.out.println(Arrays.deepToString(data));    //Debug
+        System.out.println(Arrays.deepToString(storage));
         
-        if (column == 2 && !dataPoint.equals(null) &&   //Setting side1Data 
-                !dataPoint.equals("") && data[row][3] != null && 
-                data[row][3] != "") {
-            data[row][3] = Integer.valueOf(data[row][3].toString()) * 
-                Integer.valueOf(data[row][2].toString());
-            tempInt = Integer.valueOf(data[row][3].toString());
-            side1Data = Integer.toString(tempInt);
-            tempInt = 0;
+            for (int i = 0; i < data.length; i++) {     //Update storage array
+                for (int j = 0; j < data[i].length; j++) {
+                    storage[i][j] = data[i][j];
+                    if (storage[i][j] == null) {
+                        storage[i][j] = 0;
+                    }
+                }
+            }
+            System.out.println(Arrays.deepToString(storage));
+            for (int i = 0; i < storage.length; i++) {
+                if (i != 0 && storage[i][0].equals(storage[i-1][0])) {
+                    storage[i][1] = storage[i-1][1];
+                } 
+            }
+            System.out.println(Arrays.deepToString(storage));
+        
+        //Update Total Distance
+        for (int i = 0; i < data.length; i++) {
+            if (data[i][0] != null && data[i][2] != null && 
+                data[i][3] != null && !data[i][0].equals("") && 
+                !data[i][2].equals("") & !data[i][3].equals("")) {
+                if (storage[i][1] != null && !storage[i][1].equals(0) && 
+                    !storage[i][1].equals("")) {    
+                    tempInt += Integer.valueOf(storage[i][3].toString()) * 
+                        Integer.valueOf(storage[i][2].toString()) *
+                        Integer.valueOf(storage[i][1].toString());
+                } else if (storage[i][1] == null || storage[i][1].equals(0) || 
+                    storage[i][1].equals("")) {
+                            tempInt += Integer.valueOf(storage[i][3].toString()) * 
+                            Integer.valueOf(storage[i][2].toString());
+                    }
+            }
         }
-       
-        if (column == 3 && !dataPoint.equals(null) &&   //Setting side1Data 
-                !dataPoint.equals("")){ 
-            if (data[row][2] != null && !data[row][2].equals("")) {
-                ttlDistance = Integer.valueOf(dataPoint.toString()) * 
-                Integer.valueOf(data[row][2].toString());
-            } else {
-                ttlDistance = Integer.valueOf(dataPoint.toString());
+        ttlDistance = Integer.toString(tempInt);
+        tempInt = 0;
+        
+        //Update Total Time
+            for (int i = 0; i < data.length; i++) {
+                if (data[i][6] != null && !data[i][6].equals("")) {
+                    tempInt += Integer.valueOf(data[i][6].toString());
+                }
+                if (data[i][7] != null && !data[i][7].equals("")) {
+                    tempInt2 += Integer.valueOf(data[i][7].toString());
+                    if (tempInt2 >= 60) {
+                        tempInt2 -= 60;
+                        tempInt += 1;
+                    }
+                }
             }
-                tempInt = (Integer.valueOf(side1Data) + //Addition
-                    ttlDistance);
-                side1Data = Integer.toString(tempInt);
-                tempInt = 0;
-            } else if (!dataPoint.equals(null) && dataPoint.equals("")) {
-                tempInt = Integer.valueOf(side1Data) - //Subtraction
-                    (Integer.valueOf(side1Data) - 
-                        Integer.valueOf(average(getColumn(data,3)).toString()));
-                side1Data = Integer.toString(tempInt);
-                tempInt = 0;
+        ttlTimeMin = Integer.toString(tempInt);
+        ttlTimeSec = Integer.toString(tempInt2);
+        tempInt= 0;
+        tempInt2 = 0;
+        
+        //Update Average Intensity
+            for (int i = 0; i < data.length; i++) {
+                if (data[i][8] != null && !data[i][8].equals("")) {
+                    tempInt += Integer.valueOf(data[i][8].toString());
+                    tempInt2 += 1;
+                }
             }
-        side1.setText("Total Distance: " + side1Data + "yds");
+            if (tempInt2 != 0) {
+                tempInt /= tempInt2;
+            }
+
+        avgIntensity = Integer.toString(tempInt);
+        tempInt = 0;
+        tempInt2 = 0;
+        /*
+        for (int i = 0; i < data.length; i++) {     //Update storage array
+            for (int j = 0; j < data[i].length; j++) {
+                storage[i][j] = data[i][j];
+                if (storage[i][j] == null) {
+                    storage[i][j] = 0;
+                }
+            }
+        }
+        */
+        System.out.println(Arrays.deepToString(data));
+        System.out.println(Arrays.deepToString(storage));
+        ttlDistancePanel.setText("Total Distance: " + ttlDistance 
+            + " yds");
+        if (Integer.valueOf(ttlTimeSec) == 0) {
+            ttlTimePanel.setText("Total Time: " + ttlTimeMin + 
+                " min "); 
+        } else {
+            ttlTimePanel.setText("Total Time: " + ttlTimeMin + 
+                " min " + ttlTimeSec + " Sec"); 
+        }
+        avgIntensityPanel.setText("Intensity: " + 
+        avgIntensity + "%");
     }
-    
     public void SidePanelLabels(JLabel sideName) {
         sideName.setFont(labels);
         sideName.setBorder(BorderFactory.createLineBorder(Color.red, 2));
@@ -207,18 +279,18 @@ public class MainPage implements TableModelListener{
         sidePanel.setPreferredSize(new Dimension(300,800));
         sidePanel.setLayout(new FlowLayout());
         sidePanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
-        side1 = new JLabel("Total Distance: " + side1Data + "yds");
-        side2 = new JLabel();
-        side3 = new JLabel();
+        ttlDistancePanel = new JLabel("Total Distance: " + ttlDistance + "yds");
+        ttlTimePanel = new JLabel();
+        avgIntensityPanel = new JLabel();
         side4 = new JLabel();
-        SidePanelLabels(side1);
-        SidePanelLabels(side2);
-        SidePanelLabels(side3);
+        SidePanelLabels(ttlDistancePanel);
+        SidePanelLabels(ttlTimePanel);
+        SidePanelLabels(avgIntensityPanel);
         SidePanelLabels(side4);
 
-        side1.setText("Total Distance: " + side1Data + "yds");
-        side2.setText(side2Data);
-        side3.setText(side3Data);
+        ttlDistancePanel.setText("Total Distance: " + ttlDistance + " yds");
+        ttlTimePanel.setText("Total Time: " + ttlTimeMin + " min ");
+        avgIntensityPanel.setText("Intensity: " + avgIntensity + "%");
         side4.setText(side4Data);
         mainTab.add(sidePanel);
     }
