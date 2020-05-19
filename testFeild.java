@@ -4,6 +4,8 @@ import java.awt.*;
 import java.util.*;
 import java.io.*;
 import java.awt.event.*;
+import javax.swing.table.*;
+import javax.swing.event.*;
 
 
 public class testFeild {
@@ -12,33 +14,39 @@ public class testFeild {
         JFrame test = new JFrame();
         test.setSize(new Dimension(1650,800));
         test.setMinimumSize(new Dimension(200,200));
-        test.setLayout(null);
+        test.setLayout(new BorderLayout());
         test.setVisible(true);
         test.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        JPanel container2 = new JPanel();
-        container2.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
-        container2.setLayout(null);
-        container2.setSize(200,500);
-        container2.setLocation(200,200);
+        JPanel Pane = new JPanel();
+        JTable table1 =  new JTable(100,10);
+        JTable table2 = new JTable(100,10);
+        Pane.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        table1.setBorder(BorderFactory.createLineBorder(Color.green, 2));
+        table2.setBorder(BorderFactory.createLineBorder(Color.green, 2));
+        Pane.setLayout(new FlowLayout());
+        Pane.add(table1);
         
-        JPanel container = new JPanel();
-        container.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
-        container.setLayout(null);
-        container.setSize(400,400);
-        container.setLocation(500,200);
+        JPanel Pane2 = new JPanel();
+        Pane2.setLayout(new BorderLayout());
+        JButton but1 = new JButton("Add Row");
+        but1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Pane.add(table2);
+            }
+        });
+        Pane2.add(but1, BorderLayout.CENTER);
         
-        JLabel input = new JLabel("Test");
-        input.setSize(new Dimension(450,400));
-        input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        input.setHorizontalAlignment(SwingConstants.CENTER);
-        input.setVerticalAlignment(SwingConstants.CENTER);
-        //input.setLocation(100,100);
+        JScrollPane Over = new JScrollPane(Pane);
+        Over.setBorder(BorderFactory.createLineBorder(Color.red, 2));
+        test.add(Over);
+        //test.add(Pane2);
+       
         
-        container.add(input);
-        test.add(container);
-        test.add(container2);
+        
     }
 }
+    
+
 
 
