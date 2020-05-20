@@ -132,7 +132,7 @@ public class Listeners {
                         }
                     }
                 }
-                for (int i = 0; i < storage.length; i++) {
+                for (int i = 0; i < storage.length; i++) {  //Sets rounds for all of set
                     if (i != 0 && storage[i][0].equals(storage[i-1][0])) {
                         storage[i][1] = storage[i-1][1];
                     } 
@@ -160,16 +160,34 @@ public class Listeners {
             
             //Update Total Time
                 for (int i = 0; i < MainPage.data.length; i++) {
-                    if (MainPage.data[i][6] != null && !MainPage.data[i][6].equals("")) {
-                        tempInt += Integer.valueOf(MainPage.data[i][6].toString());
-                    }
-                    if (MainPage.data[i][7] != null && !MainPage.data[i][7].equals("")) {
-                        tempInt2 += Integer.valueOf(MainPage.data[i][7].toString());
-                        if (tempInt2 >= 60) {
-                            tempInt2 -= 60;
-                            tempInt += 1;
-                        }
-                    }
+                   if (MainPage.data[i][0] != null && !MainPage.data[i][0].equals("")) {    //Checks for set
+                       if (storage[i][1] != null && !storage[i][1].equals("")) {  //Checks for round, enter if round = #
+                           if (MainPage.data[i][6] != null && !MainPage.data[i][6].equals("")) { 
+                               tempInt += Integer.valueOf(storage[i][1].toString()) 
+                                   * Integer.valueOf(MainPage.data[i][6].toString());  //non-normal calc
+                           }
+                           if (MainPage.data[i][7] != null && !MainPage.data[i][7].equals("")) {
+                               tempInt2 += Integer.valueOf(storage[i][1].toString()) 
+                                   * Integer.valueOf(MainPage.data[i][7].toString()); //non-normal calc
+                               while (tempInt2 >= 60) {
+                                   tempInt2 -= 60;
+                                   tempInt += 1;
+                               }
+                           }    
+                       } else if (storage[i][1] == null || storage[i][1].equals("") //enter if round# = null, 0, or nothing
+                           || storage[i][1].equals(0)) {
+                           if (MainPage.data[i][6] != null && !MainPage.data[i][6].equals("")) { 
+                               tempInt += Integer.valueOf(MainPage.data[i][6].toString());  //normal calc
+                           }
+                           if (MainPage.data[i][7] != null && !MainPage.data[i][7].equals("")) {
+                               tempInt2 += Integer.valueOf(MainPage.data[i][7].toString()); ////normal calc
+                               if (tempInt2 >= 60) {
+                                   tempInt2 -= 60;
+                                   tempInt += 1;
+                               }
+                           }
+                       }
+                   }
                 }
                 MainPage.ttlTimeMin = Integer.toString(tempInt);
                 MainPage.ttlTimeSec = Integer.toString(tempInt2);
@@ -211,7 +229,7 @@ public class Listeners {
                 MainPage.ttlTimePanel.setText("Total Time: " + MainPage.ttlTimeMin + 
                     " min " + MainPage.ttlTimeSec + " Sec"); 
             }
-            MainPage.avgIntensityPanel.setText("Intensity: " + 
+            MainPage.avgIntensityPanel.setText("Avg Intensity: " + 
                 MainPage.avgIntensity + "%");
         }
     };

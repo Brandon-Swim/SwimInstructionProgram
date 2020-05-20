@@ -269,7 +269,7 @@ public class MainPage {
 
         ttlDistancePanel.setText("Total Distance: " + ttlDistance + " yds");
         ttlTimePanel.setText("Total Time: " + ttlTimeMin + " min ");
-        avgIntensityPanel.setText("Intensity: " + avgIntensity + "%");
+        avgIntensityPanel.setText("Avg Intensity: " + avgIntensity + "%");
         side4.setText(side4Data);
         mainTab.add(sidePanel);
     }
