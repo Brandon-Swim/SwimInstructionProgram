@@ -18,20 +18,14 @@ public class WelcomeFrame {
         //Intro.Initialize();
     //}
 
-    JFrame introPage;
+    static JFrame introPage;
     JLabel mainHeader1;
     JLabel mainText1;
     JButton mainButton1;
     final Font header = new Font("Arial", Font.BOLD, 80);
     final Font body = new Font("Arial", Font.PLAIN, 24);
     
-    ActionListener mainButton1Press = new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-            introPage.setVisible(false);
-            MainPage.mainWindow.setVisible(true);
-            introPage.dispose();
-        }
-  };
+
  
     public WelcomeFrame() {
         introPage = new JFrame("Swim Program");
@@ -61,7 +55,7 @@ public class WelcomeFrame {
         mainButton1 = new JButton("Click to Continue");
         mainButton1.setSize(300,100);
         mainButton1.setLocation(350,600);
-        mainButton1.addActionListener(mainButton1Press);
+        mainButton1.addActionListener(Listeners.mainButton1Press);
         
         introPage.add(mainHeader1);
         introPage.add(mainText1);

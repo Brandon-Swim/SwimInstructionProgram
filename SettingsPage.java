@@ -1,4 +1,6 @@
-
+/*TODO
+    -add type selection options
+*/
 import javax.jws.soap.SOAPBinding.Style;
 import javax.swing.*;
 import java.awt.*;

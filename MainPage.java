@@ -1,6 +1,6 @@
 /*
  * TODO
- * Warp table text
+ * Wrap table text
  *  -Clear selected Cell
  * Put all data into seperate file
  *  -privitize that file
@@ -10,7 +10,7 @@
  *  -Set up side information
  *  -Set up options (might need its own class)
  *  -Opens on Default
- *  
+ * Put all listeners in their own class
  * Add File memory
  * Update welcome Frame
  * Finalize loadout
@@ -27,15 +27,19 @@ import java.awt.event.*;
 import javax.swing.table.*;
 import javax.swing.event.*;
 
-public class MainPage implements TableModelListener{
+public class MainPage {
 
      static JFrame mainWindow;
-     //Labels
-     static JLabel panel1; //TODO
-     static JLabel panel2; //TODO
-     static JLabel panel3; //TODO
-     static JLabel panel4; //TODO
-     //Panels
+     
+     //Header
+     static JLabel header; 
+     static Font headerFont = new Font("Arial", Font.BOLD, 48);
+     static String headerName = "Workout";
+     static String headerMonth = "MM";
+     static String headerDay = "DD";
+     static String headerFinal = headerMonth + "/" + headerDay + ": " + headerName;
+     
+     //Tabs
      static JPanel mainTab;
      static JPanel pastPracticeTab;
      static JPanel settingsTab;
@@ -60,8 +64,6 @@ public class MainPage implements TableModelListener{
      String[] columnNames = {"Set","Rounds","Reps","Distance",  //TODO
          "Description","Type","Minutes","Seconds", "Intensity"}; 
      static Object[][] data = new Object[30][9];
-     static Object[][] storage = new Object[30][9];
-     
      static Font tableFont = new Font("Arial", Font.PLAIN, 16);
      static JPanel tableHolder;
      static JScrollPane table1Pane;
@@ -69,6 +71,10 @@ public class MainPage implements TableModelListener{
      static JScrollPane group3Pane;
      static JScrollPane group4Pane;
      static JScrollPane group5Pane;
+     static String[] types = {"","Warm Up","Fly","Free","Back","Breast",
+         "IM","Drill","Kick","Starts","Sprint"};
+     static JComboBox<String> typeSelector = new JComboBox<>(types);
+     static TableColumn typeColumn;
      
      //Side Panel
      static JPanel sidePanel;
@@ -90,10 +96,16 @@ public class MainPage implements TableModelListener{
      static Font buttonFont = new Font("Arial", Font.PLAIN, 12);
      static Dimension buttonDimension = new Dimension(150,100);
      static int currentTable = 0;
+     static JTextField headerNameChange;
+     static JTextField headerMonthChange;
+     static JTextField headerDayChange;
+     static JLabel headerNameLabel;
+     static JLabel headerMonthLabel;
+     static JLabel headerDayLabel;
      
      //Special
      static JScrollPane mainScrollArea;
-     static Font labels = new Font("Fuse", Font.BOLD, 48); //TODO
+     static Font labels = new Font("Fuse", Font.BOLD, 22); //TODO
      static JTabbedPane tabbedPane;
     
     public MainPage() {
@@ -103,11 +115,6 @@ public class MainPage implements TableModelListener{
         mainWindow.setLayout(new BorderLayout());
         mainWindow.setVisible(false);
         mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        for (int i = 0; i < storage.length; i++) {   //Sets all to 0.
-            for (int j = 0; j < storage[i].length; j++) {
-                storage[i][j] = 0;
-            }
-        }
     }
     
     public static void setJTableColumnsWidth(JTable table, int tablePreferredWidth,
@@ -149,13 +156,14 @@ public class MainPage implements TableModelListener{
         for(int i = 0; i < columnNames.length; i++) {
             table.getColumnModel().getColumn(i).setCellEditor(editor);
         }
-        
+        typeColumn = table.getColumnModel().getColumn(5);
+        typeColumn.setCellEditor(new DefaultCellEditor(typeSelector)); 
     }
     
     public void TableSetUp() {
         
         DefaultTableModel model = new DefaultTableModel(data, columnNames);
-        model.addTableModelListener(this);
+        model.addTableModelListener(Listeners.TableChange);  //TODO
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment( JLabel.CENTER );
         JTextField textField = new JTextField();
@@ -201,118 +209,12 @@ public class MainPage implements TableModelListener{
         
         tableHolder.add(group1);
         tableHolder.add(table1Pane);
-
         tableScrollArea = new JScrollPane(tableHolder);
         tableScrollArea.setPreferredSize(new Dimension(1250,800));
         tableScrollArea.getVerticalScrollBar().setUnitIncrement(50);
         mainTab.add(tableScrollArea);
     }
 
-    public void tableChanged(TableModelEvent e) {	
-        int row = e.getFirstRow();
-        int column = e.getColumn();
-        int tempInt = 0;
-        int tempInt2 = 0;
-        int count = 1;
-        TableModel model = (TableModel)e.getSource();
-        Object dataPoint = model.getValueAt(row, column);
-        data[row][column] = dataPoint;  //updates Data
-        System.out.println(Arrays.deepToString(data));    //Debug
-        System.out.println(Arrays.deepToString(storage));
-        
-            for (int i = 0; i < data.length; i++) {     //Update storage array
-                for (int j = 0; j < data[i].length; j++) {
-                    storage[i][j] = data[i][j];
-                    if (storage[i][j] == null) {
-                        storage[i][j] = 0;
-                    }
-                }
-            }
-            System.out.println(Arrays.deepToString(storage));
-            for (int i = 0; i < storage.length; i++) {
-                if (i != 0 && storage[i][0].equals(storage[i-1][0])) {
-                    storage[i][1] = storage[i-1][1];
-                } 
-            }
-            System.out.println(Arrays.deepToString(storage));
-        
-        //Update Total Distance
-        for (int i = 0; i < data.length; i++) {
-            if (data[i][0] != null && data[i][2] != null && 
-                data[i][3] != null && !data[i][0].equals("") && 
-                !data[i][2].equals("") & !data[i][3].equals("")) {
-                if (storage[i][1] != null && !storage[i][1].equals(0) && 
-                    !storage[i][1].equals("")) {    
-                    tempInt += Integer.valueOf(storage[i][3].toString()) * 
-                        Integer.valueOf(storage[i][2].toString()) *
-                        Integer.valueOf(storage[i][1].toString());
-                } else if (storage[i][1] == null || storage[i][1].equals(0) || 
-                    storage[i][1].equals("")) {
-                            tempInt += Integer.valueOf(storage[i][3].toString()) * 
-                            Integer.valueOf(storage[i][2].toString());
-                    }
-            }
-        }
-        ttlDistance = Integer.toString(tempInt);
-        tempInt = 0;
-        
-        //Update Total Time
-            for (int i = 0; i < data.length; i++) {
-                if (data[i][6] != null && !data[i][6].equals("")) {
-                    tempInt += Integer.valueOf(data[i][6].toString());
-                }
-                if (data[i][7] != null && !data[i][7].equals("")) {
-                    tempInt2 += Integer.valueOf(data[i][7].toString());
-                    if (tempInt2 >= 60) {
-                        tempInt2 -= 60;
-                        tempInt += 1;
-                    }
-                }
-            }
-        ttlTimeMin = Integer.toString(tempInt);
-        ttlTimeSec = Integer.toString(tempInt2);
-        tempInt= 0;
-        tempInt2 = 0;
-        
-        //Update Average Intensity
-            for (int i = 0; i < data.length; i++) {
-                if (data[i][8] != null && !data[i][8].equals("")) {
-                    tempInt += Integer.valueOf(data[i][8].toString());
-                    tempInt2 += 1;
-                }
-            }
-            if (tempInt2 != 0) {
-                tempInt /= tempInt2;
-            }
-
-        avgIntensity = Integer.toString(tempInt);
-        tempInt = 0;
-        tempInt2 = 0;
-        /*
-        for (int i = 0; i < data.length; i++) {     //Update storage array
-            for (int j = 0; j < data[i].length; j++) {
-                storage[i][j] = data[i][j];
-                if (storage[i][j] == null) {
-                    storage[i][j] = 0;
-                }
-            }
-        }
-        */
-        System.out.println(Arrays.deepToString(data));
-        System.out.println(Arrays.deepToString(storage));
-        ttlDistancePanel.setText("Total Distance: " + ttlDistance 
-            + " yds");
-        if (Integer.valueOf(ttlTimeSec) == 0) {
-            ttlTimePanel.setText("Total Time: " + ttlTimeMin + 
-                " min "); 
-        } else {
-            ttlTimePanel.setText("Total Time: " + ttlTimeMin + 
-                " min " + ttlTimeSec + " Sec"); 
-        }
-        avgIntensityPanel.setText("Intensity: " + 
-        avgIntensity + "%");
-    }
-    
     public void TableLabels(JLabel group) {
         group.setForeground(Color.red);
         group.setPreferredSize(labelSize);
@@ -380,86 +282,74 @@ public class MainPage implements TableModelListener{
         addGroup = new JButton("Add Group");
         addGroup.setFont(buttonFont);
         addGroup.setSize(buttonDimension);
-        addGroup.addActionListener(new ActionListener() {
-         public void actionPerformed(ActionEvent e) {
-             currentTable += 1;
-             switch (currentTable) {
-                 case 1: 
-                     tableHolder.add(group2);
-                     tableHolder.add(group2Pane);
-                     SwingUtilities.updateComponentTreeUI(mainWindow);
-                     break;
-                 case 2:
-                     tableHolder.add(group3);
-                     tableHolder.add(group3Pane);
-                     SwingUtilities.updateComponentTreeUI(mainWindow);
-                     break;
-                 case 3:
-                     tableHolder.add(group4);
-                     tableHolder.add(group4Pane);
-                     SwingUtilities.updateComponentTreeUI(mainWindow);
-                     break;
-                 case 4:
-                     tableHolder.add(group5);
-                     tableHolder.add(group5Pane);
-                     SwingUtilities.updateComponentTreeUI(mainWindow);
-                     break;
-                 default:
-                     if (currentTable == 5) {
-                         currentTable = 4;
-                     }
-                     break;
-             }
-         }
-        });
-        
+        addGroup.addActionListener(Listeners.AddGroup);
         remGroup = new JButton("Remove Group");
         remGroup.setFont(buttonFont);
         remGroup.setSize(buttonDimension);
-        remGroup.addActionListener(new ActionListener() {
-         public void actionPerformed(ActionEvent e) {
-             currentTable -= 1;
-             switch (currentTable) {
-                 case 0: 
-                     tableHolder.remove(group2);
-                     tableHolder.remove(group2Pane);
-                     SwingUtilities.updateComponentTreeUI(mainWindow);
-                     break;
-                 case 1: 
-                     tableHolder.remove(group3);
-                     tableHolder.remove(group3Pane);
-                     SwingUtilities.updateComponentTreeUI(mainWindow);
-                     break;
-                 case 2: 
-                     tableHolder.remove(group4);
-                     tableHolder.remove(group4Pane);
-                     SwingUtilities.updateComponentTreeUI(mainWindow);
-                     break;
-                 case 3: 
-                     tableHolder.remove(group5);
-                     tableHolder.remove(group5Pane);
-                     SwingUtilities.updateComponentTreeUI(mainWindow);
-                     break;
-                 default:
-                     if (currentTable == -1) {
-                         currentTable = 0;
-                     } 
-                     break;
-             }
-         }
-        });
+        remGroup.addActionListener(Listeners.RemGroup);
+        
+        headerNameChange = new JTextField(headerName);
+        headerNameChange.setForeground(Color.LIGHT_GRAY);
+        headerNameChange.setFont(labels);
+        headerNameChange.setPreferredSize(new Dimension(200,50));
+        headerNameChange.setHorizontalAlignment(SwingConstants.CENTER);
+        headerNameChange.addMouseListener(Listeners.HeaderNameMouse);
+        headerNameChange.addActionListener(Listeners.HeaderNameText);   //hitting Enter
+        headerNameChange.addFocusListener(Listeners.HeaderNameClick);  //Clicking off
+        
+        headerMonthChange = new JTextField(headerMonth);
+        headerMonthChange.setForeground(Color.LIGHT_GRAY);
+        headerMonthChange.setFont(labels);
+        headerMonthChange.setPreferredSize(new Dimension(50,50));
+        headerMonthChange.setHorizontalAlignment(SwingConstants.CENTER);
+        headerMonthChange.addMouseListener(Listeners.HeaderMonthMouse);
+        headerMonthChange.addActionListener(Listeners.HeaderMonthText);
+        headerMonthChange.addFocusListener(Listeners.HeaderMonthClick);
+        
+        headerDayChange = new JTextField(headerDay);
+        headerDayChange.setForeground(Color.LIGHT_GRAY);
+        headerDayChange.setFont(labels);
+        headerDayChange.setPreferredSize(new Dimension(50,50));
+        headerDayChange.setHorizontalAlignment(SwingConstants.CENTER);
+        headerDayChange.addMouseListener(Listeners.HeaderDayMouse);
+        headerDayChange.addActionListener(Listeners.HeaderDayText);
+        headerDayChange.addFocusListener(Listeners.HeaderDayClick);
+        
+        headerNameLabel = new JLabel("Name:");
+        headerNameLabel.setFont(labels);
+        headerNameLabel.setPreferredSize(new Dimension(80,50));
+        headerNameLabel.setForeground(Color.black);
+        
+        headerMonthLabel = new JLabel("Month:");
+        headerMonthLabel.setFont(labels);
+        headerMonthLabel.setPreferredSize(new Dimension(80,50));
+        headerMonthLabel.setForeground(Color.black);
+        
+        headerDayLabel = new JLabel("  Day:");
+        headerDayLabel.setFont(labels);
+        headerDayLabel.setPreferredSize(new Dimension(80,50));
+        headerDayLabel.setForeground(Color.black);
+        
         graphPanel.add(addGroup);
         graphPanel.add(remGroup);
+        graphPanel.add(headerNameLabel);
+        graphPanel.add(headerNameChange);
+        graphPanel.add(headerMonthLabel);
+        graphPanel.add(headerMonthChange);
+        graphPanel.add(headerDayLabel);
+        graphPanel.add(headerDayChange);
         mainTab.add(graphPanel);    
     }
  
     public void HeaderSetUp() {
-        panel4 = new JLabel("Header");
-        panel4.setFont(labels);
-        panel4.setHorizontalAlignment(SwingConstants.CENTER);
-        panel4.setVerticalAlignment(SwingConstants.CENTER);
-        panel4.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        mainWindow.add(panel4, BorderLayout.NORTH);
+        header = new JLabel(headerFinal);
+        header.setLayout(new FlowLayout());
+        header.setFont(headerFont);
+        header.setVerticalAlignment(SwingConstants.CENTER);
+        header.setHorizontalAlignment(SwingConstants.CENTER);
+        header.setForeground(Color.LIGHT_GRAY);
+        header.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        mainWindow.add(header, BorderLayout.NORTH);
     }
     
     public void PrepareGUI() {    
