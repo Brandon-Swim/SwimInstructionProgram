@@ -7,15 +7,37 @@ import java.awt.event.*;
 import java.util.*;
 
 
-
+//Creates GUI 
 public class finalHolder {
-    static Scanner userInput;
+    static JFrame mainWindow = new JFrame("Swim Program");
     public static void main(String args[]) {
-        MainPage program = new MainPage();
-        program.PrepareGUI();
+        //Welcome Frame
         WelcomeFrame introduction = new WelcomeFrame();
         introduction.Initialize();
-        userInput = new Scanner(System.in);
         
-}
+        //Main page Setup
+        //Frame Setup
+        mainWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        mainWindow.setMinimumSize(new Dimension(1650,800));
+        mainWindow.setLayout(new BorderLayout());
+        mainWindow.setVisible(false);
+        mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        //Tab Setup
+        MainPage program = new MainPage();  
+        SettingsPage settings = new SettingsPage();
+        PracticeArchieve archieve = new PracticeArchieve();
+        ImportedPractices user = new ImportedPractices();
+        JTabbedPane tabs = new JTabbedPane();
+        tabs.setPreferredSize(new Dimension(1000,800));
+        program.PrepareGUI();
+        settings.PrepareGUI();
+        archieve.PrepareGUI();
+        user.PrepareGUI();
+        tabs.add("Practice Builder", MainPage.mainScrollArea);   //TODO figure out 
+        tabs.add("Practice Archieve", PracticeArchieve.practiceArchieveTab);
+        tabs.add("Imported Practices", ImportedPractices.importTab);
+        tabs.add("Settings", SettingsPage.settingsTab);
+        mainWindow.getContentPane().add(tabs, BorderLayout.CENTER); 
+    }
 }

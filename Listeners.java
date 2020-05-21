@@ -102,138 +102,38 @@ public class Listeners {
     
     
     //Table listener
-    static Object[][] storage = 
-        new Object[MainPage.data.length][MainPage.data[0].length]; 
-    {
-        for (int i = 0; i < storage.length; i++) {   //Sets all to 0.
-            for (int j = 0; j < storage[i].length; j++) {
-                storage[i][j] = 0;
-            }
-        }
-    }
-    static TableModelListener TableChange = new TableModelListener() {
+    static TableListener group1 = new TableListener(0);
+    static TableListener group2 = new TableListener(1);
+    static TableListener group3 = new TableListener(2);
+    static TableListener group4 = new TableListener(3);
+    static TableListener group5 = new TableListener(4);
+    static TableModelListener group1Change = new TableModelListener() {
         public void tableChanged(TableModelEvent e) {
-            int row = e.getFirstRow();
-            int column = e.getColumn();
-            int tempInt = 0;
-            int tempInt2 = 0;
-            int count = 1;
-            TableModel model = (TableModel)e.getSource();
-            Object dataPoint = model.getValueAt(row, column);
-            MainPage.data[row][column] = dataPoint;  //updates Data
-            //System.out.println(Arrays.deepToString(MainPage.data));    //Debug
-            //System.out.println(Arrays.deepToString(storage));
-            
-                for (int i = 0; i < MainPage.data.length; i++) {     //Update storage array
-                    for (int j = 0; j < MainPage.data[i].length; j++) {
-                        storage[i][j] = MainPage.data[i][j];
-                        if (storage[i][j] == null) {
-                            storage[i][j] = 0;
-                        }
-                    }
-                }
-                for (int i = 0; i < storage.length; i++) {  //Sets rounds for all of set
-                    if (i != 0 && storage[i][0].equals(storage[i-1][0])) {
-                        storage[i][1] = storage[i-1][1];
-                    } 
-                }
-            
-            //Update Total Distance
-            for (int i = 0; i < MainPage.data.length; i++) {
-                if (MainPage.data[i][0] != null && MainPage.data[i][2] != null && 
-                    MainPage.data[i][3] != null && !MainPage.data[i][0].equals("") && 
-                    !MainPage.data[i][2].equals("") & !MainPage.data[i][3].equals("")) {
-                    if (storage[i][1] != null && !storage[i][1].equals(0) && 
-                        !storage[i][1].equals("")) {    
-                        tempInt += Integer.valueOf(storage[i][3].toString()) * 
-                            Integer.valueOf(storage[i][2].toString()) *
-                            Integer.valueOf(storage[i][1].toString());
-                    } else if (storage[i][1] == null || storage[i][1].equals(0) || 
-                        storage[i][1].equals("")) {
-                                tempInt += Integer.valueOf(storage[i][3].toString()) * 
-                                Integer.valueOf(storage[i][2].toString());
-                        }
-                }
-            }
-            MainPage.ttlDistance = Integer.toString(tempInt);
-            tempInt = 0;
-            
-            //Update Total Time
-                for (int i = 0; i < MainPage.data.length; i++) {
-                   if (MainPage.data[i][0] != null && !MainPage.data[i][0].equals("")) {    //Checks for set
-                       if (storage[i][1] != null && !storage[i][1].equals("")) {  //Checks for round, enter if round = #
-                           if (MainPage.data[i][6] != null && !MainPage.data[i][6].equals("")) { 
-                               tempInt += Integer.valueOf(storage[i][1].toString()) 
-                                   * Integer.valueOf(MainPage.data[i][6].toString());  //non-normal calc
-                           }
-                           if (MainPage.data[i][7] != null && !MainPage.data[i][7].equals("")) {
-                               tempInt2 += Integer.valueOf(storage[i][1].toString()) 
-                                   * Integer.valueOf(MainPage.data[i][7].toString()); //non-normal calc
-                               while (tempInt2 >= 60) {
-                                   tempInt2 -= 60;
-                                   tempInt += 1;
-                               }
-                           }    
-                       } else if (storage[i][1] == null || storage[i][1].equals("") //enter if round# = null, 0, or nothing
-                           || storage[i][1].equals(0)) {
-                           if (MainPage.data[i][6] != null && !MainPage.data[i][6].equals("")) { 
-                               tempInt += Integer.valueOf(MainPage.data[i][6].toString());  //normal calc
-                           }
-                           if (MainPage.data[i][7] != null && !MainPage.data[i][7].equals("")) {
-                               tempInt2 += Integer.valueOf(MainPage.data[i][7].toString()); ////normal calc
-                               if (tempInt2 >= 60) {
-                                   tempInt2 -= 60;
-                                   tempInt += 1;
-                               }
-                           }
-                       }
-                   }
-                }
-                MainPage.ttlTimeMin = Integer.toString(tempInt);
-                MainPage.ttlTimeSec = Integer.toString(tempInt2);
-            tempInt= 0;
-            tempInt2 = 0;
-            
-            //Update Average Intensity
-                for (int i = 0; i < MainPage.data.length; i++) {
-                    if (MainPage.data[i][8] != null && !MainPage.data[i][8].equals("")) {
-                        tempInt += Integer.valueOf(MainPage.data[i][8].toString());
-                        tempInt2 += 1;
-                    }
-                }
-                if (tempInt2 != 0) {
-                    tempInt /= tempInt2;
-                }
-
-                MainPage.avgIntensity = Integer.toString(tempInt);
-            tempInt = 0;
-            tempInt2 = 0;
-            /*
-            for (int i = 0; i < data.length; i++) {     //Update storage array
-                for (int j = 0; j < data[i].length; j++) {
-                    storage[i][j] = data[i][j];
-                    if (storage[i][j] == null) {
-                        storage[i][j] = 0;
-                    }
-                }
-            }
-            */
-            System.out.println("A:" + Arrays.deepToString(MainPage.data));
-            System.out.println("B:" + Arrays.deepToString(storage));
-            MainPage.ttlDistancePanel.setText("Total Distance: " + MainPage.ttlDistance 
-                + " yds");
-            if (Integer.valueOf(MainPage.ttlTimeSec) == 0) {
-                MainPage.ttlTimePanel.setText("Total Time: " + MainPage.ttlTimeMin + 
-                    " min "); 
-            } else {
-                MainPage.ttlTimePanel.setText("Total Time: " + MainPage.ttlTimeMin + 
-                    " min " + MainPage.ttlTimeSec + " Sec"); 
-            }
-            MainPage.avgIntensityPanel.setText("Avg Intensity: " + 
-                MainPage.avgIntensity + "%");
+            group1.tableChanged(e);
+        }
+    };
+    static TableModelListener group2Change = new TableModelListener() {
+        public void tableChanged(TableModelEvent e) {
+            group2.tableChanged(e);
+        }
+    };
+    static TableModelListener group3Change = new TableModelListener() {
+        public void tableChanged(TableModelEvent e) {
+            group3.tableChanged(e);
+        }
+    };
+    static TableModelListener group4Change = new TableModelListener() {
+        public void tableChanged(TableModelEvent e) {
+            group4.tableChanged(e);
+        }
+    };
+    static TableModelListener group5Change = new TableModelListener() {
+        public void tableChanged(TableModelEvent e) {
+            group5.tableChanged(e);
         }
     };
     //table addition and subtraction listener
+    static Dimension dTable = new Dimension(1200,460); //Base Size
     static int currentTable = 0;
     static ActionListener AddGroup = new ActionListener() {
         public void actionPerformed(ActionEvent e) {
@@ -242,22 +142,30 @@ public class Listeners {
                 case 1: 
                     MainPage.tableHolder.add(MainPage.group2);
                     MainPage.tableHolder.add(MainPage.group2Pane);
-                    SwingUtilities.updateComponentTreeUI(MainPage.mainWindow);
+                    dTable.setSize(1200,960);
+                    MainPage.tableHolder.setPreferredSize(dTable);
+                    SwingUtilities.updateComponentTreeUI(finalHolder.mainWindow);
                     break;
                 case 2:
                     MainPage.tableHolder.add(MainPage.group3);
                     MainPage.tableHolder.add(MainPage.group3Pane);
-                    SwingUtilities.updateComponentTreeUI(MainPage.mainWindow);
+                    dTable.setSize(1200,1440);
+                    MainPage.tableHolder.setPreferredSize(dTable);
+                    SwingUtilities.updateComponentTreeUI(finalHolder.mainWindow);
                     break;
                 case 3:
                     MainPage.tableHolder.add(MainPage.group4);
                     MainPage.tableHolder.add(MainPage.group4Pane);
-                    SwingUtilities.updateComponentTreeUI(MainPage.mainWindow);
+                    dTable.setSize(1200,1920);
+                    MainPage.tableHolder.setPreferredSize(dTable);
+                    SwingUtilities.updateComponentTreeUI(finalHolder.mainWindow);
                     break;
                 case 4:
                     MainPage.tableHolder.add(MainPage.group5);
                     MainPage.tableHolder.add(MainPage.group5Pane);
-                    SwingUtilities.updateComponentTreeUI(MainPage.mainWindow);
+                    dTable.setSize(1200,2400);
+                    MainPage.tableHolder.setPreferredSize(dTable);
+                    SwingUtilities.updateComponentTreeUI(finalHolder.mainWindow);
                     break;
                 default:
                     if (currentTable == 5) {
@@ -274,22 +182,30 @@ public class Listeners {
                 case 0: 
                     MainPage.tableHolder.remove(MainPage.group2);
                     MainPage.tableHolder.remove(MainPage.group2Pane);
-                    SwingUtilities.updateComponentTreeUI(MainPage.mainWindow);
+                    dTable.setSize(1200,480);
+                    MainPage.tableHolder.setPreferredSize(dTable);
+                    SwingUtilities.updateComponentTreeUI(finalHolder.mainWindow);
                     break;
                 case 1: 
                     MainPage.tableHolder.remove(MainPage.group3);
                     MainPage.tableHolder.remove(MainPage.group3Pane);
-                    SwingUtilities.updateComponentTreeUI(MainPage.mainWindow);
+                    dTable.setSize(1200,960);
+                    MainPage.tableHolder.setPreferredSize(dTable);
+                    SwingUtilities.updateComponentTreeUI(finalHolder.mainWindow);
                     break;
                 case 2: 
                     MainPage.tableHolder.remove(MainPage.group4);
                     MainPage.tableHolder.remove(MainPage.group4Pane);
-                    SwingUtilities.updateComponentTreeUI(MainPage.mainWindow);
+                    dTable.setSize(1200,1440);
+                    MainPage.tableHolder.setPreferredSize(dTable);
+                    SwingUtilities.updateComponentTreeUI(finalHolder.mainWindow);
                     break;
                 case 3: 
                     MainPage.tableHolder.remove(MainPage.group5);
                     MainPage.tableHolder.remove(MainPage.group5Pane);
-                    SwingUtilities.updateComponentTreeUI(MainPage.mainWindow);
+                    dTable.setSize(1200,1920);
+                    MainPage.tableHolder.setPreferredSize(dTable);
+                    SwingUtilities.updateComponentTreeUI(finalHolder.mainWindow);
                     break;
                 default:
                     if (currentTable == -1) {
@@ -304,7 +220,7 @@ public class Listeners {
     static ActionListener mainButton1Press = new ActionListener() {
            public void actionPerformed(ActionEvent e) {
                WelcomeFrame.introPage.setVisible(false);
-               MainPage.mainWindow.setVisible(true);
+               finalHolder.mainWindow.setVisible(true);
                WelcomeFrame.introPage.dispose();
            }
      };   

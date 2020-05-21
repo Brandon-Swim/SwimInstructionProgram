@@ -28,8 +28,6 @@ import javax.swing.table.*;
 import javax.swing.event.*;
 
 public class MainPage {
-
-     static JFrame mainWindow;
      
      //Header
      static JLabel header; 
@@ -42,8 +40,8 @@ public class MainPage {
      //Tabs
      static JPanel mainTab;
      static JPanel pastPracticeTab;
+     static JPanel importedPracticesTab;
      static JPanel settingsTab;
-     //Buttons
      
      //Main Table
      Dimension T = new Dimension(1650,800);
@@ -61,9 +59,9 @@ public class MainPage {
      static JTable mainTableGroup4;
      static JTable mainTableGroup5; //TODO maybe?
      static JScrollPane tableScrollArea;
-     String[] columnNames = {"Set","Rounds","Reps","Distance",  //TODO
+     static String[] columnNames = {"Set","Rounds","Reps","Distance",  //TODO
          "Description","Type","Minutes","Seconds", "Intensity"}; 
-     static Object[][] data = new Object[30][9];
+     static Object[][][] data = new Object[5][30][9];
      static Font tableFont = new Font("Arial", Font.PLAIN, 16);
      static JPanel tableHolder;
      static JScrollPane table1Pane;
@@ -75,6 +73,7 @@ public class MainPage {
          "IM","Drill","Kick","Starts","Sprint"};
      static JComboBox<String> typeSelector = new JComboBox<>(types);
      static TableColumn typeColumn;
+     static int GroupNum = 1;
      
      //Side Panel
      static JPanel sidePanel;
@@ -82,15 +81,31 @@ public class MainPage {
      static JLabel ttlTimePanel;
      static JLabel avgIntensityPanel;
      static JLabel side4;
+     static JLabel side5;
+     static JLabel side6;
+     static JLabel side7;
+     static JLabel side8;
+     static JLabel side9;
+     static JLabel side10;
+     static JLabel side11;
      static String ttlDistance = "0";
      static String ttlTimeMin = "0";
      static String ttlTimeSec = "0";
      static String avgIntensity = "0";
-     static String side4Data = "0";
+     static String side4Data = "Type Counter";  //Displays total amount of practice types for the season
+     static String side5Data = "Season Distance";   //Displays total season distance
+     static String side6Data = "Practices left in the week";  //Displays practices left in the week
+     static String side7Data = "Type Counter";  //Displays practices left to next competition
+     static String side8Data = "Game Day Counter";  //Displays practices since last game day
+     static String side9Data = "Practices until Taper";  //Displays practices until taper
+     static String side10Data = "Set distance"; //Displays Individual Set distances
+     static String side11Data = "Working Distance"; //Displays amount of working yards
      static Integer[] side1Column;
+     static Dimension sidePanelSize = new Dimension(250,100);
+     static JScrollPane sideScroll;
      
-     //Graph Panel
-     static JPanel graphPanel;
+     //Control Panel
+     static JPanel controlPanel;
      static JButton addGroup;
      static JButton remGroup;
      static Font buttonFont = new Font("Arial", Font.PLAIN, 12);
@@ -103,19 +118,25 @@ public class MainPage {
      static JLabel headerMonthLabel;
      static JLabel headerDayLabel;
      
+     //Graphs
+     static JLabel graph1;
+     static JLabel graph2;
+     static JLabel graph3;
+     static JPanel graphHolder;
+     static Dimension graphLabelSize =  new Dimension(600,600);
+     
+     //past practice viewer
+     static JPanel ppHolder;
+     static JPanel ppInfo;
+     static JLabel ppSelector;
+     static JLabel ppSummary;
+     static JLabel ppTable;
+     
      //Special
      static JScrollPane mainScrollArea;
      static Font labels = new Font("Fuse", Font.BOLD, 22); //TODO
      static JTabbedPane tabbedPane;
     
-    public MainPage() {
-        mainWindow = new JFrame("Swim Program");
-        mainWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        mainWindow.setMinimumSize(new Dimension(1650,800));
-        mainWindow.setLayout(new BorderLayout());
-        mainWindow.setVisible(false);
-        mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
     
     public static void setJTableColumnsWidth(JTable table, int tablePreferredWidth,
         double... percentages) {
@@ -161,9 +182,17 @@ public class MainPage {
     }
     
     public void TableSetUp() {
+         DefaultTableModel modelG1 = new DefaultTableModel(data[0], columnNames);
+         DefaultTableModel modelG2 = new DefaultTableModel(data[1], columnNames);
+         DefaultTableModel modelG3 = new DefaultTableModel(data[2], columnNames); 
+         DefaultTableModel modelG4 = new DefaultTableModel(data[3], columnNames); 
+         DefaultTableModel modelG5 = new DefaultTableModel(data[4], columnNames);
         
-        DefaultTableModel model = new DefaultTableModel(data, columnNames);
-        model.addTableModelListener(Listeners.TableChange);  //TODO
+        modelG1.addTableModelListener(Listeners.group1Change);  
+        modelG2.addTableModelListener(Listeners.group2Change);  
+        modelG3.addTableModelListener(Listeners.group3Change);  
+        modelG4.addTableModelListener(Listeners.group4Change);  
+        modelG5.addTableModelListener(Listeners.group5Change);  
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment( JLabel.CENTER );
         JTextField textField = new JTextField();
@@ -171,20 +200,20 @@ public class MainPage {
         textField.setBorder(BorderFactory.createLineBorder(Color.red, 2));
         DefaultCellEditor cellEditor = new DefaultCellEditor( textField );
         
-        mainTableGroup1 = new JTable(model);
-        mainTableGroup2 = new JTable(model);
-        mainTableGroup3 = new JTable(model);
-        mainTableGroup4 = new JTable(model);
-        mainTableGroup5 = new JTable(model);
-        TableCreation(mainTableGroup1, model, centerRenderer, cellEditor);
-        TableCreation(mainTableGroup2, model, centerRenderer, cellEditor);
-        TableCreation(mainTableGroup3, model, centerRenderer, cellEditor);
-        TableCreation(mainTableGroup4, model, centerRenderer, cellEditor);
-        TableCreation(mainTableGroup5, model, centerRenderer, cellEditor);
+        mainTableGroup1 = new JTable(modelG1);
+        mainTableGroup2 = new JTable(modelG2);
+        mainTableGroup3 = new JTable(modelG3);
+        mainTableGroup4 = new JTable(modelG4);
+        mainTableGroup5 = new JTable(modelG5);
+        TableCreation(mainTableGroup1, modelG1, centerRenderer, cellEditor);
+        TableCreation(mainTableGroup2, modelG2, centerRenderer, cellEditor);
+        TableCreation(mainTableGroup3, modelG3, centerRenderer, cellEditor);
+        TableCreation(mainTableGroup4, modelG4, centerRenderer, cellEditor);
+        TableCreation(mainTableGroup5, modelG5, centerRenderer, cellEditor);
    
         tableHolder = new JPanel();
         tableHolder.setLayout(new FlowLayout());
-        tableHolder.setPreferredSize(new Dimension(1200,2400));
+        tableHolder.setPreferredSize(new Dimension(1200,460));
         table1Pane = new JScrollPane(mainTableGroup1);
         table1Pane.setPreferredSize(tableSize);
         group2Pane = new JScrollPane(mainTableGroup2);
@@ -212,6 +241,7 @@ public class MainPage {
         tableScrollArea = new JScrollPane(tableHolder);
         tableScrollArea.setPreferredSize(new Dimension(1250,800));
         tableScrollArea.getVerticalScrollBar().setUnitIncrement(50);
+        tableScrollArea.setBorder(BorderFactory.createEmptyBorder());
         mainTab.add(tableScrollArea);
     }
 
@@ -223,13 +253,12 @@ public class MainPage {
         group.setFont(tableHeader);
     }
     
-    public void SidePanelLabels(JLabel sideName) {
+    public void PanelSetUp(JLabel sideName, Dimension size) {
         sideName.setFont(labels);
         sideName.setBorder(BorderFactory.createLineBorder(Color.red, 2));
         sideName.setHorizontalAlignment(SwingConstants.CENTER);
         sideName.setVerticalAlignment(SwingConstants.CENTER);
-        sideName.setPreferredSize(new Dimension(280,100));
-        sidePanel.add(sideName);
+        sideName.setPreferredSize(size);
     }
     
     public static Object[] getColumn(Object[][] array, int index){
@@ -255,30 +284,67 @@ public class MainPage {
     
     public void SidePanelSetUp() {
         sidePanel = new JPanel();
-        sidePanel.setPreferredSize(new Dimension(300,800));
+        sidePanel.setPreferredSize(new Dimension(260,1500));
         sidePanel.setLayout(new FlowLayout());
-        sidePanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
         ttlDistancePanel = new JLabel("Total Distance: " + ttlDistance + "yds");
         ttlTimePanel = new JLabel();
         avgIntensityPanel = new JLabel();
         side4 = new JLabel();
-        SidePanelLabels(ttlDistancePanel);
-        SidePanelLabels(ttlTimePanel);
-        SidePanelLabels(avgIntensityPanel);
-        SidePanelLabels(side4);
-
+        side5 = new JLabel();
+        side6 = new JLabel();
+        side7 = new JLabel();
+        side8 = new JLabel();
+        side9 = new JLabel();
+        side10 = new JLabel();
+        side11= new JLabel();
+        PanelSetUp(ttlDistancePanel, sidePanelSize);
+        PanelSetUp(ttlTimePanel, sidePanelSize);
+        PanelSetUp(avgIntensityPanel, sidePanelSize);
+        PanelSetUp(side4, sidePanelSize);
+        PanelSetUp(side5, sidePanelSize);
+        PanelSetUp(side6, sidePanelSize);
+        PanelSetUp(side7, sidePanelSize);
+        PanelSetUp(side8, sidePanelSize);
+        PanelSetUp(side9, sidePanelSize);
+        PanelSetUp(side10, sidePanelSize);
+        PanelSetUp(side11, sidePanelSize);
+        sidePanel.add(ttlDistancePanel);
+        sidePanel.add(ttlTimePanel);
+        sidePanel.add(avgIntensityPanel);
+        sidePanel.add(side4);
+        sidePanel.add(side5);
+        sidePanel.add(side6);
+        sidePanel.add(side7);
+        sidePanel.add(side8);
+        sidePanel.add(side9);
+        sidePanel.add(side10);
+        sidePanel.add(side11);
+        
         ttlDistancePanel.setText("Total Distance: " + ttlDistance + " yds");
         ttlTimePanel.setText("Total Time: " + ttlTimeMin + " min ");
         avgIntensityPanel.setText("Avg Intensity: " + avgIntensity + "%");
         side4.setText(side4Data);
-        mainTab.add(sidePanel);
+        side5.setText(side5Data);
+        side6.setText(side6Data);
+        side7.setText(side7Data);
+        side8.setText(side8Data);
+        side9.setText(side9Data);
+        side10.setText(side10Data);
+        side11.setText(side11Data);
+        sideScroll = new JScrollPane(sidePanel,       //TODO Set layout for multiple panels
+            JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
+            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        sideScroll.setPreferredSize(new Dimension(300,800));
+        sideScroll.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+        sideScroll.getVerticalScrollBar().setUnitIncrement(25);
+        mainTab.add(sideScroll);
     }
 
-    public void GraphSetUp() {
-        graphPanel = new JPanel();
-        graphPanel.setPreferredSize(new Dimension(300,800));  
-        graphPanel.setLayout(new FlowLayout());
-        graphPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
+    public void ControlPanelSetUp() {
+        controlPanel = new JPanel();
+        controlPanel.setPreferredSize(new Dimension(300,800));  
+        controlPanel.setLayout(new FlowLayout());
+        controlPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
         addGroup = new JButton("Add Group");
         addGroup.setFont(buttonFont);
         addGroup.setSize(buttonDimension);
@@ -330,15 +396,15 @@ public class MainPage {
         headerDayLabel.setPreferredSize(new Dimension(80,50));
         headerDayLabel.setForeground(Color.black);
         
-        graphPanel.add(addGroup);
-        graphPanel.add(remGroup);
-        graphPanel.add(headerNameLabel);
-        graphPanel.add(headerNameChange);
-        graphPanel.add(headerMonthLabel);
-        graphPanel.add(headerMonthChange);
-        graphPanel.add(headerDayLabel);
-        graphPanel.add(headerDayChange);
-        mainTab.add(graphPanel);    
+        controlPanel.add(addGroup);
+        controlPanel.add(remGroup);
+        controlPanel.add(headerNameLabel);
+        controlPanel.add(headerNameChange);
+        controlPanel.add(headerMonthLabel);
+        controlPanel.add(headerMonthChange);
+        controlPanel.add(headerDayLabel);
+        controlPanel.add(headerDayChange);
+        mainTab.add(controlPanel);    
     }
  
     public void HeaderSetUp() {
@@ -349,37 +415,69 @@ public class MainPage {
         header.setHorizontalAlignment(SwingConstants.CENTER);
         header.setForeground(Color.LIGHT_GRAY);
         header.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        mainWindow.add(header, BorderLayout.NORTH);
+        finalHolder.mainWindow.add(header, BorderLayout.NORTH);
+    }
+    
+    public void GraphSetUp() {
+        graphHolder = new JPanel();
+        graphHolder.setLayout(new FlowLayout());
+        graphHolder.setPreferredSize(new Dimension(1860,630));
+        graphHolder.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+        graph1 = new JLabel("Graph 1");
+        graph2 = new JLabel("Graph 2");
+        graph3 = new JLabel("Graph 3");
+        PanelSetUp(graph1, graphLabelSize);
+        PanelSetUp(graph2, graphLabelSize);
+        PanelSetUp(graph3, graphLabelSize);
+        
+        graphHolder.add(graph1);
+        graphHolder.add(graph2);
+        graphHolder.add(graph3);
+        mainTab.add(graphHolder); 
+    }
+
+    public void PastPracticeSetUp() {
+        ppHolder = new JPanel();
+        ppHolder.setLayout(new FlowLayout());
+        ppHolder.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+        ppHolder.setPreferredSize(new Dimension(1860,850));
+        
+        ppInfo =  new JPanel();
+        ppInfo.setLayout(new FlowLayout());
+        ppInfo.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
+        ppInfo.setPreferredSize(new Dimension(590,820));
+        
+        ppSelector = new JLabel("Past Practice Selector");
+        ppTable = new JLabel("Past Practice Table");
+        ppSummary = new JLabel("Past Practice Summary");
+        PanelSetUp(ppSelector, new Dimension(550,400));
+        PanelSetUp(ppTable, new Dimension(1250,800));
+        PanelSetUp(ppSummary, new Dimension(550,400));
+        ppInfo.add(ppSelector);
+        ppInfo.add(ppSummary);
+        ppHolder.add(ppInfo);
+        ppHolder.add(ppTable);
+        mainTab.add(ppHolder);
+        
     }
     
     public void PrepareGUI() {    
-        
+
         mainTab = new JPanel();
         mainTab.setLayout(new FlowLayout());
-        mainTab.setPreferredSize(new Dimension(1650,2000));  //TODO
-        tabbedPane = new JTabbedPane();
-        tabbedPane.setPreferredSize(new Dimension(1000,800));   //TDOD
+        mainTab.setPreferredSize(new Dimension(1650,2400));  //TODO
         SidePanelSetUp();
         TableSetUp();
+        ControlPanelSetUp();
         GraphSetUp();
-        
-        pastPracticeTab =  new JPanel();
-        settingsTab = new JPanel();
+        PastPracticeSetUp();
+        HeaderSetUp();
     
         mainScrollArea = new JScrollPane(mainTab,       //TODO Set layout for multiple panels
-            JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
+            JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
             JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        mainScrollArea.setSize(1650,800);
-        mainScrollArea.setLocation(0,100);
-        mainScrollArea.setBorder(BorderFactory.createLineBorder(Color.PINK, 10));
+        mainScrollArea.setBorder(BorderFactory.createLineBorder(Color.green, 2));
         mainScrollArea.getVerticalScrollBar().setUnitIncrement(25);
-        
-        tabbedPane.addTab("Practice", mainScrollArea);
-        tabbedPane.addTab("Meet Times", pastPracticeTab);
-        tabbedPane.addTab("Settings", settingsTab);
-        
-        mainWindow.getContentPane().add(tabbedPane, BorderLayout.CENTER);
-        HeaderSetUp();
     }
     
 }
