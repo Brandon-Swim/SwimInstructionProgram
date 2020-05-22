@@ -9,6 +9,7 @@ import javax.swing.event.*;
 
 
 public class Listeners {
+    
     //Header Name Listeners
     static MouseAdapter HeaderNameMouse = new MouseAdapter(){
         @Override
@@ -99,7 +100,14 @@ public class Listeners {
             MainPage.header.setForeground(Color.black);
         }
     };
-    
+    //Description Listeners
+    static MouseAdapter descriptionMouse = new MouseAdapter(){
+        @Override
+        public void mouseClicked(MouseEvent e){
+                MainPage.description.setText("");
+                MainPage.description.setForeground(Color.black);
+        }
+    };
     
     //Table listener
     static TableListener group1 = new TableListener(0);
@@ -132,35 +140,137 @@ public class Listeners {
             group5.tableChanged(e);
         }
     };
+    
+    //Clear cell with delete key
+    static KeyListener delCell1 = new KeyListener() {   //TODO condense
+        public void keyTyped(KeyEvent e) {
+        }
+        public synchronized void keyPressed(KeyEvent e) {   
+            int ID = e.getKeyCode();
+                    if (ID == KeyEvent.VK_DELETE) {
+                        e.consume();
+                        int column =  MainPage.mainTableGroup1.getSelectedColumn();
+                        int row = MainPage.mainTableGroup1.getSelectedRow();
+                        MainPage.mainTableGroup1.setValueAt(null, row, column);
+                    }
+
+        }
+        public void keyReleased(KeyEvent e) {
+        }
+    };
+    static KeyListener delCell2 = new KeyListener() {
+        public void keyTyped(KeyEvent e) {
+        }
+        public synchronized void keyPressed(KeyEvent e) {   
+            int ID = e.getKeyCode();
+                    if (ID == KeyEvent.VK_DELETE) {
+                        e.consume();
+                        int column =  MainPage.mainTableGroup2.getSelectedColumn();
+                        int row = MainPage.mainTableGroup2.getSelectedRow();
+                        MainPage.mainTableGroup2.setValueAt(null, row, column);
+                    }
+
+        }
+        public void keyReleased(KeyEvent e) {
+        }
+    };
+    static KeyListener delCell3 = new KeyListener() {
+        public void keyTyped(KeyEvent e) {
+        }
+        public synchronized void keyPressed(KeyEvent e) {   
+            int ID = e.getKeyCode();
+                    if (ID == KeyEvent.VK_DELETE) {
+                        e.consume();
+                        int column =  MainPage.mainTableGroup3.getSelectedColumn();
+                        int row = MainPage.mainTableGroup3.getSelectedRow();
+                        MainPage.mainTableGroup3.setValueAt(null, row, column);
+                    }
+
+        }
+        public void keyReleased(KeyEvent e) {
+        }
+    };
+    static KeyListener delCell4 = new KeyListener() {
+        public void keyTyped(KeyEvent e) {
+        }
+        public synchronized void keyPressed(KeyEvent e) {   
+            int ID = e.getKeyCode();
+                    if (ID == KeyEvent.VK_DELETE) {
+                        e.consume();
+                        int column =  MainPage.mainTableGroup4.getSelectedColumn();
+                        int row = MainPage.mainTableGroup4.getSelectedRow();
+                        MainPage.mainTableGroup4.setValueAt(null, row, column);
+                    }
+
+        }
+        public void keyReleased(KeyEvent e) {
+        }
+    };
+    static KeyListener delCell5 = new KeyListener() {
+        public void keyTyped(KeyEvent e) {
+        }
+        public synchronized void keyPressed(KeyEvent e) {   
+            int ID = e.getKeyCode();
+                    if (ID == KeyEvent.VK_DELETE) {
+                        e.consume();
+                        int column =  MainPage.mainTableGroup5.getSelectedColumn();
+                        int row = MainPage.mainTableGroup5.getSelectedRow();
+                        MainPage.mainTableGroup5.setValueAt(null, row, column);
+                    }
+
+        }
+        public void keyReleased(KeyEvent e) {
+        }
+    };
     //table addition and subtraction listener
     static Dimension dTable = new Dimension(1200,460); //Base Size
-    static int currentTable = 0;
+    static int amtGroups = 1;    //Indicates the amount of groups
     static ActionListener AddGroup = new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-            currentTable += 1;
-            switch (currentTable) {
-                case 1: 
+            amtGroups += 1;
+            switch (amtGroups) {
+                case 2:
+                    for (int i = 0; i < MainPage.data[0].length; i++) {
+                        for (int j = 0; j < MainPage.data[0][i].length; j++) {
+                            MainPage.mainTableGroup2.setValueAt(MainPage.data[0][i][j], i, j);
+                        }
+                    }
                     MainPage.tableHolder.add(MainPage.group2);
                     MainPage.tableHolder.add(MainPage.group2Pane);
                     dTable.setSize(1200,960);
                     MainPage.tableHolder.setPreferredSize(dTable);
                     SwingUtilities.updateComponentTreeUI(finalHolder.mainWindow);
                     break;
-                case 2:
+                case 3:
+                    for (int i = 0; i < MainPage.data[0].length; i++) {
+                        for (int j = 0; j < MainPage.data[0][i].length; j++) {
+                            MainPage.mainTableGroup3.setValueAt(MainPage.data[0][i][j], i, j);
+                        }
+                    }
                     MainPage.tableHolder.add(MainPage.group3);
                     MainPage.tableHolder.add(MainPage.group3Pane);
                     dTable.setSize(1200,1440);
                     MainPage.tableHolder.setPreferredSize(dTable);
                     SwingUtilities.updateComponentTreeUI(finalHolder.mainWindow);
                     break;
-                case 3:
+                case 4:
+                    for (int i = 0; i < MainPage.data[0].length; i++) {
+                        for (int j = 0; j < MainPage.data[0][i].length; j++) {
+                            MainPage.mainTableGroup4.setValueAt(MainPage.data[0][i][j], i, j);
+                        }
+                    }
                     MainPage.tableHolder.add(MainPage.group4);
                     MainPage.tableHolder.add(MainPage.group4Pane);
                     dTable.setSize(1200,1920);
                     MainPage.tableHolder.setPreferredSize(dTable);
                     SwingUtilities.updateComponentTreeUI(finalHolder.mainWindow);
                     break;
-                case 4:
+                case 5:
+                    for (int i = 0; i < MainPage.data[0].length; i++) {
+                        for (int j = 0; j < MainPage.data[0][i].length; j++) {
+                            MainPage.mainTableGroup5.setValueAt(MainPage.data[0][i][j], i, j);
+                        }
+                    }
                     MainPage.tableHolder.add(MainPage.group5);
                     MainPage.tableHolder.add(MainPage.group5Pane);
                     dTable.setSize(1200,2400);
@@ -168,8 +278,8 @@ public class Listeners {
                     SwingUtilities.updateComponentTreeUI(finalHolder.mainWindow);
                     break;
                 default:
-                    if (currentTable == 5) {
-                        currentTable = 4;
+                    if (amtGroups == 6) {
+                        amtGroups = 5;
                     }
                     break;
             }
@@ -177,30 +287,50 @@ public class Listeners {
        };
     static ActionListener RemGroup = new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-            currentTable -= 1;
-            switch (currentTable) {
-                case 0: 
+            amtGroups -= 1;
+            switch (amtGroups) {
+                case 1:
+                    for (int i = 0; i < MainPage.data[0].length; i++) {
+                        for (int j = 0; j < MainPage.data[0][i].length; j++) {
+                            MainPage.mainTableGroup2.setValueAt(null, i, j);
+                        }
+                    }
                     MainPage.tableHolder.remove(MainPage.group2);
                     MainPage.tableHolder.remove(MainPage.group2Pane);
                     dTable.setSize(1200,480);
                     MainPage.tableHolder.setPreferredSize(dTable);
                     SwingUtilities.updateComponentTreeUI(finalHolder.mainWindow);
                     break;
-                case 1: 
+                case 2:
+                    for (int i = 0; i < MainPage.data[0].length; i++) {
+                        for (int j = 0; j < MainPage.data[0][i].length; j++) {
+                            MainPage.mainTableGroup3.setValueAt(null, i, j);
+                        }
+                    }
                     MainPage.tableHolder.remove(MainPage.group3);
                     MainPage.tableHolder.remove(MainPage.group3Pane);
                     dTable.setSize(1200,960);
                     MainPage.tableHolder.setPreferredSize(dTable);
                     SwingUtilities.updateComponentTreeUI(finalHolder.mainWindow);
                     break;
-                case 2: 
+                case 3:
+                    for (int i = 0; i < MainPage.data[0].length; i++) {
+                        for (int j = 0; j < MainPage.data[0][i].length; j++) {
+                            MainPage.mainTableGroup4.setValueAt(null, i, j);
+                        }
+                    }
                     MainPage.tableHolder.remove(MainPage.group4);
                     MainPage.tableHolder.remove(MainPage.group4Pane);
                     dTable.setSize(1200,1440);
                     MainPage.tableHolder.setPreferredSize(dTable);
                     SwingUtilities.updateComponentTreeUI(finalHolder.mainWindow);
                     break;
-                case 3: 
+                case 4: 
+                    for (int i = 0; i < MainPage.data[0].length; i++) {
+                        for (int j = 0; j < MainPage.data[0][i].length; j++) {
+                            MainPage.mainTableGroup5.setValueAt(null, i, j);
+                        }
+                    }
                     MainPage.tableHolder.remove(MainPage.group5);
                     MainPage.tableHolder.remove(MainPage.group5Pane);
                     dTable.setSize(1200,1920);
@@ -208,8 +338,8 @@ public class Listeners {
                     SwingUtilities.updateComponentTreeUI(finalHolder.mainWindow);
                     break;
                 default:
-                    if (currentTable == -1) {
-                        currentTable = 0;
+                    if (amtGroups == 0) {
+                        amtGroups = 1;
                     } 
                     break;
             }

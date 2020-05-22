@@ -76,30 +76,25 @@ public class MainPage {
      static int GroupNum = 1;
      
      //Side Panel
+     /* 
+      * Displays total distance
+      * Displays toal time
+      * Displays Intensity
+      * Displays total amount of practice types for the season
+      * Displays total season distance
+      * Displays practices left in the week
+      * Displays practices left to next competition
+      * Displays practices since last game day
+      * Displays practices until taper
+      * Displays Individual Set distances
+      * Displays amount of working yards
+      */
+     static String[] sideLabel = new String[] {"Total Distance: 0 yds", 
+         "Total Time: 0 min", "Avg Intensity: 0%", "Type Counter", "Season Distance",
+         "Practices left in the week", "Practices til Comp", "Game Day Counter",
+         "Practices until Taper", "Set distance", "Working Distance"};
+     static JLabel[] sideData =  new JLabel[sideLabel.length]; //TODO nice
      static JPanel sidePanel;
-     static JLabel ttlDistancePanel;
-     static JLabel ttlTimePanel;
-     static JLabel avgIntensityPanel;
-     static JLabel side4;
-     static JLabel side5;
-     static JLabel side6;
-     static JLabel side7;
-     static JLabel side8;
-     static JLabel side9;
-     static JLabel side10;
-     static JLabel side11;
-     static String ttlDistance = "0";
-     static String ttlTimeMin = "0";
-     static String ttlTimeSec = "0";
-     static String avgIntensity = "0";
-     static String side4Data = "Type Counter";  //Displays total amount of practice types for the season
-     static String side5Data = "Season Distance";   //Displays total season distance
-     static String side6Data = "Practices left in the week";  //Displays practices left in the week
-     static String side7Data = "Type Counter";  //Displays practices left to next competition
-     static String side8Data = "Game Day Counter";  //Displays practices since last game day
-     static String side9Data = "Practices until Taper";  //Displays practices until taper
-     static String side10Data = "Set distance"; //Displays Individual Set distances
-     static String side11Data = "Working Distance"; //Displays amount of working yards
      static Integer[] side1Column;
      static Dimension sidePanelSize = new Dimension(250,100);
      static JScrollPane sideScroll;
@@ -109,7 +104,7 @@ public class MainPage {
      static JButton addGroup;
      static JButton remGroup;
      static Font buttonFont = new Font("Arial", Font.PLAIN, 12);
-     static Dimension buttonDimension = new Dimension(150,100);
+     static Dimension buttonDimension = new Dimension(120,20);
      static int currentTable = 0;
      static JTextField headerNameChange;
      static JTextField headerMonthChange;
@@ -117,6 +112,11 @@ public class MainPage {
      static JLabel headerNameLabel;
      static JLabel headerMonthLabel;
      static JLabel headerDayLabel;
+     static JLabel controlPanelLabel;
+     static JTextArea description;
+     static String descriptionText = "Description";
+     static Font smallLabels = new Font("Arial", Font.PLAIN, 20);
+     static JLabel descriptionLabel;
      
      //Graphs
      static JLabel graph1;
@@ -151,18 +151,7 @@ public class MainPage {
                 (tablePreferredWidth * (percentages[i] / total)));
         }
     }
-    
-    public void clearRow(KeyEvent e) {  //TODO does not work
-        int column = 0;
-        int row = 0;
-        int key = e.getKeyCode();
-        if (key == KeyEvent.VK_DELETE) {
-            column = mainTableGroup1.getSelectedColumn();
-            row = mainTableGroup1.getSelectedRow();
-            mainTableGroup1.setValueAt(null, row, column);
-        }
-    }
-    
+   
     public void TableCreation(JTable table, DefaultTableModel model, 
         DefaultTableCellRenderer render, DefaultCellEditor editor) { //TODO update renderer and editor
        
@@ -178,7 +167,9 @@ public class MainPage {
             table.getColumnModel().getColumn(i).setCellEditor(editor);
         }
         typeColumn = table.getColumnModel().getColumn(5);
-        typeColumn.setCellEditor(new DefaultCellEditor(typeSelector)); 
+        typeColumn.setCellEditor(new DefaultCellEditor(typeSelector));
+        table.setFocusable(true);
+        table.addKeyListener(Listeners.delCell1);
     }
     
     public void TableSetUp() {
@@ -199,8 +190,8 @@ public class MainPage {
         textField.setFont(tableFont);
         textField.setBorder(BorderFactory.createLineBorder(Color.red, 2));
         DefaultCellEditor cellEditor = new DefaultCellEditor( textField );
-        
-        mainTableGroup1 = new JTable(modelG1);
+
+        mainTableGroup1 = new JTable(modelG1);  //TODO make into array
         mainTableGroup2 = new JTable(modelG2);
         mainTableGroup3 = new JTable(modelG3);
         mainTableGroup4 = new JTable(modelG4);
@@ -210,6 +201,11 @@ public class MainPage {
         TableCreation(mainTableGroup3, modelG3, centerRenderer, cellEditor);
         TableCreation(mainTableGroup4, modelG4, centerRenderer, cellEditor);
         TableCreation(mainTableGroup5, modelG5, centerRenderer, cellEditor);
+        mainTableGroup1.addKeyListener(Listeners.delCell1); //TODO clear row CTRL + DEL
+        mainTableGroup2.addKeyListener(Listeners.delCell2);
+        mainTableGroup3.addKeyListener(Listeners.delCell3);
+        mainTableGroup4.addKeyListener(Listeners.delCell4);
+        mainTableGroup5.addKeyListener(Listeners.delCell5);
    
         tableHolder = new JPanel();
         tableHolder.setLayout(new FlowLayout());
@@ -260,77 +256,17 @@ public class MainPage {
         sideName.setVerticalAlignment(SwingConstants.CENTER);
         sideName.setPreferredSize(size);
     }
-    
-    public static Object[] getColumn(Object[][] array, int index){
-        Object[] column = new Object[array.length];
-        for(int i = 0; i < column.length; i++){
-               column[i] = array[i][index];
-        }
-        return column;
-    }
-    
-    public static Object average(Object[] array) {
-        Object sum = 0;
-        for (int i = 0; i < array.length - 1; i++) {
-            if (array[i] != null && 
-                array[i].getClass().equals(String.class) && 
-                array[i].toString().length() != 0) {
-                sum = Integer.valueOf(sum.toString()) + 
-                    Integer.valueOf(array[i].toString());
-            }
-        }
-        return sum;
-    }
-    
+      
     public void SidePanelSetUp() {
         sidePanel = new JPanel();
         sidePanel.setPreferredSize(new Dimension(260,1500));
         sidePanel.setLayout(new FlowLayout());
-        ttlDistancePanel = new JLabel("Total Distance: " + ttlDistance + "yds");
-        ttlTimePanel = new JLabel();
-        avgIntensityPanel = new JLabel();
-        side4 = new JLabel();
-        side5 = new JLabel();
-        side6 = new JLabel();
-        side7 = new JLabel();
-        side8 = new JLabel();
-        side9 = new JLabel();
-        side10 = new JLabel();
-        side11= new JLabel();
-        PanelSetUp(ttlDistancePanel, sidePanelSize);
-        PanelSetUp(ttlTimePanel, sidePanelSize);
-        PanelSetUp(avgIntensityPanel, sidePanelSize);
-        PanelSetUp(side4, sidePanelSize);
-        PanelSetUp(side5, sidePanelSize);
-        PanelSetUp(side6, sidePanelSize);
-        PanelSetUp(side7, sidePanelSize);
-        PanelSetUp(side8, sidePanelSize);
-        PanelSetUp(side9, sidePanelSize);
-        PanelSetUp(side10, sidePanelSize);
-        PanelSetUp(side11, sidePanelSize);
-        sidePanel.add(ttlDistancePanel);
-        sidePanel.add(ttlTimePanel);
-        sidePanel.add(avgIntensityPanel);
-        sidePanel.add(side4);
-        sidePanel.add(side5);
-        sidePanel.add(side6);
-        sidePanel.add(side7);
-        sidePanel.add(side8);
-        sidePanel.add(side9);
-        sidePanel.add(side10);
-        sidePanel.add(side11);
-        
-        ttlDistancePanel.setText("Total Distance: " + ttlDistance + " yds");
-        ttlTimePanel.setText("Total Time: " + ttlTimeMin + " min ");
-        avgIntensityPanel.setText("Avg Intensity: " + avgIntensity + "%");
-        side4.setText(side4Data);
-        side5.setText(side5Data);
-        side6.setText(side6Data);
-        side7.setText(side7Data);
-        side8.setText(side8Data);
-        side9.setText(side9Data);
-        side10.setText(side10Data);
-        side11.setText(side11Data);
+        for (int i = 0; i < sideData.length - 1; i++) {
+            sideData[i] = new JLabel(sideLabel[i]);
+            PanelSetUp(sideData[i], sidePanelSize);
+            sidePanel.add(sideData[i]);
+        }
+
         sideScroll = new JScrollPane(sidePanel,       //TODO Set layout for multiple panels
             JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
             JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -347,11 +283,11 @@ public class MainPage {
         controlPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
         addGroup = new JButton("Add Group");
         addGroup.setFont(buttonFont);
-        addGroup.setSize(buttonDimension);
+        addGroup.setPreferredSize(buttonDimension);
         addGroup.addActionListener(Listeners.AddGroup);
         remGroup = new JButton("Remove Group");
         remGroup.setFont(buttonFont);
-        remGroup.setSize(buttonDimension);
+        remGroup.setPreferredSize(buttonDimension);
         remGroup.addActionListener(Listeners.RemGroup);
         
         headerNameChange = new JTextField(headerName);
@@ -396,14 +332,31 @@ public class MainPage {
         headerDayLabel.setPreferredSize(new Dimension(80,50));
         headerDayLabel.setForeground(Color.black);
         
-        controlPanel.add(addGroup);
-        controlPanel.add(remGroup);
+        controlPanelLabel = new JLabel("Control Panel");
+        PanelSetUp(controlPanelLabel, new Dimension(280,50));
+        
+        description = new JTextArea(descriptionText);
+        description.setForeground(Color.LIGHT_GRAY);
+        description.setFont(smallLabels);
+        description.setPreferredSize(new Dimension(200,250));
+        description.setLineWrap(true);
+        description.addMouseListener(Listeners.descriptionMouse);
+
+        descriptionLabel = new JLabel("Description: ");
+        PanelSetUp(descriptionLabel, new Dimension(200,50));
+        descriptionLabel.setBorder(null);
+        
+        controlPanel.add(controlPanelLabel);
         controlPanel.add(headerNameLabel);
         controlPanel.add(headerNameChange);
         controlPanel.add(headerMonthLabel);
         controlPanel.add(headerMonthChange);
         controlPanel.add(headerDayLabel);
         controlPanel.add(headerDayChange);
+        controlPanel.add(addGroup);
+        controlPanel.add(remGroup);
+        controlPanel.add(descriptionLabel);
+        controlPanel.add(description);
         mainTab.add(controlPanel);    
     }
  

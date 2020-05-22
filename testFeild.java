@@ -45,6 +45,26 @@ public class testFeild {
         
         
     }
+    public static Object[] getColumn(Object[][] array, int index){
+        Object[] column = new Object[array.length];
+        for(int i = 0; i < column.length; i++){
+               column[i] = array[i][index];
+        }
+        return column;
+    }
+    
+    public static Object average(Object[] array) {
+        Object sum = 0;
+        for (int i = 0; i < array.length - 1; i++) {
+            if (array[i] != null && 
+                array[i].getClass().equals(String.class) && 
+                array[i].toString().length() != 0) {
+                sum = Integer.valueOf(sum.toString()) + 
+                    Integer.valueOf(array[i].toString());
+            }
+        }
+        return sum;
+    }
 }
     
 
