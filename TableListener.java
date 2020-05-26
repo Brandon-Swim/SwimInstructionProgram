@@ -8,16 +8,20 @@ import javax.swing.table.*;
 import javax.swing.event.*;
 
 public class TableListener implements TableModelListener {
-    int groupType = 0;
-    static String[] ttlDistance = new String[5];
-    static String[] ttlTimeMin = new String[5];
-    static String[] ttlTimeSec = new String[5];
-    static String[] avgIntensity = new String[5];
+    Integer groupType = 0;
+    final static int AMT_TABLES = 5;
+    static String[] ttlDistance = new String[AMT_TABLES];
+    static String[] ttlTimeMin = new String[AMT_TABLES];
+    static String[] ttlTimeSec = new String[AMT_TABLES];
+    static String[] avgIntensity = new String[AMT_TABLES];
+    static String[] workingDistance = new String[AMT_TABLES];
+    static String[] workingTimeMin = new String[AMT_TABLES];
+    static String[] workingTimeSec = new String[AMT_TABLES];
+    static String[] workingIntensity = new String[AMT_TABLES];
 
     TableListener(int groupType) {
         this.groupType = groupType;
     }
-
     static Object[][][] storage =
         new Object[MainPage.data.length][MainPage.data[0].length][MainPage.data[0][0].length];
     {
@@ -31,6 +35,10 @@ public class TableListener implements TableModelListener {
             ttlTimeMin[i] = "0";
             ttlTimeSec[i] = "0";
             avgIntensity[i] = "0";
+            workingDistance[i] = "0";
+            workingTimeMin[i] = "0";
+            workingTimeSec[i] = "0";
+            workingIntensity[i] = "0";
         }
     }
 
@@ -68,6 +76,17 @@ public class TableListener implements TableModelListener {
                         "Total Time: " + ttlTimeMin[0] + " min " + ttlTimeSec[0] + " Sec");
                 }
                 MainPage.sideData[2].setText("Avg Intensity: " + avgIntensity[0] + "%");
+                MainPage.sideData[3].setText("<html> Working Distance: <br/>" + 
+                "<center>" + workingDistance[0] + " yds<center></html>");
+                if (Integer.valueOf(workingTimeSec[0]) == 0) {
+                    MainPage.sideData[4].setText("Working Time: " 
+                    + workingTimeMin[0] + " min ");
+                } else {
+                    MainPage.sideData[4].setText(
+                    "Working Time: " + workingTimeMin[0] + " min " 
+                     + workingTimeSec[0] + " Sec");
+                }
+                MainPage.sideData[5].setText("Working Intensity: " + workingIntensity[0] + "%");
                 break;
             case 2:
                 MainPage.sideData[0].setText("<html> Group Distance (yds): <br/>" 
@@ -76,6 +95,12 @@ public class TableListener implements TableModelListener {
                     + "<center>" + ttlTimeMin[0]+ " | " + ttlTimeMin[1] + "<center></html>");
                 MainPage.sideData[2].setText("<html> Group Intensity (%): <br/>" 
                     + "<center>" + avgIntensity[0] + " | " + avgIntensity[1] + "<center></html>");
+                MainPage.sideData[3].setText("<html> Working Distance (yds): <br/>" + 
+                "<center>" + workingDistance[0] + " | " + workingDistance[1] + "<center></html>");
+                MainPage.sideData[4].setText("<html> Working Time (Mins): <br/>" 
+                    + "<center>" + workingTimeMin[0]+ " | " + workingTimeMin[1] + "<center></html>");
+                MainPage.sideData[5].setText("<html> Working Intensity (%): <br/>" 
+                    + "<center>" + workingIntensity[0] + " | " + workingIntensity[1] + "<center></html>");
                 break;
             case 3: 
                 MainPage.sideData[0].setText("<html> Group Distance (yds): <br/>" 
@@ -87,6 +112,15 @@ public class TableListener implements TableModelListener {
                 MainPage.sideData[2].setText("<html> Group Intensity (%): <br/>" 
                     + "<center>" + avgIntensity[0] + " | " + avgIntensity[1] 
                     + " | " + avgIntensity[2] + "<center></html>");
+                MainPage.sideData[3].setText("<html> Working Distance (yds): <br/>" + 
+                "<center>" + workingDistance[0] + " | " + workingDistance[1] + 
+                " | " + workingDistance[2] + "<center></html>");
+                MainPage.sideData[4].setText("<html> Working Time (Mins): <br/>" 
+                    + "<center>" + workingTimeMin[0]+ " | " + workingTimeMin[1] + 
+                    " | " + workingTimeMin[2] + "<center></html>");
+                MainPage.sideData[5].setText("<html> Working Intensity (%): <br/>" 
+                    + "<center>" + workingIntensity[0] + " | " + workingIntensity[1] 
+                        + " | " + workingIntensity[2] + "<center></html>");
                 break;
             case 4:
                 MainPage.sideData[0].setText("<html> Group Distance (yds): <br/>" 
@@ -98,6 +132,15 @@ public class TableListener implements TableModelListener {
                 MainPage.sideData[2].setText("<html> Group Intensity (%): <br/>" 
                     + "<center>" + avgIntensity[0] + " | " + avgIntensity[1] 
                     + " | " + avgIntensity[2] + " | " + avgIntensity[3] + "<center></html>");
+                MainPage.sideData[3].setText("<html> Working Distance (yds): <br/>" + 
+                "<center>" + workingDistance[0] + " | " + workingDistance[1] + 
+                " | " + workingDistance[2] + " | " + workingDistance[3] + "<center></html>");
+                MainPage.sideData[4].setText("<html> Working Time (Mins): <br/>" 
+                    + "<center>" + workingTimeMin[0]+ " | " + workingTimeMin[1] + 
+                    " | " + workingTimeMin[2] + " | " + workingTimeMin[3] + "<center></html>");
+                MainPage.sideData[5].setText("<html> Working Intensity (%): <br/>" 
+                    + "<center>" + workingIntensity[0] + " | " + workingIntensity[1] 
+                        + " | " + workingIntensity[2] + " | " + workingIntensity[3] + "<center></html>");
                 break;
             case 5:
                 MainPage.sideData[0].setText("<html> Group Distance (yds): <br/>" 
@@ -112,16 +155,30 @@ public class TableListener implements TableModelListener {
                     + "<center>" + avgIntensity[0] + " | " + avgIntensity[1] 
                     + " | " + avgIntensity[2] + " | " + avgIntensity[3]
                     + " | " + avgIntensity[4] + "<center></html>");
+                MainPage.sideData[3].setText("<html> Working Distance (yds): <br/>" + 
+                "<center>" + workingDistance[0] + " | " + workingDistance[1] + 
+                " | " + workingDistance[2] + " | " + workingDistance[3] + 
+                " | " + workingDistance[4] + "<center></html>");
+                MainPage.sideData[4].setText("<html> Working Time (Mins): <br/>" 
+                    + "<center>" + workingTimeMin[0]+ " | " + workingTimeMin[1] + 
+                    " | " + workingTimeMin[2] + " | " + workingTimeMin[3] + 
+                    " | " + workingTimeMin[4] + "<center></html>");
+                MainPage.sideData[5].setText("<html> Working Intensity (%): <br/>" 
+                    + "<center>" + workingIntensity[0] + " | " + workingIntensity[1] 
+                        + " | " + workingIntensity[2] + " | " + workingIntensity[3] 
+                            + " | " + workingIntensity[4] + "<center></html>");
                 break;
             default:
                 break;
         }
-        // System.out.println("A:" + Arrays.deepToString(MainPage.data));
-        // System.out.println("B:" + Arrays.deepToString(storage));
+         //System.out.println("A:" + Arrays.deepToString(MainPage.data));
+         //System.out.println("B:" + Arrays.deepToString(storage));
         }
     public void GetDataChange() {
         int tempInt = 0;
         int tempInt2 = 0;
+        
+        //Update Total Distance
         for (int i = 0; i < MainPage.data[groupType].length; i++) {
             if (MainPage.data[groupType][i][0] != null && MainPage.data[groupType][i][2] != null
                 && MainPage.data[groupType][i][3] != null
@@ -219,6 +276,112 @@ public class TableListener implements TableModelListener {
         tempInt = 0;
         tempInt2 = 0;
         
+        //Update Working Distance
+        for (int i = 0; i < MainPage.data[groupType].length; i++) {
+            if (MainPage.data[groupType][i][0] != null 
+                && MainPage.data[groupType][i][2] != null
+                && MainPage.data[groupType][i][3] != null
+                && !MainPage.data[groupType][i][0].equals("")
+                && !MainPage.data[groupType][i][2].equals("")
+                && !MainPage.data[groupType][i][3].equals("")) {
+                if (!storage[groupType][i][5].toString().contentEquals("Warm Up") &&
+                    !storage[groupType][i][5].toString().contentEquals("Loosen")) {
+                    if (storage[groupType][i][1] != null && !storage[groupType][i][1].equals(0)
+                        && !storage[groupType][i][1].equals("")) {
+                        tempInt += Integer.valueOf(storage[groupType][i][3].toString())
+                            * Integer.valueOf(storage[groupType][i][2].toString())
+                            * Integer.valueOf(storage[groupType][i][1].toString());
+                        System.out.println(storage[groupType][i][5]);
+                    } else if (storage[groupType][i][1] == null
+                        || storage[groupType][i][1].equals(0)
+                        || storage[groupType][i][1].equals("")) {
+                        tempInt += Integer.valueOf(storage[groupType][i][3].toString())
+                            * Integer.valueOf(storage[groupType][i][2].toString());
+                    }
+                }
+            }
+        }
+        workingDistance[groupType] = Integer.toString(tempInt); //OUTPUT
+        tempInt = 0;
+        
+        //Update Working Time
+        for (int i = 0; i < MainPage.data[groupType].length; i++) {
+            if (!storage[groupType][i][5].toString().contentEquals("Warm Up") &&
+                    !storage[groupType][i][5].toString().contentEquals("Loosen")) {
+                if (MainPage.data[groupType][i][0] != null
+                    && !MainPage.data[groupType][i][0].equals("")) { // Checks for set
+                    if (storage[groupType][i][1] != null && !storage[groupType][i][1].equals("")) { // Checks for round, enter if = #
+                        if (MainPage.data[groupType][i][6] != null
+                            && !MainPage.data[groupType][i][6].equals("")
+                            && MainPage.data[groupType][i][2] != null
+                            && !MainPage.data[groupType][i][2].equals("")) {
+                            tempInt += Integer.valueOf(storage[groupType][i][1].toString())
+                                * Integer.valueOf(storage[groupType][i][2].toString())
+                                * Integer.valueOf(MainPage.data[groupType][i][6].toString()); // non-normal                                                                       // calc
+                        }
+                        if (MainPage.data[groupType][i][7] != null
+                            && !MainPage.data[groupType][i][7].equals("")
+                            && MainPage.data[groupType][i][2] != null
+                            && !MainPage.data[groupType][i][2].equals("")) {
+                            tempInt2 += Integer.valueOf(storage[groupType][i][1].toString())
+                                * Integer.valueOf(storage[groupType][i][2].toString())
+                                * Integer.valueOf(MainPage.data[groupType][i][7].toString()); // non-normal
+                                                                                              // calc
+                            while (tempInt2 >= 60) {
+                                tempInt2 -= 60;
+                                tempInt += 1;
+                            }
+                        }
+                    } else if (storage[groupType][i][1] == null
+                        || storage[groupType][i][1].equals("") // enter if round # = null, 0, or
+                                                               // nothing
+                        || storage[groupType][i][1].equals(0)) {
+                        if (MainPage.data[groupType][i][6] != null
+                            && !MainPage.data[groupType][i][6].equals("")
+                            && MainPage.data[groupType][i][2] != null
+                            && !MainPage.data[groupType][i][2].equals("")) {
+                            tempInt += Integer.valueOf(MainPage.data[groupType][i][6].toString())
+                                * Integer.valueOf(storage[groupType][i][2].toString()); // normal
+                                                                                        // calc
+                        }
+                        if (MainPage.data[groupType][i][7] != null
+                            && !MainPage.data[groupType][i][7].equals("")
+                            && MainPage.data[groupType][i][2] != null
+                            && !MainPage.data[groupType][i][2].equals("")) {
+                            tempInt2 += Integer.valueOf(MainPage.data[groupType][i][7].toString())
+                                * Integer.valueOf(storage[groupType][i][2].toString()); // normal
+                                                                                        // calc
+                            if (tempInt2 >= 60) {
+                                tempInt2 -= 60;
+                                tempInt += 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        workingTimeMin[groupType] = Integer.toString(tempInt);  //OUTPUT
+        workingTimeSec[groupType] = Integer.toString(tempInt2); //OUTPUT
+        tempInt = 0;
+        tempInt2 = 0;
+        
+        // Update Working Intensity
+        for (int i = 0; i < MainPage.data[groupType].length; i++) {
+            if (MainPage.data[groupType][i][8] != null
+                && !MainPage.data[groupType][i][8].equals("") 
+                && !storage[groupType][i][5].toString().contentEquals("Warm Up") 
+                && !storage[groupType][i][5].toString().contentEquals("Loosen")) {
+                tempInt += Integer.valueOf(MainPage.data[groupType][i][8].toString());
+                tempInt2 += 1;
+            }
+        }
+        if (tempInt2 != 0) {
+            tempInt /= tempInt2;
+        }
+
+        workingIntensity[groupType] = Integer.toString(tempInt);    //OUTPUT
+        tempInt = 0;
+        tempInt2 = 0;
     }
 }
 

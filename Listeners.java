@@ -142,6 +142,7 @@ public class Listeners {
     };
     
     //Clear cell with delete key
+
     static KeyListener delCell1 = new KeyListener() {   //TODO condense
         public void keyTyped(KeyEvent e) {
         }
@@ -151,7 +152,7 @@ public class Listeners {
                         e.consume();
                         int column =  MainPage.mainTableGroup1.getSelectedColumn();
                         int row = MainPage.mainTableGroup1.getSelectedRow();
-                        MainPage.mainTableGroup1.setValueAt(null, row, column);
+                        MainPage.mainTableGroup5.setValueAt(null, row, column); 
                     }
 
         }
@@ -215,7 +216,11 @@ public class Listeners {
                         e.consume();
                         int column =  MainPage.mainTableGroup5.getSelectedColumn();
                         int row = MainPage.mainTableGroup5.getSelectedRow();
-                        MainPage.mainTableGroup5.setValueAt(null, row, column);
+                        if (column == 5) {
+                            MainPage.mainTableGroup5.setValueAt("", row, column);
+                         } else {
+                             MainPage.mainTableGroup5.setValueAt(null, row, column); 
+                         }
                     }
 
         }

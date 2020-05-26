@@ -29,6 +29,11 @@ import javax.swing.event.*;
 
 public class MainPage {
      
+    public static void main(String args[]) { 
+        finalHolder.main(args);
+        
+    }
+    
      //Header
      static JLabel header; 
      static Font headerFont = new Font("Arial", Font.BOLD, 48);
@@ -70,7 +75,7 @@ public class MainPage {
      static JScrollPane group4Pane;
      static JScrollPane group5Pane;
      static String[] types = {"","Warm Up","Fly","Free","Back","Breast",
-         "IM","Drill","Kick","Starts","Sprint"};
+         "IM","Drill","Kick","Starts","Sprint","Loosen"};
      static JComboBox<String> typeSelector = new JComboBox<>(types);
      static TableColumn typeColumn;
      static int GroupNum = 1;
@@ -80,6 +85,9 @@ public class MainPage {
       * Displays total distance
       * Displays toal time
       * Displays Intensity
+      * Working Distance (not in warm up or easy)
+      * Working Time (not in warm up or easy)
+      * Working Intensity (not in warm up or easy)
       * Displays total amount of practice types for the season
       * Displays total season distance
       * Displays practices left in the week
@@ -90,9 +98,11 @@ public class MainPage {
       * Displays amount of working yards
       */
      static String[] sideLabel = new String[] {"Total Distance: 0 yds", 
-         "Total Time: 0 min", "Avg Intensity: 0%", "Type Counter", "Season Distance",
-         "Practices left in the week", "Practices til Comp", "Game Day Counter",
-         "Practices until Taper", "Set distance", "Working Distance"};
+         "Total Time: 0 min", "Avg Intensity: 0%", "<html> Working Distance: "
+             + "<br/><center>0 yds<center></html>", 
+         "Working Time: 0 min","Working Intensity: 0%","T Type Counter", 
+         "T Season Distance","T Practices left in the week", "T Practices til Comp", 
+         "T Game Day Counter","T Practices until Taper", "Set distance"};
      static JLabel[] sideData =  new JLabel[sideLabel.length]; //TODO nice
      static JPanel sidePanel;
      static Integer[] side1Column;
@@ -117,6 +127,7 @@ public class MainPage {
      static String descriptionText = "Description";
      static Font smallLabels = new Font("Arial", Font.PLAIN, 20);
      static JLabel descriptionLabel;
+     static JButton gameDay;
      
      //Graphs
      static JLabel graph1;
@@ -261,7 +272,7 @@ public class MainPage {
         sidePanel = new JPanel();
         sidePanel.setPreferredSize(new Dimension(260,1500));
         sidePanel.setLayout(new FlowLayout());
-        for (int i = 0; i < sideData.length - 1; i++) {
+        for (int i = 0; i < sideData.length; i++) {
             sideData[i] = new JLabel(sideLabel[i]);
             PanelSetUp(sideData[i], sidePanelSize);
             sidePanel.add(sideData[i]);
@@ -346,6 +357,11 @@ public class MainPage {
         PanelSetUp(descriptionLabel, new Dimension(200,50));
         descriptionLabel.setBorder(null);
         
+        gameDay = new JButton("Game Day");
+        gameDay.setFont(buttonFont);
+        gameDay.setPreferredSize(buttonDimension);
+        //gameDay.addActionListener(); TODO
+        
         controlPanel.add(controlPanelLabel);
         controlPanel.add(headerNameLabel);
         controlPanel.add(headerNameChange);
@@ -357,6 +373,7 @@ public class MainPage {
         controlPanel.add(remGroup);
         controlPanel.add(descriptionLabel);
         controlPanel.add(description);
+        controlPanel.add(gameDay);
         mainTab.add(controlPanel);    
     }
  
