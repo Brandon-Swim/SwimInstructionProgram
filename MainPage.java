@@ -18,14 +18,13 @@
  */
 
 
-import javax.jws.soap.SOAPBinding.Style;
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
-import java.io.*;
-import java.awt.event.*;
 import javax.swing.table.*;
-import javax.swing.event.*;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.DefaultPieDataset;
 
 public class MainPage {
      
@@ -74,7 +73,7 @@ public class MainPage {
      static JScrollPane group3Pane;
      static JScrollPane group4Pane;
      static JScrollPane group5Pane;
-     static String[] types = {"","Warm Up","Fly","Free","Back","Breast",
+     static String[] types = {"Warm Up","Fly","Free","Back","Breast",
          "IM","Drill","Kick","Starts","Sprint","Loosen"};
      static JComboBox<String> typeSelector = new JComboBox<>(types);
      static TableColumn typeColumn;
@@ -130,11 +129,13 @@ public class MainPage {
      static JButton gameDay;
      
      //Graphs
-     static JLabel graph1;
-     static JLabel graph2;
-     static JLabel graph3;
      static JPanel graphHolder;
-     static Dimension graphLabelSize =  new Dimension(600,600);
+     final static int amtCharts = 3;
+     static ChartPanel[] chartHolders = new ChartPanel[amtCharts];
+     static JFreeChart[] charts = new JFreeChart[amtCharts];
+     static DefaultPieDataset[] ringChartData = new DefaultPieDataset[amtCharts];
+     //static String[][] pieDataLabels = new String[amtCharts][types.length];
+     static Dimension chartSize = new Dimension(600,600);
      
      //past practice viewer
      static JPanel ppHolder;
@@ -388,7 +389,7 @@ public class MainPage {
         finalHolder.mainWindow.add(header, BorderLayout.NORTH);
     }
     
-    public void GraphSetUp() {
+    /*public void GraphSetUpOld() {
         graphHolder = new JPanel();
         graphHolder.setLayout(new FlowLayout());
         graphHolder.setPreferredSize(new Dimension(1860,630));
@@ -404,7 +405,46 @@ public class MainPage {
         graphHolder.add(graph2);
         graphHolder.add(graph3);
         mainTab.add(graphHolder); 
+    } */
+    
+    public void ChartCreation(JFreeChart chart, ChartPanel panel) {
+        chart.setBackgroundPaint(Color.white);
+        chart.setBorderPaint(Color.red);
+        panel = new ChartPanel(chart);
+        panel.setPreferredSize(chartSize);
+        graphHolder.add(panel);
     }
+    
+    public void GraphSetUp() {
+        graphHolder = new JPanel();
+        graphHolder.setPreferredSize(new Dimension(1860,630));
+        graphHolder.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+        for (int i = 0; i < amtCharts; i++) {
+            ringChartData[i] = new DefaultPieDataset();
+        }
+        for (int j = 0; j < amtCharts; j++) {  
+            for (int i = 0; i < types.length; i++) {
+                ringChartData[j].setValue(types[i], 0);
+            }
+         }
+        //Chart 1 set up, type counter
+        charts[0] = ChartFactory.createRingChart  //TODO
+            ("Type Split", ringChartData[0], false, true, false);
+        //chart 2 set up, set Intensity
+        charts[1] = ChartFactory.createRingChart  //TODO
+            ("Set Intensity", ringChartData[1], false, true, false);
+        //chart 3 set up, set Distance
+        charts[2] = ChartFactory.createRingChart  //TODO
+            ("Set Distance", ringChartData[2], false, true, false);
+        
+        //Visual chart formatting and addition
+        for (int i = 0; i < amtCharts; i++) {
+            ChartCreation(charts[i],chartHolders[i]);
+        }
+        mainTab.add(graphHolder);
+    }
+
+    
 
     public void PastPracticeSetUp() {
         ppHolder = new JPanel();
@@ -439,6 +479,7 @@ public class MainPage {
         SidePanelSetUp();
         TableSetUp();
         ControlPanelSetUp();
+        //GraphSetUpOld();
         GraphSetUp();
         PastPracticeSetUp();
         HeaderSetUp();

@@ -41,7 +41,7 @@ public class TableListener implements TableModelListener {
             workingIntensity[i] = "0";
         }
     }
-
+    
     @Override
     public void tableChanged(TableModelEvent e) {
         int row = e.getFirstRow();
@@ -175,10 +175,16 @@ public class TableListener implements TableModelListener {
          //System.out.println("B:" + Arrays.deepToString(storage));
         }
     public void GetDataChange() {
+        TotalDistanceChange();
+        TotalTimeChange();
+        AverageIntensityChange();
+        WorkingDistanceChagne();
+        WorkingTimeChange();
+        WorkingIntensityChange();
+        TypeChartChange();
+    }
+    public void TotalDistanceChange() { //Update Total Distance
         int tempInt = 0;
-        int tempInt2 = 0;
-        
-        //Update Total Distance
         for (int i = 0; i < MainPage.data[groupType].length; i++) {
             if (MainPage.data[groupType][i][0] != null && MainPage.data[groupType][i][2] != null
                 && MainPage.data[groupType][i][3] != null
@@ -199,9 +205,11 @@ public class TableListener implements TableModelListener {
             }
         }
         ttlDistance[groupType] = Integer.toString(tempInt); //OUTPUT
-        tempInt = 0;
-
-        // Update Total Time
+    }
+    
+    public void TotalTimeChange() {
+        int tempInt = 0;
+        int tempInt2 = 0;
         for (int i = 0; i < MainPage.data[groupType].length; i++) {
             if (MainPage.data[groupType][i][0] != null
                 && !MainPage.data[groupType][i][0].equals("")) { // Checks for set
@@ -257,10 +265,11 @@ public class TableListener implements TableModelListener {
         }
         ttlTimeMin[groupType] = Integer.toString(tempInt);  //OUTPUT
         ttlTimeSec[groupType] = Integer.toString(tempInt2); //OUTPUT
-        tempInt = 0;
-        tempInt2 = 0;
-
-        // Update Average Intensity
+    }
+    
+    public void AverageIntensityChange() {
+        int tempInt = 0;
+        int tempInt2 = 0;
         for (int i = 0; i < MainPage.data[groupType].length; i++) {
             if (MainPage.data[groupType][i][8] != null
                 && !MainPage.data[groupType][i][8].equals("")) {
@@ -273,10 +282,10 @@ public class TableListener implements TableModelListener {
         }
 
         avgIntensity[groupType] = Integer.toString(tempInt);    //OUTPUT
-        tempInt = 0;
-        tempInt2 = 0;
-        
-        //Update Working Distance
+    }
+    
+    public void WorkingDistanceChagne() {
+        int tempInt = 0;
         for (int i = 0; i < MainPage.data[groupType].length; i++) {
             if (MainPage.data[groupType][i][0] != null 
                 && MainPage.data[groupType][i][2] != null
@@ -302,9 +311,11 @@ public class TableListener implements TableModelListener {
             }
         }
         workingDistance[groupType] = Integer.toString(tempInt); //OUTPUT
-        tempInt = 0;
-        
-        //Update Working Time
+    }
+    
+    public void WorkingTimeChange() {
+        int tempInt = 0;
+        int tempInt2 = 0;
         for (int i = 0; i < MainPage.data[groupType].length; i++) {
             if (!storage[groupType][i][5].toString().contentEquals("Warm Up") &&
                     !storage[groupType][i][5].toString().contentEquals("Loosen")) {
@@ -362,10 +373,11 @@ public class TableListener implements TableModelListener {
         }
         workingTimeMin[groupType] = Integer.toString(tempInt);  //OUTPUT
         workingTimeSec[groupType] = Integer.toString(tempInt2); //OUTPUT
-        tempInt = 0;
-        tempInt2 = 0;
-        
-        // Update Working Intensity
+    }
+    
+    public void WorkingIntensityChange() {
+        int tempInt = 0;
+        int tempInt2 = 0;
         for (int i = 0; i < MainPage.data[groupType].length; i++) {
             if (MainPage.data[groupType][i][8] != null
                 && !MainPage.data[groupType][i][8].equals("") 
@@ -380,8 +392,48 @@ public class TableListener implements TableModelListener {
         }
 
         workingIntensity[groupType] = Integer.toString(tempInt);    //OUTPUT
-        tempInt = 0;
-        tempInt2 = 0;
+    }
+    
+    public void TypeChartChange() {
+        int[] tempInt = new int[MainPage.types.length];
+        for (int i = 0; i < MainPage.data[groupType].length; i++) {
+            if (MainPage.data[groupType][i][0] != null  //set,reps,distance,type 
+                && MainPage.data[groupType][i][2] != null
+                && MainPage.data[groupType][i][3] != null
+                && MainPage.data[groupType][i][5] != null
+                && !MainPage.data[groupType][i][0].equals("")
+                && !MainPage.data[groupType][i][2].equals("")
+                && !MainPage.data[groupType][i][3].equals("")
+                && !MainPage.data[groupType][i][5].equals("")) {
+                for (int j = 0; j < MainPage.types.length; j++) {
+                     if (MainPage.data[groupType][i][5]
+                         .toString().equals(MainPage.types[j])) {
+                            if (storage[groupType][i][1] != null && !storage[groupType][i][1].equals(0) //non 0 distance
+                                && !storage[groupType][i][1].equals("")) {
+                                tempInt[j] += Integer.valueOf(storage[groupType][i][3].toString())
+                                    * Integer.valueOf(storage[groupType][i][2].toString())
+                                    * Integer.valueOf(storage[groupType][i][1].toString());
+                            } else if (storage[groupType][i][1] == null //0 distance
+                                || storage[groupType][i][1].equals(0)
+                                || storage[groupType][i][1].equals("")) {
+                                tempInt[j] += Integer.valueOf(storage[groupType][i][3].toString())
+                                    * Integer.valueOf(storage[groupType][i][2].toString());
+                            }
+                        }
+                    }
+            }
+        }
+        for (int i = 0; i < MainPage.types.length; i++) {
+            MainPage.ringChartData[0].setValue(MainPage.types[i], tempInt[i]);
+        }
+    }
+    
+    public void SetIntensityChartChange() {
+        
+    }
+    
+    public void SetDistanceChartChange() {
+        
     }
 }
 
