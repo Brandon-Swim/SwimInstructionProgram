@@ -349,8 +349,7 @@ public class Listeners {
                     break;
             }
         }
-       };
-    
+       }; 
     //Welcome Button Listener
     static ActionListener mainButton1Press = new ActionListener() {
            public void actionPerformed(ActionEvent e) {
@@ -359,6 +358,137 @@ public class Listeners {
                WelcomeFrame.introPage.dispose();
            }
      };   
+   //Radio Button Listeners
+    static ItemListener graph1Display = new ItemListener() {
+        public void itemStateChanged(ItemEvent e) {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                MainPage.charts[0].setBackgroundPaint(Color.red);
+                MainPage.charts[1].setBackgroundPaint(Color.red);
+                MainPage.charts[2].setBackgroundPaint(Color.red);
+                for (int i = 0; i < MainPage.groupGraph.length; i++) {
+                    if (i != 0) {
+                        MainPage.groupGraph[i].setSelected(false);
+                    }
+                }
+            } else {
+                int tempInt = 0;
+                for (int i = 0; i < MainPage.groupGraph.length; i++) {
+                    if (MainPage.groupGraph[i].isSelected()) {
+                        tempInt = 1;
+                    }
+                }
+                if (tempInt != 1) {
+                    MainPage.groupGraph[0].setSelected(true);
+                } else {
+                    System.out.println("Graph 1 unselected");
+                }
+            }
+        }
+    };
+    static ItemListener graph2Display = new ItemListener() {
+        public void itemStateChanged(ItemEvent e) {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                MainPage.charts[0].setBackgroundPaint(Color.blue);
+                MainPage.charts[1].setBackgroundPaint(Color.blue);
+                MainPage.charts[2].setBackgroundPaint(Color.blue);
+                for (int i = 0; i < MainPage.groupGraph.length; i++) {
+                    if (i != 1) {
+                        MainPage.groupGraph[i].setSelected(false);
+                    }
+                }
+            } else {
+                int tempInt = 0;
+                for (int i = 0; i < MainPage.groupGraph.length; i++) {
+                    if (MainPage.groupGraph[i].isSelected()) {
+                        tempInt = 1;
+                    }
+                }
+                if (tempInt != 1) {
+                    MainPage.groupGraph[1].setSelected(true);
+                } else { 
+                    System.out.println("Graph 2 unselected");
+                }
+            }
+        }
+    };
+    static ItemListener graph3Display = new ItemListener() {
+        public void itemStateChanged(ItemEvent e) {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                MainPage.charts[0].setBackgroundPaint(Color.green);
+                MainPage.charts[1].setBackgroundPaint(Color.green);
+                MainPage.charts[2].setBackgroundPaint(Color.green);
+                for (int i = 0; i < MainPage.groupGraph.length; i++) {
+                    if (i != 2) {
+                        MainPage.groupGraph[i].setSelected(false);
+                    }
+                }
+            } else {
+                int tempInt = 0;
+                for (int i = 0; i < MainPage.groupGraph.length; i++) {
+                    if (MainPage.groupGraph[i].isSelected()) {
+                        tempInt = 1;
+                    }
+                }
+                if (tempInt != 1) {
+                    MainPage.groupGraph[2].setSelected(true);
+                } else {
+                    System.out.println("Graph 3 unselected");
+                }
+            }
+        }
+    };
+    static ItemListener graph4Display = new ItemListener() {
+        public void itemStateChanged(ItemEvent e) {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                MainPage.charts[0].setBackgroundPaint(Color.pink);
+                MainPage.charts[1].setBackgroundPaint(Color.pink);
+                MainPage.charts[2].setBackgroundPaint(Color.pink);
+                for (int i = 0; i < MainPage.groupGraph.length; i++) {
+                    if (i != 3) {
+                        MainPage.groupGraph[i].setSelected(false);
+                    }
+                }
+            } else {
+                int tempInt = 0;
+                for (int i = 0; i < MainPage.groupGraph.length; i++) {
+                    if (MainPage.groupGraph[i].isSelected()) {
+                        tempInt = 1;
+                    }
+                }
+                if (tempInt != 1) {
+                    MainPage.groupGraph[3].setSelected(true);
+                } else {
+                    System.out.println("Graph 4 unselected");
+                }
+            }
+        }
+    };
+    static ItemListener graph5Display = new ItemListener() {
+        public void itemStateChanged(ItemEvent e) {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                MainPage.charts[0].setBackgroundPaint(Color.cyan);
+                MainPage.charts[1].setBackgroundPaint(Color.cyan);
+                MainPage.charts[2].setBackgroundPaint(Color.cyan);
+                for (int i = 0; i < MainPage.groupGraph.length; i++) {
+                    if (i != 4) {
+                        MainPage.groupGraph[i].setSelected(false);
+                    }
+                }
+            } else {
+                int tempInt = 0;
+                for (int i = 0; i < MainPage.groupGraph.length; i++) {
+                    if (MainPage.groupGraph[i].isSelected()) {
+                        tempInt = 1;
+                    }
+                }
+                if (tempInt != 1) {
+                    MainPage.groupGraph[4].setSelected(true);
+                } else {
+                    System.out.println("Graph 5 unselected");
+                }
+            }
+        }
+    };
 }
 
 

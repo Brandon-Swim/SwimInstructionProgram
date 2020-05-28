@@ -20,6 +20,7 @@
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import javax.swing.table.*;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -127,6 +128,10 @@ public class MainPage {
      static Font smallLabels = new Font("Arial", Font.PLAIN, 20);
      static JLabel descriptionLabel;
      static JButton gameDay;
+     static JPanel graphSelector;
+     static JRadioButton[] groupGraph = new JRadioButton[5];
+     static JLabel[] groupGraphLabels = new JLabel[5];
+     static Font graphLabels = new Font("Arial", Font.PLAIN, 14);
      
      //Graphs
      static JPanel graphHolder;
@@ -134,7 +139,8 @@ public class MainPage {
      static ChartPanel[] chartHolders = new ChartPanel[amtCharts];
      static JFreeChart[] charts = new JFreeChart[amtCharts];
      static DefaultPieDataset[] ringChartData = new DefaultPieDataset[amtCharts];
-     //static String[][] pieDataLabels = new String[amtCharts][types.length];
+     static String[] setDataLabels = new String[] {"Set 1", "Set 2","3"
+         ,"Set 4","Set 5","Set 6","Set 7","Set 8","Set 9","Set 10",};
      static Dimension chartSize = new Dimension(600,600);
      
      //past practice viewer
@@ -363,6 +369,57 @@ public class MainPage {
         gameDay.setPreferredSize(buttonDimension);
         //gameDay.addActionListener(); TODO
         
+        groupGraph[0] = new JRadioButton();
+        groupGraph[0].setSelected(true);
+        groupGraph[0].setMnemonic(KeyEvent.VK_1);
+        groupGraph[0].addItemListener(Listeners.graph1Display);
+        groupGraph[1] =  new JRadioButton();
+        groupGraph[1].setMnemonic(KeyEvent.VK_2);
+        groupGraph[1].addItemListener(Listeners.graph2Display);
+        groupGraph[2] =  new JRadioButton();
+        groupGraph[2].setMnemonic(KeyEvent.VK_3);
+        groupGraph[2].addItemListener(Listeners.graph3Display);
+        groupGraph[3] =  new JRadioButton();
+        groupGraph[3].setMnemonic(KeyEvent.VK_4);
+        groupGraph[3].addItemListener(Listeners.graph4Display);
+        groupGraph[4] =  new JRadioButton();
+        groupGraph[4].setMnemonic(KeyEvent.VK_5);
+        groupGraph[4].addItemListener(Listeners.graph5Display);
+        
+        groupGraphLabels[0] = new JLabel("Graph 1:");
+        groupGraphLabels[0].setFont(graphLabels);
+        groupGraphLabels[0].setPreferredSize(new Dimension(80,50));
+        groupGraphLabels[0].setForeground(Color.black);
+        
+        groupGraphLabels[1] = new JLabel("Graph 2:");
+        groupGraphLabels[1].setFont(graphLabels);
+        groupGraphLabels[1].setPreferredSize(new Dimension(80,50));
+        groupGraphLabels[1].setForeground(Color.black);
+
+        groupGraphLabels[2] = new JLabel("Graph 3:");
+        groupGraphLabels[2].setFont(graphLabels);
+        groupGraphLabels[2].setPreferredSize(new Dimension(80,50));
+        groupGraphLabels[2].setForeground(Color.black);
+        
+        groupGraphLabels[3] = new JLabel("Graph 4:");
+        groupGraphLabels[3].setFont(graphLabels);
+        groupGraphLabels[3].setPreferredSize(new Dimension(80,50));
+        groupGraphLabels[3].setForeground(Color.black);
+        
+        groupGraphLabels[4] = new JLabel("Graph 5:");
+        groupGraphLabels[4].setFont(graphLabels);
+        groupGraphLabels[4].setPreferredSize(new Dimension(80,50));
+        groupGraphLabels[4].setForeground(Color.black);
+        
+        graphSelector = new JPanel();
+        graphSelector.setPreferredSize(new Dimension(280,200));
+        graphSelector.setLayout(new FlowLayout(FlowLayout.LEFT));
+        graphSelector.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
+        for (int i = 0; i < groupGraph.length; i++) {
+            graphSelector.add(groupGraphLabels[i]);
+            graphSelector.add(groupGraph[i]);
+        }
+        
         controlPanel.add(controlPanelLabel);
         controlPanel.add(headerNameLabel);
         controlPanel.add(headerNameChange);
@@ -375,6 +432,7 @@ public class MainPage {
         controlPanel.add(descriptionLabel);
         controlPanel.add(description);
         controlPanel.add(gameDay);
+        controlPanel.add(graphSelector);
         mainTab.add(controlPanel);    
     }
  
@@ -388,25 +446,7 @@ public class MainPage {
         header.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         finalHolder.mainWindow.add(header, BorderLayout.NORTH);
     }
-    
-    /*public void GraphSetUpOld() {
-        graphHolder = new JPanel();
-        graphHolder.setLayout(new FlowLayout());
-        graphHolder.setPreferredSize(new Dimension(1860,630));
-        graphHolder.setBorder(BorderFactory.createLineBorder(Color.black, 2));
-        graph1 = new JLabel("Graph 1");
-        graph2 = new JLabel("Graph 2");
-        graph3 = new JLabel("Graph 3");
-        PanelSetUp(graph1, graphLabelSize);
-        PanelSetUp(graph2, graphLabelSize);
-        PanelSetUp(graph3, graphLabelSize);
-        
-        graphHolder.add(graph1);
-        graphHolder.add(graph2);
-        graphHolder.add(graph3);
-        mainTab.add(graphHolder); 
-    } */
-    
+
     public void ChartCreation(JFreeChart chart, ChartPanel panel) {
         chart.setBackgroundPaint(Color.white);
         chart.setBorderPaint(Color.red);
@@ -421,12 +461,8 @@ public class MainPage {
         graphHolder.setBorder(BorderFactory.createLineBorder(Color.black, 2));
         for (int i = 0; i < amtCharts; i++) {
             ringChartData[i] = new DefaultPieDataset();
-        }
-        for (int j = 0; j < amtCharts; j++) {  
-            for (int i = 0; i < types.length; i++) {
-                ringChartData[j].setValue(types[i], 0);
-            }
-         }
+        } 
+           
         //Chart 1 set up, type counter
         charts[0] = ChartFactory.createRingChart  //TODO
             ("Type Split", ringChartData[0], false, true, false);
@@ -443,8 +479,6 @@ public class MainPage {
         }
         mainTab.add(graphHolder);
     }
-
-    
 
     public void PastPracticeSetUp() {
         ppHolder = new JPanel();
@@ -479,7 +513,6 @@ public class MainPage {
         SidePanelSetUp();
         TableSetUp();
         ControlPanelSetUp();
-        //GraphSetUpOld();
         GraphSetUp();
         PastPracticeSetUp();
         HeaderSetUp();

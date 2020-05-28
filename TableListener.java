@@ -182,15 +182,18 @@ public class TableListener implements TableModelListener {
         WorkingTimeChange();
         WorkingIntensityChange();
         TypeChartChange();
+        SetIntensityChartChange();
+        SetDistanceChartChange();
     }
     public void TotalDistanceChange() { //Update Total Distance
         int tempInt = 0;
         for (int i = 0; i < MainPage.data[groupType].length; i++) {
-            if (MainPage.data[groupType][i][0] != null && MainPage.data[groupType][i][2] != null
+            if (MainPage.data[groupType][i][0] != null 
+                && MainPage.data[groupType][i][2] != null
                 && MainPage.data[groupType][i][3] != null
                 && !MainPage.data[groupType][i][0].equals("")
                 && !MainPage.data[groupType][i][2].equals("")
-                    & !MainPage.data[groupType][i][3].equals("")) {
+                && !MainPage.data[groupType][i][3].equals("")) {
                 if (storage[groupType][i][1] != null && !storage[groupType][i][1].equals(0)
                     && !storage[groupType][i][1].equals("")) {
                     tempInt += Integer.valueOf(storage[groupType][i][3].toString())
@@ -300,7 +303,6 @@ public class TableListener implements TableModelListener {
                         tempInt += Integer.valueOf(storage[groupType][i][3].toString())
                             * Integer.valueOf(storage[groupType][i][2].toString())
                             * Integer.valueOf(storage[groupType][i][1].toString());
-                        System.out.println(storage[groupType][i][5]);
                     } else if (storage[groupType][i][1] == null
                         || storage[groupType][i][1].equals(0)
                         || storage[groupType][i][1].equals("")) {
@@ -424,16 +426,97 @@ public class TableListener implements TableModelListener {
             }
         }
         for (int i = 0; i < MainPage.types.length; i++) {
-            MainPage.ringChartData[0].setValue(MainPage.types[i], tempInt[i]);
+            if (tempInt[i] != 0) {
+                MainPage.ringChartData[0].setValue(MainPage.types[i], tempInt[i]);  //OUTPUT 
+            }
         }
     }
     
     public void SetIntensityChartChange() {
+        int[] tempInt = new int[MainPage.setDataLabels.length];
+        int[] tempInt2 = new int[MainPage.setDataLabels.length];
+        int[] tempInt3 = new int[MainPage.setDataLabels.length];
+        for (int i = 0; i < MainPage.data[groupType].length; i++) {
+            for (int j = 1; j < MainPage.setDataLabels.length + 1; j++) {  //runs through sets
+                if (MainPage.data[groupType][i][0] != null 
+                    && !MainPage.data[groupType][i][0].equals("") 
+                    && j == Integer.valueOf(storage[groupType][i][0].toString())) {
+                    if (MainPage.data[groupType][i][8] != null  //if intensity exists
+                        && !MainPage.data[groupType][i][8].equals("")) {
+                        tempInt[j - 1] += Integer.valueOf(MainPage.data[groupType][i][8].toString());
+                        tempInt2[j - 1] += 1;
+                        tempInt3[j - 1] = 1; 
+                    } 
+                }
+            }
+        }
+        for (int i = 0; i < MainPage.setDataLabels.length; i++) {
+            if (tempInt3[i] == 0) {
+                tempInt[i] = 0;
+            }
+        }
+        for (int i = 0; i < MainPage.setDataLabels.length; i++) {
+            if (tempInt2[i] != 0) {
+                tempInt[i] /= tempInt2[i];
+            }
+        }
         
+        for (int i = 0; i < MainPage.setDataLabels.length; i++) {
+            if (tempInt[i] != 0) {
+                MainPage.ringChartData[1]
+                    .setValue(MainPage.setDataLabels[i], tempInt[i]);  //OUTPUT
+            } else {
+                MainPage.ringChartData[1]
+                    .setValue(MainPage.setDataLabels[i], 0);
+                MainPage.ringChartData[1].remove(MainPage.setDataLabels[i]);
+            }
+        }
     }
     
     public void SetDistanceChartChange() {
-        
+        int[] tempInt = new int[MainPage.setDataLabels.length];
+        int[] tempInt2 = new int[MainPage.setDataLabels.length];
+        for (int i = 0; i < MainPage.data[groupType].length; i++) {
+            for (int j = 1; j < MainPage.setDataLabels.length + 1; j++) {
+                if (MainPage.data[groupType][i][0] != null 
+                    && !MainPage.data[groupType][i][0].equals("") 
+                    && j == Integer.valueOf(storage[groupType][i][0].toString())) {
+                    if (MainPage.data[groupType][i][2] != null
+                        && MainPage.data[groupType][i][3] != null
+                        && !MainPage.data[groupType][i][2].equals("")
+                            & !MainPage.data[groupType][i][3].equals("")) {
+                        if (storage[groupType][i][1] != null 
+                            && !storage[groupType][i][1].equals(0)
+                            && !storage[groupType][i][1].equals("")) {
+                            tempInt[j - 1] += Integer.valueOf(storage[groupType][i][3].toString())
+                                * Integer.valueOf(storage[groupType][i][2].toString())
+                                * Integer.valueOf(storage[groupType][i][1].toString());
+                        } else if (storage[groupType][i][1] == null
+                            || storage[groupType][i][1].equals(0)
+                            || storage[groupType][i][1].equals("")) {
+                            tempInt[j - 1] += Integer.valueOf(storage[groupType][i][3].toString())
+                                * Integer.valueOf(storage[groupType][i][2].toString());
+                        }
+                        tempInt2[j - 1] = 1;
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < MainPage.setDataLabels.length; i++) {
+            if (tempInt2[i] == 0) {
+                tempInt[i] = 0;
+            }
+        }
+        for (int i = 0; i < MainPage.setDataLabels.length; i++) {
+            if (tempInt[i] != 0) {
+                MainPage.ringChartData[2]
+                    .setValue(MainPage.setDataLabels[i], tempInt[i]);  //OUTPUT
+            } else {
+                MainPage.ringChartData[2]
+                    .setValue(MainPage.setDataLabels[i], 0);
+                MainPage.ringChartData[2].remove(MainPage.setDataLabels[i]);
+            }
+        }
     }
 }
 
