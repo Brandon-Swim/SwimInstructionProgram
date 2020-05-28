@@ -1,10 +1,5 @@
-import javax.jws.soap.SOAPBinding.Style;
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
-import java.io.*;
-import java.awt.event.*;
-import java.util.*;
 
 
 //Creates GUI 
@@ -17,7 +12,6 @@ public class finalHolder {
         
         //Main page Setup
         //Frame Setup
-        mainWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
         mainWindow.setMinimumSize(new Dimension(1650,800));
         mainWindow.setLayout(new BorderLayout());
         mainWindow.setVisible(false);
@@ -37,7 +31,8 @@ public class finalHolder {
         tabs.add("Practice Builder", MainPage.mainScrollArea);   //TODO figure out 
         tabs.add("Practice Archieve", PracticeArchieve.practiceArchieveTab);
         tabs.add("Imported Practices", ImportedPractices.importTab);
-        tabs.add("Settings", SettingsPage.settingsTab);
+        tabs.add("Settings", SettingsPage.settingsScrollArea);
         mainWindow.getContentPane().add(tabs, BorderLayout.CENTER); 
+        mainWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 }

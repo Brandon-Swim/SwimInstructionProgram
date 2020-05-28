@@ -427,7 +427,7 @@ public class TableListener implements TableModelListener {
         }
         for (int i = 0; i < MainPage.types.length; i++) {
             if (tempInt[i] != 0) {
-                MainPage.ringChartData[0].setValue(MainPage.types[i], tempInt[i]);  //OUTPUT 
+                MainPage.ringChartData[0][groupType].setValue(MainPage.types[i], tempInt[i]);  //OUTPUT 
             }
         }
     }
@@ -463,12 +463,12 @@ public class TableListener implements TableModelListener {
         
         for (int i = 0; i < MainPage.setDataLabels.length; i++) {
             if (tempInt[i] != 0) {
-                MainPage.ringChartData[1]
+                MainPage.ringChartData[1][groupType]
                     .setValue(MainPage.setDataLabels[i], tempInt[i]);  //OUTPUT
             } else {
-                MainPage.ringChartData[1]
+                MainPage.ringChartData[1][groupType]
                     .setValue(MainPage.setDataLabels[i], 0);
-                MainPage.ringChartData[1].remove(MainPage.setDataLabels[i]);
+                MainPage.ringChartData[1][groupType].remove(MainPage.setDataLabels[i]);
             }
         }
     }
@@ -509,12 +509,12 @@ public class TableListener implements TableModelListener {
         }
         for (int i = 0; i < MainPage.setDataLabels.length; i++) {
             if (tempInt[i] != 0) {
-                MainPage.ringChartData[2]
+                MainPage.ringChartData[2][groupType]
                     .setValue(MainPage.setDataLabels[i], tempInt[i]);  //OUTPUT
             } else {
-                MainPage.ringChartData[2]
+                MainPage.ringChartData[2][groupType]
                     .setValue(MainPage.setDataLabels[i], 0);
-                MainPage.ringChartData[2].remove(MainPage.setDataLabels[i]);
+                MainPage.ringChartData[2][groupType].remove(MainPage.setDataLabels[i]);
             }
         }
     }

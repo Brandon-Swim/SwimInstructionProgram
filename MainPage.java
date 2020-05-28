@@ -34,6 +34,8 @@ public class MainPage {
         
     }
     
+    final static int amtCharts = 3;
+    final static int amtGroups = 5;
      //Header
      static JLabel header; 
      static Font headerFont = new Font("Arial", Font.BOLD, 48);
@@ -54,11 +56,7 @@ public class MainPage {
      static Dimension labelSize = new Dimension(1220,50);
      static Dimension tableSize = new Dimension(1220,400);
      static JTable mainTableGroup1;
-     static JLabel group1;
-     static JLabel group2;
-     static JLabel group3;
-     static JLabel group4;
-     static JLabel group5;
+     static JLabel[] tableGroupLabels = new JLabel[amtGroups];
      static JTable mainTableGroup2;
      static JTable mainTableGroup3;
      static JTable mainTableGroup4;
@@ -135,10 +133,9 @@ public class MainPage {
      
      //Graphs
      static JPanel graphHolder;
-     final static int amtCharts = 3;
-     static ChartPanel[] chartHolders = new ChartPanel[amtCharts];
-     static JFreeChart[] charts = new JFreeChart[amtCharts];
-     static DefaultPieDataset[] ringChartData = new DefaultPieDataset[amtCharts];
+     static ChartPanel[][] chartHolders = new ChartPanel[amtCharts][amtGroups];
+     static JFreeChart[][] charts = new JFreeChart[amtCharts][amtGroups];
+     static DefaultPieDataset[][] ringChartData = new DefaultPieDataset[amtCharts][amtGroups];
      static String[] setDataLabels = new String[] {"Set 1", "Set 2","3"
          ,"Set 4","Set 5","Set 6","Set 7","Set 8","Set 9","Set 10",};
      static Dimension chartSize = new Dimension(600,600);
@@ -239,18 +236,20 @@ public class MainPage {
         group5Pane = new JScrollPane(mainTableGroup5);
         group5Pane.setPreferredSize(tableSize);
         
-        group1 = new JLabel("Group 1 Workout");
-        group2 = new JLabel("Group 2 Workout");
-        group3 = new JLabel("Group 3 Workout");
-        group4 = new JLabel("Group 4 Workout");
-        group5 = new JLabel("Group 5 Workout");
-        TableLabels(group1);
-        TableLabels(group2);
-        TableLabels(group3);
-        TableLabels(group4);
-        TableLabels(group5);
+
+        tableGroupLabels[0] = new JLabel("Group 1 Workout");
+        tableGroupLabels[1] = new JLabel("Group 2 Workout");
+        tableGroupLabels[2] = new JLabel("Group 3 Workout");
+        tableGroupLabels[3] = new JLabel("Group 4 Workout");
+        tableGroupLabels[4] = new JLabel("Group 5 Workout");
         
-        tableHolder.add(group1);
+        TableLabels(tableGroupLabels[0], Color.red);
+        TableLabels(tableGroupLabels[1], Color.blue);
+        TableLabels(tableGroupLabels[2], Color.green);
+        TableLabels(tableGroupLabels[3], Color.pink);
+        TableLabels(tableGroupLabels[4], Color.cyan);
+        
+        tableHolder.add(tableGroupLabels[0]);
         tableHolder.add(table1Pane);
         tableScrollArea = new JScrollPane(tableHolder);
         tableScrollArea.setPreferredSize(new Dimension(1250,800));
@@ -259,8 +258,8 @@ public class MainPage {
         mainTab.add(tableScrollArea);
     }
 
-    public void TableLabels(JLabel group) {
-        group.setForeground(Color.red);
+    public void TableLabels(JLabel group, Color color) {
+        group.setForeground(color);
         group.setPreferredSize(labelSize);
         group.setHorizontalAlignment(SwingConstants.CENTER);
         group.setVerticalAlignment(SwingConstants.CENTER);
@@ -387,32 +386,17 @@ public class MainPage {
         groupGraph[4].addItemListener(Listeners.graph5Display);
         
         groupGraphLabels[0] = new JLabel("Graph 1:");
-        groupGraphLabels[0].setFont(graphLabels);
-        groupGraphLabels[0].setPreferredSize(new Dimension(80,50));
-        groupGraphLabels[0].setForeground(Color.black);
-        
         groupGraphLabels[1] = new JLabel("Graph 2:");
-        groupGraphLabels[1].setFont(graphLabels);
-        groupGraphLabels[1].setPreferredSize(new Dimension(80,50));
-        groupGraphLabels[1].setForeground(Color.black);
-
         groupGraphLabels[2] = new JLabel("Graph 3:");
-        groupGraphLabels[2].setFont(graphLabels);
-        groupGraphLabels[2].setPreferredSize(new Dimension(80,50));
-        groupGraphLabels[2].setForeground(Color.black);
-        
         groupGraphLabels[3] = new JLabel("Graph 4:");
-        groupGraphLabels[3].setFont(graphLabels);
-        groupGraphLabels[3].setPreferredSize(new Dimension(80,50));
-        groupGraphLabels[3].setForeground(Color.black);
-        
         groupGraphLabels[4] = new JLabel("Graph 5:");
-        groupGraphLabels[4].setFont(graphLabels);
-        groupGraphLabels[4].setPreferredSize(new Dimension(80,50));
-        groupGraphLabels[4].setForeground(Color.black);
-        
+        for (int i = 0; i< groupGraphLabels.length; i++) {
+            groupGraphLabels[i].setFont(graphLabels);
+            groupGraphLabels[i].setPreferredSize(new Dimension(80,20));
+            groupGraphLabels[i].setForeground(Color.black);
+        }
         graphSelector = new JPanel();
-        graphSelector.setPreferredSize(new Dimension(280,200));
+        graphSelector.setPreferredSize(new Dimension(280,90));
         graphSelector.setLayout(new FlowLayout(FlowLayout.LEFT));
         graphSelector.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
         for (int i = 0; i < groupGraph.length; i++) {
@@ -446,37 +430,48 @@ public class MainPage {
         header.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         finalHolder.mainWindow.add(header, BorderLayout.NORTH);
     }
-
-    public void ChartCreation(JFreeChart chart, ChartPanel panel) {
-        chart.setBackgroundPaint(Color.white);
-        chart.setBorderPaint(Color.red);
-        panel = new ChartPanel(chart);
-        panel.setPreferredSize(chartSize);
-        graphHolder.add(panel);
-    }
-    
+  
     public void GraphSetUp() {
         graphHolder = new JPanel();
         graphHolder.setPreferredSize(new Dimension(1860,630));
         graphHolder.setBorder(BorderFactory.createLineBorder(Color.black, 2));
         for (int i = 0; i < amtCharts; i++) {
-            ringChartData[i] = new DefaultPieDataset();
+            for (int j = 0; j < amtGroups; j++) {
+            ringChartData[i][j] = new DefaultPieDataset();
+            }
         } 
            
         //Chart 1 set up, type counter
-        charts[0] = ChartFactory.createRingChart  //TODO
-            ("Type Split", ringChartData[0], false, true, false);
+        for (int i = 0; i < amtCharts; i++) {
+            for (int j = 0; j < amtGroups; j++)
+                charts[0][j] = ChartFactory.createRingChart  //TODO
+                ("Type Split", ringChartData[0][j], false, true, false);
+        } 
         //chart 2 set up, set Intensity
-        charts[1] = ChartFactory.createRingChart  //TODO
-            ("Set Intensity", ringChartData[1], false, true, false);
+        for (int i = 0; i < amtCharts; i++) {
+            for (int j = 0; j < amtGroups; j++)
+                charts[1][j] = ChartFactory.createRingChart  //TODO
+                ("Set Intensity", ringChartData[1][j], false, true, false);
+        } 
         //chart 3 set up, set Distance
-        charts[2] = ChartFactory.createRingChart  //TODO
-            ("Set Distance", ringChartData[2], false, true, false);
+        for (int i = 0; i < amtCharts; i++) {
+            for (int j = 0; j < amtGroups; j++)
+                charts[2][j] = ChartFactory.createRingChart  //TODO
+                ("Set Distance", ringChartData[2][j], false, true, false);
+        } 
         
         //Visual chart formatting and addition
         for (int i = 0; i < amtCharts; i++) {
-            ChartCreation(charts[i],chartHolders[i]);
+            for (int j = 0; j < amtGroups; j++) {
+                charts[i][j].setBackgroundPaint(Color.white);
+                charts[i][j].setBorderPaint(Color.red);
+                chartHolders[i][j] = new ChartPanel(charts[i][j]);
+                chartHolders[i][j].setPreferredSize(chartSize);
+            }
         }
+        graphHolder.add(chartHolders[0][0]);
+        graphHolder.add(chartHolders[1][0]);
+        graphHolder.add(chartHolders[2][0]);
         mainTab.add(graphHolder);
     }
 
@@ -510,12 +505,12 @@ public class MainPage {
         mainTab = new JPanel();
         mainTab.setLayout(new FlowLayout());
         mainTab.setPreferredSize(new Dimension(1650,2400));  //TODO
-        SidePanelSetUp();
+        SidePanelSetUp();   //all added to mainTab
         TableSetUp();
         ControlPanelSetUp();
         GraphSetUp();
         PastPracticeSetUp();
-        HeaderSetUp();
+        HeaderSetUp();  //Added to frame
     
         mainScrollArea = new JScrollPane(mainTab,       //TODO Set layout for multiple panels
             JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 

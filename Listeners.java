@@ -240,7 +240,7 @@ public class Listeners {
                             MainPage.mainTableGroup2.setValueAt(MainPage.data[0][i][j], i, j);
                         }
                     }
-                    MainPage.tableHolder.add(MainPage.group2);
+                    MainPage.tableHolder.add(MainPage.tableGroupLabels[1]);
                     MainPage.tableHolder.add(MainPage.group2Pane);
                     dTable.setSize(1200,960);
                     MainPage.tableHolder.setPreferredSize(dTable);
@@ -252,7 +252,7 @@ public class Listeners {
                             MainPage.mainTableGroup3.setValueAt(MainPage.data[0][i][j], i, j);
                         }
                     }
-                    MainPage.tableHolder.add(MainPage.group3);
+                    MainPage.tableHolder.add(MainPage.tableGroupLabels[2]);
                     MainPage.tableHolder.add(MainPage.group3Pane);
                     dTable.setSize(1200,1440);
                     MainPage.tableHolder.setPreferredSize(dTable);
@@ -264,7 +264,7 @@ public class Listeners {
                             MainPage.mainTableGroup4.setValueAt(MainPage.data[0][i][j], i, j);
                         }
                     }
-                    MainPage.tableHolder.add(MainPage.group4);
+                    MainPage.tableHolder.add(MainPage.tableGroupLabels[3]);
                     MainPage.tableHolder.add(MainPage.group4Pane);
                     dTable.setSize(1200,1920);
                     MainPage.tableHolder.setPreferredSize(dTable);
@@ -276,7 +276,7 @@ public class Listeners {
                             MainPage.mainTableGroup5.setValueAt(MainPage.data[0][i][j], i, j);
                         }
                     }
-                    MainPage.tableHolder.add(MainPage.group5);
+                    MainPage.tableHolder.add(MainPage.tableGroupLabels[4]);
                     MainPage.tableHolder.add(MainPage.group5Pane);
                     dTable.setSize(1200,2400);
                     MainPage.tableHolder.setPreferredSize(dTable);
@@ -300,7 +300,7 @@ public class Listeners {
                             MainPage.mainTableGroup2.setValueAt(null, i, j);
                         }
                     }
-                    MainPage.tableHolder.remove(MainPage.group2);
+                    MainPage.tableHolder.remove(MainPage.tableGroupLabels[1]);
                     MainPage.tableHolder.remove(MainPage.group2Pane);
                     dTable.setSize(1200,480);
                     MainPage.tableHolder.setPreferredSize(dTable);
@@ -312,7 +312,7 @@ public class Listeners {
                             MainPage.mainTableGroup3.setValueAt(null, i, j);
                         }
                     }
-                    MainPage.tableHolder.remove(MainPage.group3);
+                    MainPage.tableHolder.remove(MainPage.tableGroupLabels[2]);
                     MainPage.tableHolder.remove(MainPage.group3Pane);
                     dTable.setSize(1200,960);
                     MainPage.tableHolder.setPreferredSize(dTable);
@@ -324,7 +324,7 @@ public class Listeners {
                             MainPage.mainTableGroup4.setValueAt(null, i, j);
                         }
                     }
-                    MainPage.tableHolder.remove(MainPage.group4);
+                    MainPage.tableHolder.remove(MainPage.tableGroupLabels[3]);
                     MainPage.tableHolder.remove(MainPage.group4Pane);
                     dTable.setSize(1200,1440);
                     MainPage.tableHolder.setPreferredSize(dTable);
@@ -336,7 +336,7 @@ public class Listeners {
                             MainPage.mainTableGroup5.setValueAt(null, i, j);
                         }
                     }
-                    MainPage.tableHolder.remove(MainPage.group5);
+                    MainPage.tableHolder.remove(MainPage.tableGroupLabels[4]);
                     MainPage.tableHolder.remove(MainPage.group5Pane);
                     dTable.setSize(1200,1920);
                     MainPage.tableHolder.setPreferredSize(dTable);
@@ -362,13 +362,22 @@ public class Listeners {
     static ItemListener graph1Display = new ItemListener() {
         public void itemStateChanged(ItemEvent e) {
             if (e.getStateChange() == ItemEvent.SELECTED) {
-                MainPage.charts[0].setBackgroundPaint(Color.red);
-                MainPage.charts[1].setBackgroundPaint(Color.red);
-                MainPage.charts[2].setBackgroundPaint(Color.red);
                 for (int i = 0; i < MainPage.groupGraph.length; i++) {
                     if (i != 0) {
                         MainPage.groupGraph[i].setSelected(false);
                     }
+                }
+                if (MainPage.graphHolder.getComponentCount() != 0) {    //removes all active graphs
+                    for (int i = MainPage.amtCharts - 1; i > -1; i--) {
+                        MainPage.graphHolder.remove(MainPage.graphHolder.getComponent(i));
+                    }
+                    for (int i = 0; i < MainPage.amtCharts; i++) {  //adds group 1 graph
+                        MainPage.graphHolder.add(MainPage.chartHolders[i][0]);
+                    }
+                    SwingUtilities.updateComponentTreeUI(finalHolder.mainWindow);
+                    MainPage.charts[0][0].setBackgroundPaint(Color.red);
+                    MainPage.charts[1][0].setBackgroundPaint(Color.red);
+                    MainPage.charts[2][0].setBackgroundPaint(Color.red);
                 }
             } else {
                 int tempInt = 0;
@@ -388,14 +397,24 @@ public class Listeners {
     static ItemListener graph2Display = new ItemListener() {
         public void itemStateChanged(ItemEvent e) {
             if (e.getStateChange() == ItemEvent.SELECTED) {
-                MainPage.charts[0].setBackgroundPaint(Color.blue);
-                MainPage.charts[1].setBackgroundPaint(Color.blue);
-                MainPage.charts[2].setBackgroundPaint(Color.blue);
                 for (int i = 0; i < MainPage.groupGraph.length; i++) {
                     if (i != 1) {
                         MainPage.groupGraph[i].setSelected(false);
                     }
                 }
+                if (MainPage.graphHolder.getComponentCount() != 0) {    //removes all active graphs
+                    for (int i = MainPage.amtCharts - 1; i > -1; i--) {
+                        MainPage.graphHolder.remove(MainPage.graphHolder.getComponent(i));
+                    }
+                    for (int i = 0; i < MainPage.amtCharts; i++) {  //adds group 2 graph
+                        MainPage.graphHolder.add(MainPage.chartHolders[i][1]);
+                    }
+                    SwingUtilities.updateComponentTreeUI(finalHolder.mainWindow);
+                    MainPage.charts[0][1].setBackgroundPaint(Color.blue);
+                    MainPage.charts[1][1].setBackgroundPaint(Color.blue);
+                    MainPage.charts[2][1].setBackgroundPaint(Color.blue);
+                }
+                
             } else {
                 int tempInt = 0;
                 for (int i = 0; i < MainPage.groupGraph.length; i++) {
@@ -414,13 +433,22 @@ public class Listeners {
     static ItemListener graph3Display = new ItemListener() {
         public void itemStateChanged(ItemEvent e) {
             if (e.getStateChange() == ItemEvent.SELECTED) {
-                MainPage.charts[0].setBackgroundPaint(Color.green);
-                MainPage.charts[1].setBackgroundPaint(Color.green);
-                MainPage.charts[2].setBackgroundPaint(Color.green);
                 for (int i = 0; i < MainPage.groupGraph.length; i++) {
                     if (i != 2) {
                         MainPage.groupGraph[i].setSelected(false);
                     }
+                }
+                if (MainPage.graphHolder.getComponentCount() != 0) {    //removes all active graphs
+                    for (int i = MainPage.amtCharts - 1; i > -1; i--) {
+                        MainPage.graphHolder.remove(MainPage.graphHolder.getComponent(i));
+                    }
+                    for (int i = 0; i < MainPage.amtCharts; i++) {  //adds group 3 graph
+                        MainPage.graphHolder.add(MainPage.chartHolders[i][2]);
+                    }
+                    SwingUtilities.updateComponentTreeUI(finalHolder.mainWindow);
+                    MainPage.charts[0][2].setBackgroundPaint(Color.green);
+                    MainPage.charts[1][2].setBackgroundPaint(Color.green);
+                    MainPage.charts[2][2].setBackgroundPaint(Color.green);
                 }
             } else {
                 int tempInt = 0;
@@ -440,13 +468,22 @@ public class Listeners {
     static ItemListener graph4Display = new ItemListener() {
         public void itemStateChanged(ItemEvent e) {
             if (e.getStateChange() == ItemEvent.SELECTED) {
-                MainPage.charts[0].setBackgroundPaint(Color.pink);
-                MainPage.charts[1].setBackgroundPaint(Color.pink);
-                MainPage.charts[2].setBackgroundPaint(Color.pink);
                 for (int i = 0; i < MainPage.groupGraph.length; i++) {
                     if (i != 3) {
                         MainPage.groupGraph[i].setSelected(false);
                     }
+                }
+                if (MainPage.graphHolder.getComponentCount() != 0) {    //removes all active graphs
+                    for (int i = MainPage.amtCharts - 1; i > -1; i--) {
+                        MainPage.graphHolder.remove(MainPage.graphHolder.getComponent(i));
+                    }
+                    for (int i = 0; i < MainPage.amtCharts; i++) {  //adds group 4 graph
+                        MainPage.graphHolder.add(MainPage.chartHolders[i][3]);
+                    }
+                    SwingUtilities.updateComponentTreeUI(finalHolder.mainWindow);
+                    MainPage.charts[0][3].setBackgroundPaint(Color.pink);
+                    MainPage.charts[1][3].setBackgroundPaint(Color.pink);
+                    MainPage.charts[2][3].setBackgroundPaint(Color.pink);
                 }
             } else {
                 int tempInt = 0;
@@ -466,13 +503,22 @@ public class Listeners {
     static ItemListener graph5Display = new ItemListener() {
         public void itemStateChanged(ItemEvent e) {
             if (e.getStateChange() == ItemEvent.SELECTED) {
-                MainPage.charts[0].setBackgroundPaint(Color.cyan);
-                MainPage.charts[1].setBackgroundPaint(Color.cyan);
-                MainPage.charts[2].setBackgroundPaint(Color.cyan);
                 for (int i = 0; i < MainPage.groupGraph.length; i++) {
                     if (i != 4) {
                         MainPage.groupGraph[i].setSelected(false);
                     }
+                }
+                if (MainPage.graphHolder.getComponentCount() != 0) {    //removes all active graphs
+                    for (int i = MainPage.amtCharts - 1; i > -1; i--) {
+                        MainPage.graphHolder.remove(MainPage.graphHolder.getComponent(i));
+                    }
+                    for (int i = 0; i < MainPage.amtCharts; i++) {  //adds group 5 graph
+                        MainPage.graphHolder.add(MainPage.chartHolders[i][4]);  //TODO for settings
+                    }
+                    SwingUtilities.updateComponentTreeUI(finalHolder.mainWindow);
+                    MainPage.charts[0][4].setBackgroundPaint(Color.cyan);
+                    MainPage.charts[1][4].setBackgroundPaint(Color.cyan);
+                    MainPage.charts[2][4].setBackgroundPaint(Color.cyan);
                 }
             } else {
                 int tempInt = 0;
