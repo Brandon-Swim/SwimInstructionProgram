@@ -276,16 +276,17 @@ public class MainPage {
       
     public void SidePanelSetUp() {
         sidePanel = new JPanel();
-        sidePanel.setPreferredSize(new Dimension(260,1500));
+        sidePanel.setPreferredSize(new Dimension(260,720));
         sidePanel.setLayout(new FlowLayout());
+        
         for (int i = 0; i < sideData.length; i++) {
             sideData[i] = new JLabel(sideLabel[i]);
             PanelSetUp(sideData[i], sidePanelSize);
-            sidePanel.add(sideData[i]);
+        //    sidePanel.add(sideData[i]);
         }
 
         sideScroll = new JScrollPane(sidePanel,       //TODO Set layout for multiple panels
-            JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
+            JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
             JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         sideScroll.setPreferredSize(new Dimension(300,800));
         sideScroll.setBorder(BorderFactory.createLineBorder(Color.black, 2));

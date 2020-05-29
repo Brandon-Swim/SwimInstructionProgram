@@ -31,7 +31,7 @@ public class finalHolder {
         tabs.add("Practice Builder", MainPage.mainScrollArea);   //TODO figure out 
         tabs.add("Practice Archieve", PracticeArchieve.practiceArchieveTab);
         tabs.add("Imported Practices", ImportedPractices.importTab);
-        tabs.add("Settings", SettingsPage.settingsScrollArea);
+        tabs.add("Settings", SettingsPage.settingsTab);
         mainWindow.getContentPane().add(tabs, BorderLayout.CENTER); 
         mainWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }

@@ -358,7 +358,7 @@ public class Listeners {
                WelcomeFrame.introPage.dispose();
            }
      };   
-   //Radio Button Listeners
+    //Radio Button Listeners
     static ItemListener graph1Display = new ItemListener() {
         public void itemStateChanged(ItemEvent e) {
             if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -535,7 +535,98 @@ public class Listeners {
             }
         }
     };
+    //Settings Button Listeners
+    static ActionListener settingButton1 = new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            if (SettingsPage.selectionPanels[1].getComponentCount() != 0) {
+                SettingsPage.selectionPanels[1].remove(
+                    SettingsPage.selectionPanels[1].getComponent(0));
+                SettingsPage.selectionPanels[1].add(
+                    SettingsPage.selectionPanels[2]);
+                SwingUtilities.updateComponentTreeUI(SettingsPage.settingsTab);
+            }
+        }
+    };
+    static ActionListener settingButton2 = new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            if (SettingsPage.selectionPanels[1].getComponentCount() != 0) {
+                SettingsPage.selectionPanels[1].remove(
+                    SettingsPage.selectionPanels[1].getComponent(0));
+                SettingsPage.selectionPanels[1].add(
+                    SettingsPage.selectionPanels[3]);
+                SwingUtilities.updateComponentTreeUI(SettingsPage.settingsTab);
+            }
+        }
+    };
+    static ActionListener settingButton3 = new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            if (SettingsPage.selectionPanels[1].getComponentCount() != 0) {
+                SettingsPage.selectionPanels[1].remove(
+                    SettingsPage.selectionPanels[1].getComponent(0));
+                SettingsPage.selectionPanels[1].add(
+                    SettingsPage.selectionPanels[4]);
+                SwingUtilities.updateComponentTreeUI(SettingsPage.settingsTab);
+            }
+        }
+    };
+    static ActionListener settingButton4 = new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            if (SettingsPage.selectionPanels[1].getComponentCount() != 0) {
+                SettingsPage.selectionPanels[1].remove(
+                    SettingsPage.selectionPanels[1].getComponent(0));
+                SettingsPage.selectionPanels[1].add(
+                    SettingsPage.selectionPanels[5]);
+                SwingUtilities.updateComponentTreeUI(SettingsPage.settingsTab);
+            }
+        }
+    };
+    static ActionListener settingButton5 = new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            if (SettingsPage.selectionPanels[1].getComponentCount() != 0) {
+                SettingsPage.selectionPanels[1].remove(
+                    SettingsPage.selectionPanels[1].getComponent(0));
+                SettingsPage.selectionPanels[1].add(
+                    SettingsPage.selectionPanels[6]);
+                SwingUtilities.updateComponentTreeUI(SettingsPage.settingsTab);
+            }
+        }
+    };
+    static ActionListener settingButton6 = new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            if (SettingsPage.selectionPanels[1].getComponentCount() != 0) {
+                SettingsPage.selectionPanels[1].remove(
+                    SettingsPage.selectionPanels[1].getComponent(0));
+                SettingsPage.selectionPanels[1].add(
+                    SettingsPage.selectionPanels[7]);
+                SwingUtilities.updateComponentTreeUI(SettingsPage.settingsTab);
+            }
+        }
+    };
+    //Settings Side panel layout listener
+    static ItemListener spSelector = new ItemListener() {
+        public void itemStateChanged(ItemEvent e) {
+            Object source = e.getSource();
+            for (int i = 0; i < MainPage.sideLabel.length; i++ ) {
+                if (source == SettingsPage.spSelector[i]    //Item Listener for first Checkbox
+                    && e.getStateChange() == ItemEvent.SELECTED) {
+                    MainPage.sidePanel.add(MainPage.sideData[i]);
+                } else if (source == SettingsPage.spSelector[i] && 
+                    e.getStateChange() == ItemEvent.DESELECTED) {
+                    MainPage.sidePanel.remove(MainPage.sideData[i]);
+                }
+            }
+            if (MainPage.sidePanel.getComponentCount() > 7) {
+                int length = (MainPage.sidePanel.getComponentCount() * 110);
+                MainPage.sidePanel.setPreferredSize(new Dimension(260,length));
+            } else {
+                MainPage.sidePanel.setPreferredSize(new Dimension(260,720));
+            }
+        }
+    };
+    
+    
 }
+
 
 
 

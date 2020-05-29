@@ -1,4 +1,4 @@
-/*
+
 import javax.jws.soap.SOAPBinding.Style;
 import javax.swing.*;
 import java.awt.*;
@@ -13,35 +13,32 @@ public class testFeild {
     
     public static void main(String args[]) {
         JFrame test = new JFrame();
-        test.setSize(new Dimension(1650,800));
         test.setMinimumSize(new Dimension(200,200));
-        test.setLayout(new BorderLayout());
+        test.setLayout(new FlowLayout());
         test.setVisible(true);
         test.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         JPanel Pane = new JPanel();
-        JTable table1 =  new JTable(100,10);
-        JTable table2 = new JTable(100,10);
-        Pane.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        table1.setBorder(BorderFactory.createLineBorder(Color.green, 2));
-        table2.setBorder(BorderFactory.createLineBorder(Color.green, 2));
+        Pane.setPreferredSize(new Dimension(200,700));
+        Pane.setBorder(BorderFactory.createLineBorder(Color.black, 2));
         Pane.setLayout(new FlowLayout());
-        Pane.add(table1);
         
-        JPanel Pane2 = new JPanel();
-        Pane2.setLayout(new BorderLayout());
-        JButton but1 = new JButton("Add Row");
-        but1.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                Pane.add(table2);
-            }
-        });
-        Pane2.add(but1, BorderLayout.CENTER);
+        JTextField field1 = new JTextField("This is a Test");
+        field1.setDragEnabled(true);
+        field1.setPreferredSize(new Dimension(150,50));
+        field1.setEditable(false);
         
-        JScrollPane Over = new JScrollPane(Pane);
-        Over.setBorder(BorderFactory.createLineBorder(Color.red, 2));
-        test.add(Over);
-        //test.add(Pane2);
+        JTextField field2 = new JTextField("Test Goes Here");
+        field2.setEnabled(true);
+        field2.setPreferredSize(new Dimension(150,50));
+        field2.setTransferHandler(new TransferHandler("text"));
+        field2.setEditable(false);
+        
+        Pane.add(field1);
+        Pane.add(field2);
+        
+        test.add(Pane);
+        test.setSize(new Dimension(1650,800));
        
         
         
@@ -67,70 +64,9 @@ public class testFeild {
         return sum;
     }
 }
- */
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.util.Random;
-import javax.swing.AbstractAction;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.category.DefaultCategoryDataset;
 
-/**
- * @see https://stackoverflow.com/a/21267585/230513
- */
-public class testFeild {
 
-    private static final String ROW_KEY = "Values";
-    private static final Random r = new Random();
 
-    private void display() {
-        JFrame f = new JFrame("Test");
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        final DefaultCategoryDataset model = new DefaultCategoryDataset();
-        model.setValue(1, ROW_KEY, "1");
-        model.setValue(2, ROW_KEY, "2");
-        model.setValue(3, ROW_KEY, "3");
-        JFreeChart chart = ChartFactory.createBarChart("Proxi", "Sensors",
-            "Value", model, PlotOrientation.VERTICAL, false, true, false);
-        ChartPanel barPanel = new ChartPanel(chart) {
-
-            @Override
-            public Dimension getPreferredSize() {
-                return new Dimension(320, 240);
-            }
-        };
-        f.add(barPanel);
-        f.add(new JButton(new AbstractAction("Update") {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                model.setValue(r.nextDouble() * 3, ROW_KEY, "1");
-            }
-        }), BorderLayout.SOUTH);
-
-        f.pack();
-        f.setLocationRelativeTo(null);
-        f.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                new testFeild().display();
-            }
-        });
-    }
-}
 
 
 
