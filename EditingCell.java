@@ -1,4 +1,4 @@
 
-public class EditingCell extends TableCell<>{
+public class EditingCell {
 
 }

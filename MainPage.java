@@ -65,6 +65,7 @@ public class MainPage {
         "T Season Distance","T Practices left in the week", "T Practices til Comp", 
         "T Game Day Counter","T Practices until Taper", "Set distance"};
     static Label[] sideData = new Label[sideLabel.length];
+    
     public MainPage() {
         int height = 2400;
         Border mainBorder = new Border(new BorderStroke(Color.RED, 
