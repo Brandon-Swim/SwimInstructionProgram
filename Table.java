@@ -1,21 +1,33 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-import javafx.util.converter.IntegerStringConverter;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 
 public class Table {
     
     
     private TableView<Set> TABLE = new TableView<>();
+    private Label header = new Label();
+    private int IDnum = -1;
+    //Empy constructor
+    public Table() {
+        
+    }
     
-    public Table(TableView<Set> table) {
+    public Table(TableView<Set> table, ObservableList<Set> data, int ID) {
+        this.IDnum = ID;
         table.setPrefSize(1350, 400);
         table.setEditable(true);
         String[] columnNames = new String[] {"Set","Rounds","Reps","Distance",
@@ -44,7 +56,6 @@ public class Table {
                 }
             }
         );
-        setNum.addEventHandler(KeyEvent.KEY_TYPED, Background.addRow);
         
         TableColumn<Set, String> roundNum = new TableColumn<>(columnNames[1]);
         roundNum.setPrefWidth(67.5);    //TODO move background 5% of table
@@ -230,22 +241,62 @@ public class Table {
                     }
                 }
             }
-        );       
+        );   
         
+        table.setOnKeyPressed(new EventHandler<KeyEvent>(){
+            public void handle(KeyEvent e){
+                if (e.getCode() == KeyCode.TAB) {
+                    data.add(new Set("1", "1", "", "", "", "", "", "", ""));
+                    table.setItems(data);
+                    }
+                }
+            });
+        
+        /*
+        IntensityNum.addEventHandler(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>(){
+            public void handle(KeyEvent e){
+                if (e.getCode() == KeyCode.A) {
+                    data.add(new Set("1", "1", "", "", "", "", "", "", ""));
+                    table.setItems(data);
+                    }
+                }
+            });
+        */
         TableColumn<Set, Integer> time = new TableColumn<>("Time");
-        time.getColumns().addAll(minNum, secNum);
+        time.getColumns().addAll(minNum, secNum); 
         
-        table.setItems(Storage.data);
+        table.setItems(data); //TODO problem for multiple tables
         table.getColumns().addAll(setNum, roundNum, repNum, distanceNum, 
             description, type, time, IntensityNum);
         this.TABLE = table;
+        //Set Up Labels
+        Label tableHeader = new Label(Storage.TABLE_HEADERS[ID - 1]);
+        tableHeader.setPrefSize(1350, 100);
+        tableHeader.setTextAlignment(TextAlignment.CENTER);
+        tableHeader.setAlignment(Pos.CENTER);
+        tableHeader.setFont(Font.font("Arial", 32));
+        tableHeader.setTextFill(Color.RED);
+        this.header = tableHeader;
     }
+    
     public TableView<Set> getTable() {
         return TABLE;
     }
     
     public void addTable(Pane tablePane) {
-        tablePane.getChildren().add(TABLE);
+        tablePane.getChildren().addAll(header, TABLE);
+    }
+    
+    public void remTable(Pane tablePane) {
+        tablePane.getChildren().removeAll(header, TABLE);
+    }
+    
+    public int getID() {
+        return IDnum;
+    }
+    
+    public void setData(ObservableList<Set> data) {
+        TABLE.setItems(data);
     }
 }
 

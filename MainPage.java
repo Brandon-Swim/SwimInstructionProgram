@@ -1,12 +1,7 @@
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.CheckBoxTableCell;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
@@ -14,23 +9,17 @@ import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-import javax.swing.BorderFactory;
-import javax.swing.SwingConstants;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
-import javafx.geometry.Dimension2D;
 import javafx.geometry.Pos;
 
 public class MainPage {
     
     static Pane mainPane;
+    //Method Variables
     /*
      * Panes for laying out in the main Pane
      * 0-Upper Pane
@@ -40,31 +29,16 @@ public class MainPage {
      * 4-Table Pane within the upper pane
      * 5-Control Pane within the upper pane
      */
-    static Pane[] layoutPanes = new Pane[6];
+    private static Label[] sideData = new Label[Storage.sideLabel.length];
+    //Getter Variables 
+    private static ControlPanel controlP = new ControlPanel();
     static ScrollPane mainScene;
-    //Side Panel
-    /* 
-     * Displays total distance
-     * Displays toal time
-     * Displays Intensity
-     * Working Distance (not in warm up or easy)
-     * Working Time (not in warm up or easy)
-     * Working Intensity (not in warm up or easy)
-     * Displays total amount of practice types for the season
-     * Displays total season distance
-     * Displays practices left in the week
-     * Displays practices left to next competition
-     * Displays practices since last game day
-     * Displays practices until taper
-     * Displays Individual Set distances
-     * Displays amount of working yards
-     */
-    static String[] sideLabel = new String[] {"Total Distance: 0 yds", 
-        "Total Time: 0 min", "Avg Intensity: 0%", "Working Distance: 0 yds", 
-        "Working Time: 0 min","Working Intensity: 0%","T Type Counter", 
-        "T Season Distance","T Practices left in the week", "T Practices til Comp", 
-        "T Game Day Counter","T Practices until Taper", "Set distance"};
-    static Label[] sideData = new Label[sideLabel.length];
+    static Table table1 = new Table();
+    static Table table2 = new Table();
+    static Table table3 = new Table();
+    static Table table4 = new Table();
+    static Table table5 = new Table();
+    private static VBox tablePane = new VBox();
     
     public MainPage() {
         int height = 2400;
@@ -107,7 +81,8 @@ public class MainPage {
         
         Region spacer1 = new Region();
         spacer1.setBorder(mainBorder);
-        Pane tableHolder = new Pane();
+        VBox tableHolder = new VBox();
+        this.tablePane = tableHolder;
         ScrollPane tablePane = new ScrollPane(tableHolder);
         //tableHolder.setPrefSize(1500, 1000); sets the panes scrollable size
         tablePane.setPrefSize(1380, 790);   
@@ -125,24 +100,27 @@ public class MainPage {
         sideLayout.getChildren().addAll(sidePane, spacer1, tablePane, spacer2, controlPane);
         mainPane.getChildren().add(generalLayout);  //Sets main layout
         infoPane.getChildren().add(sideLayout); //Sets side data layout
-        SidePaneSetUp(sideData);
         
-        TableView<Set> table1 = new TableView<>();
-        Table tableBuilder = new Table(table1);
-        tableBuilder.addTable(tableHolder);
+        SidePaneSetUp(sideData);
+        ControlPanel controller = new ControlPanel(controlPane);
+        controlP = controller;
+         
+        table1 = new Table(new TableView<>(), Storage.datagroup1, 1);
+        table2 = new Table(new TableView<>(), Storage.datagroup2, 2);
+        table3 = new Table(new TableView<>(), Storage.datagroup3, 3);
+        table4 = new Table(new TableView<>(), Storage.datagroup4, 4);
+        table5 = new Table(new TableView<>(), Storage.datagroup5, 5);
+        table1.addTable(tableHolder);   //Adds the first table to the pane
     }
     
-    public ScrollPane getPane() {
-        return mainScene;
-    }
-    
+    //Methods
     public void SidePaneSetUp(Pane sideDataHolder) {
         Border sideDataBorder = new Border(new BorderStroke(Color.RED, 
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT));
         VBox sideLayout = new VBox();
         //ScrollPane sideHolder = new ScrollPane(layoutPanes[3]);
         for (int i = 0; i < sideData.length; i++) {
-            sideData[i] = new Label(sideLabel[i]);
+            sideData[i] = new Label(Storage.sideLabel[i]);
             sideData[i].setFont(Font.font("Arial", 20));
             sideData[i].setBorder(sideDataBorder);
             sideData[i].setTextAlignment(TextAlignment.CENTER);
@@ -154,4 +132,35 @@ public class MainPage {
         sideLayout.setAlignment(Pos.TOP_CENTER);
         sideDataHolder.getChildren().add(sideLayout);
     }    
+   
+    //Getters 
+    // Gets the controlPane 
+    public static ControlPanel getControl() {
+        return controlP;
+    }
+    //Returns the overall pane for the scene
+    public ScrollPane getPane() {
+        return mainScene;
+    }
+    //Returns table based on index
+    public static Table getTable(int ID) {
+        switch (ID) {
+            case 1:
+                return table1;
+            case 2:
+                return table2;
+            case 3:
+                return table3;
+            case 4:
+                return table4;
+            case 5:
+                return table5;
+            default:
+                return null;
+        }
+    }
+    //Returns table layout
+    public static VBox getTableLayout() {
+        return tablePane;
+    }
 }
