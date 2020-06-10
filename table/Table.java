@@ -1,10 +1,13 @@
-import javafx.collections.FXCollections;
+package table;
+
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -14,6 +17,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import general.Storage;
 
 public class Table {
     
@@ -44,7 +48,7 @@ public class Table {
                 @Override
                 public void handle(CellEditEvent<Set, String> t) {
                     // Checks to see if the input is a number
-                    if (Background.isNumeric(t.getNewValue())) {    
+                    if (isNumeric(t.getNewValue())) {    
                         //if true then the value is accepted
                         ((Set) t.getTableView().getItems().get(
                             t.getTablePosition().getRow())
@@ -68,7 +72,7 @@ public class Table {
                 @Override
                 public void handle(CellEditEvent<Set, String> t) {
                     // Checks to see if the input is a number
-                    if (Background.isNumeric(t.getNewValue())) {    
+                    if (isNumeric(t.getNewValue())) {    
                         //if true then the value is accepted
                         ((Set) t.getTableView().getItems().get(
                             t.getTablePosition().getRow())
@@ -92,7 +96,7 @@ public class Table {
                 @Override
                 public void handle(CellEditEvent<Set, String> t) {
                     // Checks to see if the input is a number
-                    if (Background.isNumeric(t.getNewValue())) {    
+                    if (isNumeric(t.getNewValue())) {    
                         //if true then the value is accepted
                         ((Set) t.getTableView().getItems().get(
                             t.getTablePosition().getRow())
@@ -116,7 +120,7 @@ public class Table {
                 @Override
                 public void handle(CellEditEvent<Set, String> t) {
                     // Checks to see if the input is a number
-                    if (Background.isNumeric(t.getNewValue())) {    
+                    if (isNumeric(t.getNewValue())) {    
                         //if true then the value is accepted
                         ((Set) t.getTableView().getItems().get(
                             t.getTablePosition().getRow())
@@ -157,7 +161,7 @@ public class Table {
                 @Override
                 public void handle(CellEditEvent<Set, String> t) {
                     // Checks to see if the input is a number
-                    if (Background.isNumeric(t.getNewValue())) {    
+                    if (isNumeric(t.getNewValue())) {    
                         //if true then the value is accepted
                         ((Set) t.getTableView().getItems().get(
                             t.getTablePosition().getRow())
@@ -182,7 +186,7 @@ public class Table {
                 @Override
                 public void handle(CellEditEvent<Set, String> t) {
                     // Checks to see if the input is a number
-                    if (Background.isNumeric(t.getNewValue())) {    
+                    if (isNumeric(t.getNewValue())) {    
                         //if true then the value is accepted
                         ((Set) t.getTableView().getItems().get(
                             t.getTablePosition().getRow())
@@ -206,7 +210,7 @@ public class Table {
                 @Override
                 public void handle(CellEditEvent<Set, String> t) {
                     // Checks to see if the input is a number
-                    if (Background.isNumeric(t.getNewValue())) {    
+                    if (isNumeric(t.getNewValue())) {    
                         //if true then the value is accepted
                         ((Set) t.getTableView().getItems().get(
                             t.getTablePosition().getRow())
@@ -230,7 +234,7 @@ public class Table {
                 @Override
                 public void handle(CellEditEvent<Set, String> t) {
                     // Checks to see if the input is a number
-                    if (Background.isNumeric(t.getNewValue())) {    
+                    if (isNumeric(t.getNewValue())) {    
                         //if true then the value is accepted
                         ((Set) t.getTableView().getItems().get(
                             t.getTablePosition().getRow())
@@ -297,6 +301,27 @@ public class Table {
     
     public void setData(ObservableList<Set> data) {
         TABLE.setItems(data);
+    }
+    
+    /*
+     * Misc Methods
+     */
+     private static boolean isNumeric(String value) {
+        if (value.equals(null) || value.isEmpty()) {
+            return false;
+        }
+        
+        try {
+            double d = Double.parseDouble(value);
+        } catch (NumberFormatException nfe) {
+            Alert alert =  new Alert(AlertType.ERROR);
+            alert.setTitle("Input Error");
+            alert.setContentText("Error: " + value + " is not an accepted input."
+                + " Input must be a number.");
+            alert.showAndWait();
+            return false;
+        }
+        return true;
     }
 }
 

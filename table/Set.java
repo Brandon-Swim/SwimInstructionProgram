@@ -1,3 +1,4 @@
+package table;
 //import javafx.beans.property.SimpleIntegerProperty; not sure if switch back
 import javafx.beans.property.SimpleStringProperty;
 

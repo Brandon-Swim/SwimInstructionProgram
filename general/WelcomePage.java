@@ -1,3 +1,4 @@
+package general;
 /*
  * This class displays the welcome message for the user.
  * The message will introduce the user to the program and
@@ -24,10 +25,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
-public class Welcome{
+public class WelcomePage{
     
         Scene introduction;
-    public Welcome() {
+    public WelcomePage() {
         //Border for all components
         Border welcomeBorder = new Border(new BorderStroke(Color.BLACK, 
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT));
@@ -41,8 +42,8 @@ public class Welcome{
         but1.setBorder(welcomeBorder);
         EventHandler<ActionEvent> buttonHandler = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                Foreground.getStage().setScene(Foreground.mainPage);
-                Foreground.getStage().setMaximized(true);
+                GUI.getStage().setScene(GUI.mainPage);
+                GUI.getStage().setMaximized(true);
             }
         };
         but1.setOnAction(buttonHandler);
@@ -71,7 +72,7 @@ public class Welcome{
         return introduction;
     }
     public static void main(String[] args) {
-        Foreground.main(args);  
+        GUI.main(args);  
     }
     public static String fileReader(String fileName) {
         String fileContents = "";

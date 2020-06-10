@@ -1,4 +1,6 @@
-import java.util.ArrayList;
+package mainpage;
+//import java.util.ArrayList;
+import general.Storage;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,17 +13,15 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
+//import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
-public class ControlPanel {
+public class ControlPane {
     
     private Pane controlPane = new Pane();
     private static final Border testBorder = new Border(new BorderStroke(Color.BLACK, 
@@ -36,17 +36,17 @@ public class ControlPanel {
     private TextField dayField = new TextField();
     private TextArea descriptionField = new TextArea();
     
-    public ControlPanel() {
+    public ControlPane() {
         //Default Constructor
     }
     
-    public ControlPanel(Pane controlPane) {
+    public ControlPane(Pane controlPane) {
         VBox layoutGeneral = new VBox();    //Contains everything vertically
         FlowPane layoutTitle = new FlowPane();  //layout for name, month, day
         VBox layoutRows = new VBox();   //layout for groups 
         FlowPane layoutGraphs = new FlowPane(); //layout for selecting graphs
         FlowPane layoutButton = new FlowPane();
-        ArrayList<Region> spacers = new ArrayList<>();  //TODO
+        //ArrayList<Region> spacers = new ArrayList<>();  //TODO
         
         // 1. Set up the Header, added with out a layout. 
         Label header = new Label();
@@ -79,9 +79,9 @@ public class ControlPanel {
         nameArea.setBorder(testBorder);
         nameArea.setPrefSize(170,50);
         nameArea.setAlignment(Pos.CENTER);
-        nameArea.setOnMouseClicked(Background.clearWorkoutText);
-        nameArea.textProperty().addListener(Background.storeWorkoutText);
-        nameArea.focusedProperty().addListener(Background.defaultWorkoutText);
+        nameArea.setOnMouseClicked(CPListeners.clearWorkoutText);
+        nameArea.textProperty().addListener(CPListeners.storeWorkoutText);
+        nameArea.focusedProperty().addListener(CPListeners.defaultWorkoutText);
         this.nameField = nameArea;
         
         month.setText("Month: ");
@@ -96,9 +96,9 @@ public class ControlPanel {
         monthArea.setBorder(testBorder);
         monthArea.setPrefSize(60,50);
         monthArea.setAlignment(Pos.CENTER);
-        monthArea.setOnMouseClicked(Background.clearMonthText);
-        monthArea.textProperty().addListener(Background.storeMonth);
-        monthArea.focusedProperty().addListener(Background.defaultMonthText);
+        monthArea.setOnMouseClicked(CPListeners.clearMonthText);
+        monthArea.textProperty().addListener(CPListeners.storeMonth);
+        monthArea.focusedProperty().addListener(CPListeners.defaultMonthText);
         this.monthField = monthArea;
         
         day.setText("Day: ");
@@ -113,9 +113,9 @@ public class ControlPanel {
         dayArea.setBorder(testBorder);
         dayArea.setPrefSize(60,50);
         dayArea.setAlignment(Pos.CENTER);
-        dayArea.setOnMouseClicked(Background.clearDayText);
-        dayArea.textProperty().addListener(Background.storeDay);
-        dayArea.focusedProperty().addListener(Background.defaultDayText);
+        dayArea.setOnMouseClicked(CPListeners.clearDayText);
+        dayArea.textProperty().addListener(CPListeners.storeDay);
+        dayArea.focusedProperty().addListener(CPListeners.defaultDayText);
         this.dayField = dayArea;
         
         layoutTitle.setPrefSize(250, 100);
@@ -139,9 +139,9 @@ public class ControlPanel {
         descriptionArea.setPrefSize(250,200);
         descriptionArea.setMaxWidth(250);
         descriptionArea.setWrapText(true);
-        descriptionArea.setOnMouseClicked(Background.clearDescription);
-        descriptionArea.textProperty().addListener(Background.storeDescription);
-        descriptionArea.focusedProperty().addListener(Background.defaultDescription);
+        descriptionArea.setOnMouseClicked(CPListeners.clearDescription);
+        descriptionArea.textProperty().addListener(CPListeners.storeDescription);
+        descriptionArea.focusedProperty().addListener(CPListeners.defaultDescription);
         this.descriptionField = descriptionArea;
         
         // 4. Row and Graph set Up 
@@ -197,22 +197,22 @@ public class ControlPanel {
         addGroup.setPrefSize(100, 50);
         addGroup.setAlignment(Pos.CENTER);
         addGroup.setFont(Font.font("Arial", 12));
-        addGroup.setOnAction(Background.addControls);
+        addGroup.setOnAction(CPListeners.addControls);
         
         remGroup.setPrefSize(100, 50);
         remGroup.setAlignment(Pos.CENTER);
         remGroup.setFont(Font.font("Arial", 12));
-        remGroup.setOnAction(Background.remControls);
+        remGroup.setOnAction(CPListeners.remControls);
 
         gameDay.setPrefSize(100, 50);
         gameDay.setAlignment(Pos.CENTER);
         gameDay.setFont(Font.font("Arial", 12));
-        gameDay.setOnAction(Background.gameDay);
+        gameDay.setOnAction(CPListeners.gameDay);
         
         reset.setPrefSize(100, 50);
         reset.setAlignment(Pos.CENTER);
         reset.setFont(Font.font("Arial", 12));
-        reset.setOnAction(Background.reset);
+        reset.setOnAction(CPListeners.reset);
         
         layoutButton.setPrefWidth(250);
         layoutButton.setMaxWidth(250);

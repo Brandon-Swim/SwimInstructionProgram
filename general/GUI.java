@@ -1,3 +1,5 @@
+package general;
+import inpracpage.ImportedPractices;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -12,8 +14,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import mainpage.MainPage;
+import praclistpage.PracticeArchieve;
+import settingspage.Settings;
 
-public class Foreground extends Application{
+public class GUI extends Application{
     
     public static Stage StageGUI;
     public static Scene mainPage;
@@ -27,8 +32,11 @@ public class Foreground extends Application{
     public void start(Stage mainStage) {
         StageGUI = mainStage;
         //Declare Different Scenes
-        Welcome introduction = new Welcome();   
+        WelcomePage introduction = new WelcomePage();   
         MainPage practiceTab = new MainPage();  //Pane For Mainpage
+        PracticeArchieve archieveTab = new PracticeArchieve();
+        ImportedPractices importTab = new ImportedPractices();
+        Settings settingsTab = new Settings();
         //Runs Introduction
         mainStage.setTitle("Practice Builder");
         mainStage.setScene(introduction.setScene());
@@ -37,24 +45,25 @@ public class Foreground extends Application{
         
         TabPane tabs = new TabPane();
         Tab tab1 = new Tab("Practice Builder", practiceTab.getPane());
-        Tab tab2 = new Tab("Practice Archieve"  , new Pane());
-        Tab tab3 = new Tab("Imported Practices" , new Pane());
-        Tab tab4 = new Tab("Settings", new Pane());
+        Tab tab2 = new Tab("Practice Archieve"  , archieveTab.getPane());
+        Tab tab3 = new Tab("Imported Practices" , importTab.getPane());
+        Tab tab4 = new Tab("Settings", settingsTab.getPane());
 
         tabs.getTabs().add(tab1);
         tabs.getTabs().add(tab2);
         tabs.getTabs().add(tab3);
         tabs.getTabs().add(tab4);
         
-        Label header = new Label("Header");
+        Label header = new Label("Practice Builder");
         header.setFont(Font.font("Arial", 48));
         header.setTextFill(Color.RED);
         header.setPrefSize(400, 100);
         header.setTextAlignment(TextAlignment.CENTER);
         header.setAlignment(Pos.CENTER);
         VBox tabLayout = new VBox(tabs);
-        HBox overLayout = new HBox();
-        mainPage = new Scene(tabLayout);//Set minimum Size
+        VBox overLayout = new VBox();
+        overLayout.getChildren().addAll(header, tabLayout);
+        mainPage = new Scene(overLayout);//Set minimum Size
     }
     
     public static void main(String[] args) {

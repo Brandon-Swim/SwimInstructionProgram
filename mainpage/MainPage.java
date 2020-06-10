@@ -1,3 +1,4 @@
+package mainpage;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
@@ -14,7 +15,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import general.Storage;
 import javafx.geometry.Pos;
+import table.Set;
+import table.Table;
 
 public class MainPage {
     
@@ -29,9 +33,9 @@ public class MainPage {
      * 4-Table Pane within the upper pane
      * 5-Control Pane within the upper pane
      */
-    private static Label[] sideData = new Label[Storage.sideLabel.length];
     //Getter Variables 
-    private static ControlPanel controlP = new ControlPanel();
+    private static ControlPane controlP = new ControlPane();
+    private static SidePane sideP = new SidePane();
     static ScrollPane mainScene;
     static Table table1 = new Table();
     static Table table2 = new Table();
@@ -101,8 +105,9 @@ public class MainPage {
         mainPane.getChildren().add(generalLayout);  //Sets main layout
         infoPane.getChildren().add(sideLayout); //Sets side data layout
         
-        SidePaneSetUp(sideData);
-        ControlPanel controller = new ControlPanel(controlPane);
+        SidePane information =  new SidePane(sideData);
+        sideP = information;
+        ControlPane controller = new ControlPane(controlPane);
         controlP = controller;
          
         table1 = new Table(new TableView<>(), Storage.datagroup1, 1);
@@ -113,35 +118,20 @@ public class MainPage {
         table1.addTable(tableHolder);   //Adds the first table to the pane
     }
     
-    //Methods
-    public void SidePaneSetUp(Pane sideDataHolder) {
-        Border sideDataBorder = new Border(new BorderStroke(Color.RED, 
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT));
-        VBox sideLayout = new VBox();
-        //ScrollPane sideHolder = new ScrollPane(layoutPanes[3]);
-        for (int i = 0; i < sideData.length; i++) {
-            sideData[i] = new Label(Storage.sideLabel[i]);
-            sideData[i].setFont(Font.font("Arial", 20));
-            sideData[i].setBorder(sideDataBorder);
-            sideData[i].setTextAlignment(TextAlignment.CENTER);
-            sideData[i].setAlignment(Pos.CENTER);
-            sideData[i].setPrefSize(230,75);
-            sideData[i].setWrapText(true);
-            sideLayout.getChildren().add(sideData[i]);
-        }
-        sideLayout.setAlignment(Pos.TOP_CENTER);
-        sideDataHolder.getChildren().add(sideLayout);
-    }    
-   
     //Getters 
     // Gets the controlPane 
-    public static ControlPanel getControl() {
+    public static ControlPane getControl() {
         return controlP;
+    }
+    // gets the sidePane
+    public static SidePane getSide() {
+        return sideP;
     }
     //Returns the overall pane for the scene
     public ScrollPane getPane() {
         return mainScene;
     }
+    
     //Returns table based on index
     public static Table getTable(int ID) {
         switch (ID) {
