@@ -107,14 +107,16 @@ public class MainPage {
         
         SidePane information =  new SidePane(sideData);
         sideP = information;
-        ControlPane controller = new ControlPane(controlPane);
-        controlP = controller;
          
         table1 = new Table(new TableView<>(), Storage.datagroup1, 1);
         table2 = new Table(new TableView<>(), Storage.datagroup2, 2);
         table3 = new Table(new TableView<>(), Storage.datagroup3, 3);
         table4 = new Table(new TableView<>(), Storage.datagroup4, 4);
         table5 = new Table(new TableView<>(), Storage.datagroup5, 5);
+        
+        ControlPane controller = new ControlPane(controlPane);
+        controlP = controller;
+        
         table1.addTable(tableHolder);   //Adds the first table to the pane
     }
     

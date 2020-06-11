@@ -25,7 +25,21 @@ public class Set {
         this.secCol = new SimpleStringProperty(col8);
         this.intensityCol = new SimpleStringProperty(col9);
     }
-
+        
+    
+        public String printSet() {
+            String temp = "";
+            temp += "Set: " + setCol.get() + "\n";
+            temp += "Round: " + roundsCol.get() + "\n";
+            temp += "Rep: " + repsCol.get() + "\n";
+            temp += "Distance: " + distanceCol.get() + "\n";
+            temp += "Description: " + descriptionCol.get() + "\n";
+            temp += "Type: " + typeCol.get() + "\n";
+            temp += "Min: " + minCol.get() + "\n";
+            temp += "Sec: " + secCol.get() + "\n";
+            temp += "Intensity: " + intensityCol.get() + "\n";
+            return temp;
+        }
         //Editing the Set Column
         public String getSetCol() {
             return setCol.get();

@@ -20,6 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import table.Table;
 
 public class ControlPane {
     
@@ -146,32 +147,18 @@ public class ControlPane {
         
         // 4. Row and Graph set Up 
         HBox[] tableControl = new HBox[Storage.AMT_GROUPS];
-        Button[] addRow = new Button[Storage.AMT_GROUPS];
-        Button[] remRow = new Button[Storage.AMT_GROUPS];
-        Button[] copyRow = new Button[Storage.AMT_GROUPS];
-        Button[] pasteRow = new Button[Storage.AMT_GROUPS];
-        Button[] clearRow = new Button[Storage.AMT_GROUPS];
         RadioButton[] selectGraph = new RadioButton[Storage.AMT_GROUPS];
-        
+        TableModifiers[] controlSet = new TableModifiers[Storage.AMT_GROUPS];
+
         for (int i = 0; i < Storage.AMT_GROUPS; i++) {
             tableControl[i] = new HBox();
             tableControl[i].setPrefSize(250, 50);
             tableControl[i].setMaxWidth(250);
             tableControl[i].setMaxHeight(50);
-            
-            addRow[i] = new Button("+");
-            remRow[i] = new Button("-");
-            copyRow[i] = new Button("C");    //TODO icon
-            pasteRow[i] = new Button("P");  //TODO icon
-            clearRow[i] = new Button("Cl"); //TODO icon
-            buttonSetUp(addRow[i]);
-            buttonSetUp(remRow[i]);
-            buttonSetUp(copyRow[i]);
-            buttonSetUp(pasteRow[i]);
-            buttonSetUp(clearRow[i]);
-            
-            tableControl[i].getChildren().addAll(addRow[i],remRow[i], copyRow[i],
-                pasteRow[i], clearRow[i]);
+            controlSet[i] = new TableModifiers(MainPage.getTable(i + 1));
+            tableControl[i].getChildren().addAll(controlSet[i].getAddRow(), 
+                controlSet[i].getRemRow(), controlSet[i].getCopyRow()
+                , controlSet[i].getPasteRow(), controlSet[i].getClearRow());
             this.tableControls = tableControl;
             
             selectGraph[i] = new RadioButton("Graph " + (i + 1));
@@ -180,6 +167,7 @@ public class ControlPane {
         
         layoutRows.setPrefSize(250, 200);
         layoutRows.setBorder(testBorder);
+
         layoutRows.getChildren().add(tableControl[0]);
         this.rowPane = layoutRows;
         
@@ -224,12 +212,6 @@ public class ControlPane {
             descriptionArea, layoutButton, layoutRows, layoutGraphs);
         controlPane.getChildren().add(layoutGeneral);
         this.controlPane = controlPane;
-    }
-    private void buttonSetUp(Button but) {
-        but.setPrefSize(30, 30);
-        but.setWrapText(true);
-        but.setFont(Font.font("Arial", 20));
-        but.setAlignment(Pos.CENTER);
     }
     //Getters for action events
     // Returns the radio button at the selected index for the graph selector

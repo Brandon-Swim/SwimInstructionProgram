@@ -34,16 +34,7 @@ public class CPListeners {
                   .add(MainPage.getControl().getTableController(Storage.currentGroup -1));
                   MainPage.getTable(Storage.currentGroup).addTable(MainPage.getTableLayout());
               }
-              switch (Storage.currentGroup) {
-                  case 2:
-                      break;
-                  case 3:
-                      break;
-                  case 4:
-                      break;
-                  case 5:
-                      break;
-              }
+              MainPage.getSide().updateSelectedData(Storage.currentGroup);
           }
       };
 
@@ -67,16 +58,7 @@ public class CPListeners {
                   .remTable(MainPage.getTableLayout());
 
               }
-              switch (Storage.currentGroup) {
-                  case 2:
-                      break;
-                  case 3:
-                      break;
-                  case 4:
-                      break;
-                  case 5:
-                      break;
-              }
+              MainPage.getSide().updateSelectedData(Storage.currentGroup);
           }
       };
       /*

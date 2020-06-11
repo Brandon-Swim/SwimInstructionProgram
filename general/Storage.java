@@ -11,6 +11,8 @@ public class Storage {
     public static int currentGroup = 1;
     
     //MAIN PAGE VARIABLES
+    //Side Data Labels
+    public static int[] ttlDistanceAmts = new int[AMT_GROUPS];
     /* 
      * Displays total distance
      * Displays total time
@@ -27,11 +29,23 @@ public class Storage {
      * Displays Individual Set distances
      * Displays amount of working yards
      */
-    public static String[] sideLabel = new String[] {"Total Distance: 0 yds", 
-        "Total Time: 0 min", "Avg Intensity: 0%", "Working Distance: 0 yds", 
-        "Working Time: 0 min","Working Intensity: 0%","T Type Counter", 
-        "T Season Distance","T Practices left in the week", "T Practices til Comp", 
-        "T Game Day Counter","T Practices until Taper", "Set distance"};
+    public static String[] sideLabel = new String[] {
+        "Total Distance: " + ttlDistanceAmts[0] + "yds", 
+        "Total Time: 0 min", 
+        "Avg Intensity: 0%", 
+        "Working Distance: 0 yds", 
+        "Working Time: 0 min",
+        "Working Intensity: 0%",
+        "T Type Counter", 
+        "T Season Distance",
+        "T Practices left in the week", 
+        "T Practices til Comp", 
+        "T Game Day Counter",
+        "T Practices until Taper", 
+        "Set distance"};
+
+ 
+    
     public static String workoutName = "Workout Name";
     public static Text nameStyle = new Text();
     public static String monthName = "MM";
@@ -40,37 +54,39 @@ public class Storage {
     public static Text dayStyle = new Text();
     public static String descriptionText = "Description";
     //TABLE VARIABLES
+    //Defualt Set
+    public static final Set DEFAULT_SET = new Set("1", "", "", "", "", "", "", "", "");
     //Data stored in the first table
     public static ObservableList<Set> datagroup1 = FXCollections.observableArrayList(
-        new Set("1", "", "", "", "", "", "", "", ""),
-        new Set("1", "", "", "", "", "", "", "", ""),
-        new Set("1", "", "", "", "", "", "", "", ""),
-        new Set("1", "", "", "", "", "", "", "", ""),
-        new Set("1", "", "", "", "", "", "", "", ""));   // start with 5 blank rows
+        new Set("", "", "", "", "", "", "", "", ""),
+        new Set("", "", "", "", "", "", "", "", ""),
+        new Set("", "", "", "", "", "", "", "", ""),
+        new Set("", "", "", "", "", "", "", "", ""),
+        new Set("", "", "", "", "", "", "", "", ""));   // start with 5 blank rows
     
     public static ObservableList<Set> datagroup2 = FXCollections.observableArrayList(
-        new Set("1", "", "", "", "", "", "", "", ""),
+        new Set("2", "", "", "", "", "", "", "", ""),
         new Set("1", "", "", "", "", "", "", "", ""),
         new Set("1", "", "", "", "", "", "", "", ""),
         new Set("1", "", "", "", "", "", "", "", ""),
         new Set("1", "", "", "", "", "", "", "", ""));   // start with 5 blank rows
     
     public static ObservableList<Set> datagroup3 = FXCollections.observableArrayList(
-        new Set("1", "", "", "", "", "", "", "", ""),
+        new Set("3", "", "", "", "", "", "", "", ""),
         new Set("1", "", "", "", "", "", "", "", ""),
         new Set("1", "", "", "", "", "", "", "", ""),
         new Set("1", "", "", "", "", "", "", "", ""),
         new Set("1", "", "", "", "", "", "", "", ""));   // start with 5 blank rows
     
     public static ObservableList<Set> datagroup4 = FXCollections.observableArrayList(
-        new Set("1", "", "", "", "", "", "", "", ""),
+        new Set("4", "", "", "", "", "", "", "", ""),
         new Set("1", "", "", "", "", "", "", "", ""),
         new Set("1", "", "", "", "", "", "", "", ""),
         new Set("1", "", "", "", "", "", "", "", ""),
         new Set("1", "", "", "", "", "", "", "", ""));   // start with 5 blank rows
     
     public static ObservableList<Set> datagroup5 = FXCollections.observableArrayList(
-        new Set("1", "", "", "", "", "", "", "", ""),
+        new Set("5", "", "", "", "", "", "", "", ""),
         new Set("1", "", "", "", "", "", "", "", ""),
         new Set("1", "", "", "", "", "", "", "", ""),
         new Set("1", "", "", "", "", "", "", "", ""),

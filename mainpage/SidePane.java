@@ -16,6 +16,8 @@ import javafx.scene.text.TextAlignment;
 
 public class SidePane {
     
+    private Label[] labels = new Label[Storage.sideLabel.length];
+    
     public SidePane() {
         
     }
@@ -35,8 +37,46 @@ public class SidePane {
             sideData[i].setPrefSize(230,75);
             sideData[i].setWrapText(true);
             sideLayout.getChildren().add(sideData[i]);
+            this.labels[i] = sideData[i];
         }
         sideLayout.setAlignment(Pos.TOP_CENTER);
         sideDataHolder.getChildren().add(sideLayout);
     } 
+    
+    public Label getSideData(int ID) {
+        return labels[ID];
+    }
+    
+    public void updateSelectedData(int ID) {
+        switch (ID) {
+            case 1:
+                Storage.sideLabel[0] = "TTL Distance: " + 
+            Storage.ttlDistanceAmts[0] + " yds";
+                break;
+            case 2:
+                Storage.sideLabel[0] = "TTL Distance: " + 
+            Storage.ttlDistanceAmts[0] + "|" + Storage.ttlDistanceAmts[1]
+                + " yds";
+                break;
+            case 3:
+                Storage.sideLabel[0] = "TTL Distance: " + 
+            Storage.ttlDistanceAmts[0] + "|" + Storage.ttlDistanceAmts[1]
+                + "|" + Storage.ttlDistanceAmts[2] + " yds";
+                break;
+            case 4:
+                Storage.sideLabel[0] = "TTL Distance: " + 
+            Storage.ttlDistanceAmts[0] + "|" + Storage.ttlDistanceAmts[1]
+                + "|" + Storage.ttlDistanceAmts[2] + "|" 
+            + Storage.ttlDistanceAmts[3] + " yds";
+                break;
+            case 5:
+                Storage.sideLabel[0] = "TTL Distance: " + 
+            Storage.ttlDistanceAmts[0] + "|" + Storage.ttlDistanceAmts[1]
+                + "|" + Storage.ttlDistanceAmts[2] + "|" 
+            + Storage.ttlDistanceAmts[3] + "|" + Storage.ttlDistanceAmts[4]
+                + " yds";
+                break;
+        }
+        MainPage.getSide().getSideData(0).setText(Storage.sideLabel[0]);
+    }
 }
