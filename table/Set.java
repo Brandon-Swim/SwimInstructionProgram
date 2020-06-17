@@ -38,6 +38,7 @@ public class Set {
             temp += "Min: " + minCol.get() + "\n";
             temp += "Sec: " + secCol.get() + "\n";
             temp += "Intensity: " + intensityCol.get() + "\n";
+            System.out.println(temp);
             return temp;
         }
         //Editing the Set Column
@@ -76,11 +77,16 @@ public class Set {
             descriptionCol.set(col5);
         }
         //Editing the Integer Column
-        public String getTypeCol() {
-            return typeCol.get();
+        public SimpleStringProperty typeProperty() {
+            return this.typeCol;
         }
-        public void setTypeCol(String col6) {
-            typeCol.set(col6);
+
+        public String getTypeCol() {
+            return this.typeProperty().get();
+        }
+
+        public void setTypeCol(final String type) {
+            this.typeProperty().set(type);
         }
         //Editing the Minute Column
         public String getMinCol() {

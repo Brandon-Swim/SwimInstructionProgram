@@ -16,9 +16,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import general.Storage;
+import graphs.Graphs;
 import javafx.geometry.Pos;
 import table.Set;
 import table.Table;
+import table.TableUtils;
 
 public class MainPage {
     
@@ -86,7 +88,7 @@ public class MainPage {
         Region spacer1 = new Region();
         spacer1.setBorder(mainBorder);
         VBox tableHolder = new VBox();
-        this.tablePane = tableHolder;
+        tablePane = tableHolder;
         ScrollPane tablePane = new ScrollPane(tableHolder);
         //tableHolder.setPrefSize(1500, 1000); sets the panes scrollable size
         tablePane.setPrefSize(1380, 790);   
@@ -107,12 +109,16 @@ public class MainPage {
         
         SidePane information =  new SidePane(sideData);
         sideP = information;
+        
+        Graphs displayInfo = new Graphs(graphPane);
          
         table1 = new Table(new TableView<>(), Storage.datagroup1, 1);
         table2 = new Table(new TableView<>(), Storage.datagroup2, 2);
         table3 = new Table(new TableView<>(), Storage.datagroup3, 3);
         table4 = new Table(new TableView<>(), Storage.datagroup4, 4);
         table5 = new Table(new TableView<>(), Storage.datagroup5, 5);
+        
+        TableUtils.installCopyPasteHandler(table1.getTableView());
         
         ControlPane controller = new ControlPane(controlPane);
         controlP = controller;

@@ -13,6 +13,11 @@ public class Storage {
     //MAIN PAGE VARIABLES
     //Side Data Labels
     public static int[] ttlDistanceAmts = new int[AMT_GROUPS];
+    public static double[] ttlTimeAmts = new double[AMT_GROUPS];
+    public static int[] ttlIntensity = new int[AMT_GROUPS];
+    public static int[] workingDistanceAmts = new int[AMT_GROUPS];
+    public static double[] workningTimeAmts = new double[AMT_GROUPS];
+    public static int[] workingIntensity = new int[AMT_GROUPS];
     /* 
      * Displays total distance
      * Displays total time
@@ -30,12 +35,12 @@ public class Storage {
      * Displays amount of working yards
      */
     public static String[] sideLabel = new String[] {
-        "Total Distance: " + ttlDistanceAmts[0] + "yds", 
-        "Total Time: 0 min", 
-        "Avg Intensity: 0%", 
-        "Working Distance: 0 yds", 
-        "Working Time: 0 min",
-        "Working Intensity: 0%",
+        "TTL Distance: " + ttlDistanceAmts[0] + " yds", 
+        "TTL Time: 0 mins 0 sec",
+        "Avg Intensity: " + ttlIntensity[0] + "%", 
+        "Working Distance: " + workingDistanceAmts[0] + " yds",
+        "Working Time: 0 mins 0 sec",
+        "Working Intensity: " + workingIntensity[0] + "%",
         "T Type Counter", 
         "T Season Distance",
         "T Practices left in the week", 
@@ -66,7 +71,7 @@ public class Storage {
     
     public static ObservableList<Set> datagroup2 = FXCollections.observableArrayList(
         new Set("2", "", "", "", "", "", "", "", ""),
-        new Set("1", "", "", "", "", "", "", "", ""),
+        new Set("3", "", "", "", "", "", "", "", ""),
         new Set("1", "", "", "", "", "", "", "", ""),
         new Set("1", "", "", "", "", "", "", "", ""),
         new Set("1", "", "", "", "", "", "", "", ""));   // start with 5 blank rows
@@ -95,6 +100,20 @@ public class Storage {
     // Labels for each group
     public static final String[] TABLE_HEADERS = new String[]{"Group 1",
         "Group 2","Group 3","Group 4","Group 5"};
+    public static ObservableList<String> typeSelector = 
+        FXCollections.observableArrayList(
+        "Warm Up",
+        "Free",
+        "Back",
+        "Breast",
+        "Fly",
+        "IM",
+        "Kick",
+        "Pull",
+        "Sprint",
+        "Loosen" 
+        );
+    
     
     //SETTINGS VARIABLES
     public static boolean resetData = true;

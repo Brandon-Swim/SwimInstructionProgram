@@ -1,6 +1,5 @@
 package mainpage;
 
-import general.Storage;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -8,6 +7,8 @@ import javafx.scene.control.Button;
 import javafx.scene.text.Font;
 import table.Set;
 import table.Table;
+import table.TableEvents;
+import table.TableUtils;
 
 /*
  * add Row
@@ -49,6 +50,11 @@ public class TableModifiers {
                 if (table.getData().size() != 0) {
                     table.getData().remove(table.getData().size() - 1);
                     table.getTableView().refresh();
+                    TableEvents.refreshSideData(table.getID());
+                }
+                if (table.getData().size() == 0) {
+                    TableEvents.refreshSideData(table.getID());
+                    table.getTableView().refresh();
                 }
             }
         });
@@ -58,6 +64,7 @@ public class TableModifiers {
         copyRow.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
                 tempSet = table.getTableView().getSelectionModel().getSelectedItem();
+                TableUtils.copySelectionToClipboard(table.getTableView());
             }
         });
         this.copyRow = copyRow;
@@ -76,8 +83,12 @@ public class TableModifiers {
         buttonSetUp(clearRow);
         clearRow.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
-                int temp = table.getTableView().getSelectionModel().getSelectedIndex();
-                table.getData().set(temp, Storage.DEFAULT_SET);
+                int tempSet = table.getTableView()
+                    .getSelectionModel().getSelectedIndex();
+                table.getData().set(tempSet, 
+                    new Set("1", "", "", "", "", "", "", "", ""));
+                TableEvents.refreshSideData(table.getID());
+                MainPage.getSide().updateSelectedData(table.getID());  
                 table.getTableView().refresh();
             }
         });

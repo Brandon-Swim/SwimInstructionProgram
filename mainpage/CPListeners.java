@@ -4,8 +4,6 @@ import java.util.Optional;
 import general.Storage;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -13,6 +11,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import table.Set;
+import table.TableEvents;
 
 public class CPListeners {
     /*
@@ -231,19 +230,26 @@ public class CPListeners {
       //Resets all the data in the table 
       private static void TableDataToDefault(boolean check) {
           if (check) {
-              ObservableList<Set> defaultData = FXCollections.observableArrayList(
-                  new Set("1", "", "", "", "", "", "", "", ""),
-                  new Set("1", "", "", "", "", "", "", "", ""),
-                  new Set("1", "", "", "", "", "", "", "", ""),
-                  new Set("1", "", "", "", "", "", "", "", ""),
-                  new Set("1", "", "", "", "", "", "", "", ""));   
-               Storage.datagroup1 = defaultData;
-               Storage.datagroup2 = defaultData;
-               Storage.datagroup3 = defaultData;
-               Storage.datagroup4 = defaultData;
-               Storage.datagroup5 = defaultData;
                for (int i = 1; i <= Storage.AMT_GROUPS; i++) {
-                   MainPage.getTable(i).setData(defaultData);
+                   Storage.datagroup1.clear();
+                   Storage.datagroup2.clear();
+                   Storage.datagroup3.clear();
+                   Storage.datagroup4.clear();
+                   Storage.datagroup5.clear();
+                   for (int j = 0; j < 5; j++) {
+                       Storage.datagroup1.add(
+                           new Set("1", "", "", "", "", "", "", "", ""));
+                       Storage.datagroup2.add(
+                           new Set("1", "", "", "", "", "", "", "", ""));
+                       Storage.datagroup3.add(
+                           new Set("1", "", "", "", "", "", "", "", ""));
+                       Storage.datagroup4.add(
+                           new Set("1", "", "", "", "", "", "", "", ""));
+                       Storage.datagroup5.add(
+                           new Set("1", "", "", "", "", "", "", "", ""));
+                   }
+                   TableEvents.refreshSideData(i);
+                   MainPage.getSide().updateSelectedData(i);
                }
           }
       }

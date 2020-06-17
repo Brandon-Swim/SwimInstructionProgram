@@ -2,14 +2,11 @@ package table;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.Pane;
@@ -35,6 +32,7 @@ public class Table {
         this.IDnum = ID;
         table.setPrefSize(1350, 400);
         table.setEditable(true);
+        table.setPlaceholder(new Label("Table is empty"));  //TODO IMAGE
         String[] columnNames = new String[] {"Set","Rounds","Reps","Distance",
             "Description","Type","Minutes","Seconds", "Intensity"};
         TableEvents e = new TableEvents(ID);
@@ -83,10 +81,10 @@ public class Table {
         type.setPrefWidth(135);    //TODO move background 10% of table
         type.setMaxWidth(135);
         type.setMinWidth(135);
-        type.setCellValueFactory(new PropertyValueFactory<Set, String>("typeCol"));
-        type.setCellFactory(TextFieldTableCell.forTableColumn());
+        type.setCellValueFactory(cellData -> cellData.getValue().typeProperty());
+        type.setCellFactory(ComboBoxTableCell.forTableColumn(Storage.typeSelector));
         type.setOnEditCommit(e.getType());
-        
+
         
         TableColumn<Set, String> minNum = new TableColumn<>(columnNames[6]);
         minNum.setPrefWidth(135);    //TODO move background 10% of table
