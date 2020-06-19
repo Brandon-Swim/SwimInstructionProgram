@@ -1,6 +1,5 @@
 package mainpage;
 
-import java.util.Arrays;
 import general.Storage;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -37,6 +36,7 @@ public class SidePane {
             sideData[i].setAlignment(Pos.CENTER);
             sideData[i].setPrefSize(230,75);
             sideData[i].setWrapText(true);
+            sideData[i].setCache(false);
             sideLayout.getChildren().add(sideData[i]);
             this.labels[i] = sideData[i];
         }

@@ -14,7 +14,8 @@ import table.Set;
 import table.TableEvents;
 
 public class CPListeners {
-    /*
+    
+      /*
      * Control Panel Listeners
      * For every action
      *  -adds radiobutton for graph
@@ -36,7 +37,7 @@ public class CPListeners {
               MainPage.getSide().updateSelectedData(Storage.currentGroup);
           }
       };
-
+      
       /*
        * For every action
        *  -removes graph selector

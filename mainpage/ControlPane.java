@@ -54,7 +54,7 @@ public class ControlPane {
         header.setText("Control Panel");
         header.setFont(Font.font("Arial", 24));
         header.setBorder(testBorder);
-        header.setPrefSize(250, 50);
+        header.setPrefSize(250, 40);
         header.setTextAlignment(TextAlignment.CENTER);
         header.setAlignment(Pos.CENTER);
         
@@ -69,7 +69,7 @@ public class ControlPane {
         name.setText("Name: ");
         name.setFont(Font.font("Arial", 20));
         name.setBorder(testBorder);
-        name.setPrefSize(80, 50);
+        name.setPrefSize(80, 40);
         name.setTextAlignment(TextAlignment.CENTER);
         name.setAlignment(Pos.CENTER_RIGHT);
         
@@ -78,7 +78,7 @@ public class ControlPane {
         Storage.nameStyle.textProperty().bind(nameArea.textProperty());
         nameArea.setFont(Font.font("Arial", 20));
         nameArea.setBorder(testBorder);
-        nameArea.setPrefSize(170,50);
+        nameArea.setPrefSize(170,40);
         nameArea.setAlignment(Pos.CENTER);
         nameArea.setOnMouseClicked(CPListeners.clearWorkoutText);
         nameArea.textProperty().addListener(CPListeners.storeWorkoutText);
@@ -88,14 +88,14 @@ public class ControlPane {
         month.setText("Month: ");
         month.setFont(Font.font("Arial", 20));
         month.setBorder(testBorder);
-        month.setPrefSize(80, 50);
+        month.setPrefSize(80, 40);
         month.setTextAlignment(TextAlignment.CENTER);
         month.setAlignment(Pos.CENTER);
         
         monthArea.setText(Storage.monthName);
         monthArea.setFont(Font.font("Arial", 20));
         monthArea.setBorder(testBorder);
-        monthArea.setPrefSize(60,50);
+        monthArea.setPrefSize(60,40);
         monthArea.setAlignment(Pos.CENTER);
         monthArea.setOnMouseClicked(CPListeners.clearMonthText);
         monthArea.textProperty().addListener(CPListeners.storeMonth);
@@ -105,21 +105,21 @@ public class ControlPane {
         day.setText("Day: ");
         day.setFont(Font.font("Arial", 20));
         day.setBorder(testBorder);
-        day.setPrefSize(50, 50);
+        day.setPrefSize(50, 40);
         day.setTextAlignment(TextAlignment.CENTER);
         day.setAlignment(Pos.CENTER_LEFT);
         
         dayArea.setText(Storage.dayName);
         dayArea.setFont(Font.font("Arial", 20));
         dayArea.setBorder(testBorder);
-        dayArea.setPrefSize(60,50);
+        dayArea.setPrefSize(60,40);
         dayArea.setAlignment(Pos.CENTER);
         dayArea.setOnMouseClicked(CPListeners.clearDayText);
         dayArea.textProperty().addListener(CPListeners.storeDay);
         dayArea.focusedProperty().addListener(CPListeners.defaultDayText);
         this.dayField = dayArea;
         
-        layoutTitle.setPrefSize(250, 100);
+        layoutTitle.setPrefSize(250, 80);
         layoutTitle.setMaxWidth(250);
         layoutTitle.getChildren().addAll(name, nameArea, month, 
             monthArea, day, dayArea);
@@ -130,14 +130,14 @@ public class ControlPane {
         description.setText("Description:");
         description.setFont(Font.font("Arial", 20));
         description.setBorder(testBorder);
-        description.setPrefSize(250, 50);
+        description.setPrefSize(250, 40);
         description.setTextAlignment(TextAlignment.CENTER);
         description.setAlignment(Pos.CENTER);
         
         descriptionArea = new TextArea(Storage.descriptionText);
         descriptionArea.setFont(Font.font("Arial", 20));
         descriptionArea.setBorder(testBorder);
-        descriptionArea.setPrefSize(250,200);
+        descriptionArea.setPrefSize(250,150);
         descriptionArea.setMaxWidth(250);
         descriptionArea.setWrapText(true);
         descriptionArea.setOnMouseClicked(CPListeners.clearDescription);
@@ -152,7 +152,7 @@ public class ControlPane {
 
         for (int i = 0; i < Storage.AMT_GROUPS; i++) {
             tableControl[i] = new HBox();
-            tableControl[i].setPrefSize(250, 50);
+            tableControl[i].setPrefSize(250, 40);
             tableControl[i].setMaxWidth(250);
             tableControl[i].setMaxHeight(50);
             controlSet[i] = new TableModifiers(MainPage.getTable(i + 1));
@@ -165,13 +165,13 @@ public class ControlPane {
             this.graphs[i] = selectGraph[i];
         }
         
-        layoutRows.setPrefSize(250, 200);
+        layoutRows.setPrefSize(250, 150);
         layoutRows.setBorder(testBorder);
 
         layoutRows.getChildren().add(tableControl[0]);
         this.rowPane = layoutRows;
         
-        layoutGraphs.setPrefSize(250, 50);
+        layoutGraphs.setPrefSize(250, 40);
         layoutGraphs.setMaxWidth(250);
         layoutGraphs.getChildren().add(selectGraph[0]);
         this.graphPane = layoutGraphs;
@@ -182,22 +182,22 @@ public class ControlPane {
         Button gameDay = new Button("Game Day");
         Button reset = new Button("Reset");
         
-        addGroup.setPrefSize(100, 50);
+        addGroup.setPrefSize(80, 40);
         addGroup.setAlignment(Pos.CENTER);
         addGroup.setFont(Font.font("Arial", 12));
         addGroup.setOnAction(CPListeners.addControls);
         
-        remGroup.setPrefSize(100, 50);
+        remGroup.setPrefSize(100, 40);
         remGroup.setAlignment(Pos.CENTER);
         remGroup.setFont(Font.font("Arial", 12));
         remGroup.setOnAction(CPListeners.remControls);
 
-        gameDay.setPrefSize(100, 50);
+        gameDay.setPrefSize(80, 40);
         gameDay.setAlignment(Pos.CENTER);
         gameDay.setFont(Font.font("Arial", 12));
         gameDay.setOnAction(CPListeners.gameDay);
         
-        reset.setPrefSize(100, 50);
+        reset.setPrefSize(80, 40);
         reset.setAlignment(Pos.CENTER);
         reset.setFont(Font.font("Arial", 12));
         reset.setOnAction(CPListeners.reset);

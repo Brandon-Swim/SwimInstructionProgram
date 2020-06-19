@@ -1,6 +1,5 @@
 package graphs;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
@@ -9,15 +8,16 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+// TODO find a new way to display this caus this doesnt work
 public class DistanceGraph extends PieChart {
     private final Circle innerCircle;
     
     
     public DistanceGraph(ObservableList<Data> pieData) {
         super(pieData);
-
+        
         innerCircle = new Circle();
-
+        
         // just styled in code for demo purposes,
         // use a style class instead to style via css.
         innerCircle.setFill(Color.WHITESMOKE);
@@ -46,7 +46,7 @@ public class DistanceGraph extends PieChart {
         }
     }
 
-    private void updateInnerCircleLayout() {
+    public void updateInnerCircleLayout() {
         double minX = Double.MAX_VALUE, minY = Double.MAX_VALUE;
         double maxX = Double.MIN_VALUE, maxY = Double.MIN_VALUE;
         for (PieChart.Data data: getData()) {

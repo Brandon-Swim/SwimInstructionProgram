@@ -54,7 +54,7 @@ public class WelcomePage{
         welcomeText.setTextFill(Color.BLACK);
         welcomeText.setTextAlignment(TextAlignment.CENTER);
         welcomeText.setAlignment(Pos.CENTER);
-        welcomeText.setPrefSize(500, 400);
+        welcomeText.setPrefSize(300, 200);
         welcomeText.setBorder(welcomeBorder);
         //Header Text
         Label headerText = new Label("Welcome");
@@ -66,7 +66,7 @@ public class WelcomePage{
         headerText.setAlignment(Pos.CENTER);
         
         layout.getChildren().addAll(headerText, welcomeText, but1);
-        introduction = new Scene(layout, 1000, 800);
+        introduction = new Scene(layout, 800, 600);
     }
     public Scene setScene() {
         return introduction;
