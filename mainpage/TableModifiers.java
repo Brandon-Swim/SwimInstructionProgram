@@ -1,10 +1,13 @@
 package mainpage;
 
+import general.Storage;
+import graphs.GraphData;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.text.Font;
+import table.GraphEvents;
 import table.Set;
 import table.Table;
 import table.TableEvents;
@@ -86,14 +89,42 @@ public class TableModifiers {
     buttonSetUp(clearRow);
     clearRow.setOnAction(new EventHandler<ActionEvent>() {
       public void handle(ActionEvent e) {
+        //Table Updates
         int tempSet = table.getTableView().getSelectionModel().getSelectedIndex();
         table.getData().set(tempSet, new Set("1", "", "", "", "", "", "", "", ""));
         TableEvents.refreshSideData(table.getID());
         MainPage.getSide().updateSelectedData(table.getID());;
         table.getTableView().refresh();
+        //Graph Updates
+          updateGraphs("distance", table.getID(), 0);
+          updateGraphs("intensity", table.getID(), 0);
+          updateGraphs("type", table.getID(), 5);
       }
     });
     this.clearRow = clearRow;
+  }
+  //TODO bug where if you clear the last row it crashes
+  public static void updateGraphs(String name, int ID, int colID) {
+   int index = ID - 1;
+    GraphData graphData = MainPage.getGraphs().getData(name, index);
+    boolean present = false;
+    // Checks for if something needs to be removed'
+    System.out.println(Storage.getSet(ID).size());
+    for (int i = 0; i < graphData.getData().size(); i++) {
+      for (int j = 0; j < Storage.getSet(ID).size(); j++) {
+        present = false;
+        System.out.println(name + ": " + i + " " + j);
+        if (Storage.getSet(ID).get(j).get(colID) != null && 
+            !Storage.getSet(ID).get(j).get(colID).contentEquals("") &&
+            graphData.getData().get(i).getName().equals(Storage.getSet(ID).get(j).get(colID))) {
+          present = true;
+          break;
+        } 
+      }
+      if (!present) {
+        graphData.getData().remove(i);
+      }
+    }
   }
 
   private void buttonSetUp(Button but) {

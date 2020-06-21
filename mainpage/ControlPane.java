@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
@@ -36,6 +37,7 @@ public class ControlPane {
     private TextField monthField = new TextField();
     private TextField dayField = new TextField();
     private TextArea descriptionField = new TextArea();
+    ToggleGroup toggleRB = new ToggleGroup();
     
     public ControlPane() {
         //Default Constructor
@@ -149,7 +151,7 @@ public class ControlPane {
         HBox[] tableControl = new HBox[Storage.AMT_GROUPS];
         RadioButton[] selectGraph = new RadioButton[Storage.AMT_GROUPS];
         TableModifiers[] controlSet = new TableModifiers[Storage.AMT_GROUPS];
-
+        ToggleGroup toggleRB = new ToggleGroup();
         for (int i = 0; i < Storage.AMT_GROUPS; i++) {
             tableControl[i] = new HBox();
             tableControl[i].setPrefSize(250, 40);
@@ -162,9 +164,13 @@ public class ControlPane {
             this.tableControls = tableControl;
             
             selectGraph[i] = new RadioButton("Graph " + (i + 1));
+            selectGraph[i].setToggleGroup(toggleRB);
             this.graphs[i] = selectGraph[i];
         }
-        
+        toggleRB.selectedToggleProperty().addListener(CPListeners.radioButton);
+        this.toggleRB = toggleRB;
+        selectGraph[0].setSelected(true);
+
         layoutRows.setPrefSize(250, 150);
         layoutRows.setBorder(testBorder);
 
@@ -181,6 +187,7 @@ public class ControlPane {
         Button remGroup = new Button("Remove Group");
         Button gameDay = new Button("Game Day");
         Button reset = new Button("Reset");
+        Button save = new Button("Save");
         
         addGroup.setPrefSize(80, 40);
         addGroup.setAlignment(Pos.CENTER);
@@ -202,11 +209,16 @@ public class ControlPane {
         reset.setFont(Font.font("Arial", 12));
         reset.setOnAction(CPListeners.reset);
         
+        save.setPrefSize(80, 40);
+        save.setAlignment(Pos.CENTER);
+        save.setFont(Font.font("Arial", 12));
+        save.setOnAction(CPListeners.save);
+        
         layoutButton.setPrefWidth(250);
         layoutButton.setMaxWidth(250);
         layoutButton.setMaxHeight(100);
         layoutButton.setBorder(testBorder);
-        layoutButton.getChildren().addAll(addGroup, remGroup, gameDay, reset);
+        layoutButton.getChildren().addAll(addGroup, remGroup, gameDay, reset, save);
         
         layoutGeneral.getChildren().addAll(header, layoutTitle, description, 
             descriptionArea, layoutButton, layoutRows, layoutGraphs);
@@ -215,8 +227,12 @@ public class ControlPane {
     }
     //Getters for action events
     // Returns the radio button at the selected index for the graph selector
-    public RadioButton getGraph(int index) {
-        return graphs[index];
+    public RadioButton getRadioButton(int index) {
+      return graphs[index];
+    }
+    
+    public ToggleGroup getToggle() {
+        return toggleRB;
     }
     // Returns the layout for the graph selector radio buttons
     public FlowPane getGraphLayout() {

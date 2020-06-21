@@ -56,6 +56,7 @@ public class TableEvents {
               workingIntensity(ID);
               g.getDistanceGraphEvent();
               g.getIntensityGraphEvent();
+              g.getTypeGraphEvent();
               MainPage.getSide().updateSelectedData(ID);
               MainPage.getTable(ID).getTableView().refresh();
             } else {
@@ -81,6 +82,7 @@ public class TableEvents {
               workingDistance(ID);
               workingTime(ID);
               g.getDistanceGraphEvent();
+              g.getTypeGraphEvent();
               MainPage.getSide().updateSelectedData(ID);
               MainPage.getTable(ID).getTableView().refresh();
             } else {
@@ -104,6 +106,7 @@ public class TableEvents {
               ttlDistance(ID);
               workingDistance(ID);
               g.getDistanceGraphEvent();
+              g.getTypeGraphEvent();
               MainPage.getSide().updateSelectedData(ID);
               MainPage.getTable(ID).getTableView().refresh();
             } else {
@@ -127,6 +130,7 @@ public class TableEvents {
               ttlDistance(ID);
               workingDistance(ID);
               g.getDistanceGraphEvent();
+              g.getTypeGraphEvent();
               MainPage.getSide().updateSelectedData(ID);
               MainPage.getTable(ID).getTableView().refresh();
             } else {
@@ -160,8 +164,9 @@ public class TableEvents {
             workingDistance(ID);
             workingTime(ID);
             workingIntensity(ID);
-            g.getDistanceGraphEvent();
+            g.getDistanceGraphEvent();  //TODO
             g.getIntensityGraphEvent();
+            g.getTypeGraphEvent();
             MainPage.getSide().updateSelectedData(ID);
             MainPage.getTable(ID).getTableView().refresh();
           }

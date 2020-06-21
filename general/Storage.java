@@ -64,17 +64,17 @@ public class Storage {
     //Data stored in the first table
     public static ObservableList<Set> datagroup1 = FXCollections.observableArrayList(
         new Set("1", "2", "3", "", "", "Free", "", "", ""),
-        new Set("", "", "", "", "", "", "", "", ""),
+        new Set("2", "1", "2", "", "", "Back", "", "", ""),
         new Set("", "", "", "", "", "", "", "", ""),
         new Set("", "", "", "", "", "", "", "", ""),
         new Set("", "", "", "", "", "", "", "", ""));   // start with 5 blank rows
    
     public static ObservableList<Set> datagroup2 = FXCollections.observableArrayList(
-        new Set("2", "", "", "", "", "", "", "", ""),
-        new Set("3", "", "", "", "", "", "", "", ""),
-        new Set("1", "", "", "", "", "", "", "", ""),
-        new Set("1", "", "", "", "", "", "", "", ""),
-        new Set("1", "", "", "", "", "", "", "", ""));   // start with 5 blank rows
+        new Set("2", "2", "2", "", "", "Back", "", "", ""),
+        new Set("", "", "", "", "", "", "", "", ""),
+        new Set("", "", "", "", "", "", "", "", ""),
+        new Set("", "", "", "", "", "", "", "", ""),
+        new Set("", "", "", "", "", "", "", "", ""));   // start with 5 blank rows
     
     public static ObservableList<Set> datagroup3 = FXCollections.observableArrayList(
         new Set("3", "", "", "", "", "", "", "", ""),

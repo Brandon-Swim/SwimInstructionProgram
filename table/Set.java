@@ -50,6 +50,56 @@ public class Set {
     System.out.println(temp);
     return temp;
   }
+  
+  @Override
+  public String toString() {
+    String output = new String();
+    String temp = new String();
+    for (int i = 0; i < columns.size(); i++) {
+      if (i != DESCRIPTION) {
+        if (i != columns.size() - 1) {
+          temp += columns.get(i).get() + " | ";
+        } else {
+          temp += columns.get(i).get() + "\n";
+        }
+      } else {
+        temp += cutOff(columns.get(i).get());
+      }
+    }
+    System.out.println(temp);
+    output += isEmptyRow(temp);
+    return output;
+  }
+  
+  private String isEmptyRow(String str) {
+    String row = str;
+    boolean check = false;
+    char[] chars = str.toCharArray();
+    for (int i = 0; i < chars.length; i++) {
+      if(Character.isDigit(chars[i])){
+        check = true;
+        break;
+      }
+    }
+    if (check) {
+      return row;
+    } else {
+      return "";
+    }
+  }
+  
+  private String cutOff(String str) {
+    String temp = str;
+    char[] chars = temp.toCharArray();
+    temp = "";
+    if (chars.length > 10) {
+      for (int i = 0; i < 10; i++) {
+        temp += chars[i];
+      }
+      temp += "... |";
+    }
+    return temp;
+  }
 
   public String get(int index) {
     for (int i = 0; i < AMT_COLUMNS; i++) {

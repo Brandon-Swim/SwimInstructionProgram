@@ -19,7 +19,7 @@ public class DoughnutChartSample extends Application {
 
         ObservableList<PieChart.Data> pieChartData = createData();
 
-        final DistanceGraph chart = new DistanceGraph(pieChartData);
+        final DonutGraph chart = new DonutGraph(pieChartData);
         chart.setTitle("Imported Fruits");
 
         Scene scene = new Scene(new StackPane(chart));
