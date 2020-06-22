@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-
+//TODO: getter for particular cell
 public class Group {
 
 	private ArrayList<Integer> set = new ArrayList<Integer>();
@@ -39,7 +39,7 @@ public class Group {
 	
 	public void editCell(int row, Name column, Object element) {
 		if (row >= intensity.size()) {
-			System.out.println("you're fucked");
+			System.out.println("uh-oh");
 			createRow(row - intensity.size() + 1);
 		}
 		switch (column) {
@@ -64,6 +64,29 @@ public class Group {
 		}
 	}
 	
+	public Object getCell(int row, Name column) {
+		switch (column) {
+		case set:
+			return set.get(row);
+		case rounds:
+			return rounds.get(row);
+		case reps:
+			return reps.get(row);
+		case distance:
+			return distance.get(row);
+		case description:
+			return description.get(row);
+		case type:
+			return type.get(row);
+		case minutes:
+			return minutes.get(row);
+		case seconds:
+			return seconds.get(row);
+		case intensity:
+			return intensity.get(row);
+		}
+		return "bad";
+	}
 	public int totalDistance() {
 		int sum = 0;
 		for (int i = 0; i < intensity.size(); i++) {
@@ -75,16 +98,13 @@ public class Group {
 	public String totalTime() {
 		int minutes = 0;
 		int seconds = 0;
-		int hours = 0;
 		for (int i = 0; i < intensity.size(); i++) {
 			minutes += rounds.get(i).intValue() * reps.get(i).intValue() * this.minutes.get(i).intValue();
 			seconds += rounds.get(i).intValue() * reps.get(i).intValue() * this.seconds.get(i).intValue();
 		}
 		minutes += seconds / 60;
-		hours += minutes / 60;
 		seconds = seconds % 60;
-		minutes = minutes % 60;
-		return hours + ":" + minutes + ":" + seconds;
+		return minutes + ":" + seconds;
 	}
 	
 	public double avgIntensity() {
@@ -108,7 +128,6 @@ public class Group {
 	public String workingTime() {
 		int minutes = 0;
 		int seconds = 0;
-		int hours = 0;
 		for (int i = 0; i < intensity.size(); i++) {
 			if (type.get(i) != Type.Warm_Up || type.get(i) != Type.Loosen) {
 				minutes += rounds.get(i).intValue() * reps.get(i).intValue() * this.minutes.get(i).intValue();
@@ -116,10 +135,9 @@ public class Group {
 			}
 		}
 		minutes += seconds / 60;
-		hours += minutes / 60;
 		seconds = seconds % 60;
-		minutes = minutes % 60;
-		return hours + ":" + minutes + ":" + seconds;
+		
+		return minutes + ":" + seconds;
 	}
 	
 	public double workingIntensity() {
@@ -134,4 +152,5 @@ public class Group {
 		}
 		return avg / sum;
 	}
+
 }
