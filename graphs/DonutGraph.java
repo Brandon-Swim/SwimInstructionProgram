@@ -8,17 +8,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-/**
- * Displays the percentage of a distance type in a donut graph
- * @author Brandon Chelstrom
- *
- */
-
-public class TypeGraph extends PieChart {
+// TODO find a new way to display this caus this doesnt work
+public class DonutGraph extends PieChart {
     private final Circle innerCircle;
     
     
-    public TypeGraph(ObservableList<Data> pieData) {
+    public DonutGraph(ObservableList<Data> pieData) {
         super(pieData);
         
         innerCircle = new Circle();
@@ -51,7 +46,7 @@ public class TypeGraph extends PieChart {
         }
     }
 
-    private void updateInnerCircleLayout() {
+    public void updateInnerCircleLayout() {
         double minX = Double.MAX_VALUE, minY = Double.MAX_VALUE;
         double maxX = Double.MIN_VALUE, maxY = Double.MIN_VALUE;
         for (PieChart.Data data: getData()) {

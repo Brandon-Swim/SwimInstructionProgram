@@ -60,21 +60,21 @@ public class Storage {
     public static String descriptionText = "Description";
     //TABLE VARIABLES
     //Defualt Set
-    public static final Set DEFAULT_SET = new Set("1", "", "", "", "", "", "", "", "");
+    //public static final Set DEFAULT_SET = new Set("1", "", "", "", "", "", "", "", "");
     //Data stored in the first table
     public static ObservableList<Set> datagroup1 = FXCollections.observableArrayList(
+        new Set("1", "2", "3", "", "", "Free", "", "", ""),
+        new Set("2", "1", "2", "", "", "Back", "", "", ""),
         new Set("", "", "", "", "", "", "", "", ""),
+        new Set("", "", "", "", "", "", "", "", ""),
+        new Set("", "", "", "", "", "", "", "", ""));   // start with 5 blank rows
+   
+    public static ObservableList<Set> datagroup2 = FXCollections.observableArrayList(
+        new Set("2", "2", "2", "", "", "Back", "", "", ""),
         new Set("", "", "", "", "", "", "", "", ""),
         new Set("", "", "", "", "", "", "", "", ""),
         new Set("", "", "", "", "", "", "", "", ""),
         new Set("", "", "", "", "", "", "", "", ""));   // start with 5 blank rows
-    
-    public static ObservableList<Set> datagroup2 = FXCollections.observableArrayList(
-        new Set("2", "", "", "", "", "", "", "", ""),
-        new Set("3", "", "", "", "", "", "", "", ""),
-        new Set("1", "", "", "", "", "", "", "", ""),
-        new Set("1", "", "", "", "", "", "", "", ""),
-        new Set("1", "", "", "", "", "", "", "", ""));   // start with 5 blank rows
     
     public static ObservableList<Set> datagroup3 = FXCollections.observableArrayList(
         new Set("3", "", "", "", "", "", "", "", ""),
@@ -96,6 +96,22 @@ public class Storage {
         new Set("1", "", "", "", "", "", "", "", ""),
         new Set("1", "", "", "", "", "", "", "", ""),
         new Set("1", "", "", "", "", "", "", "", ""));   // start with 5 blank rows
+    
+    public static ObservableList<Set> getSet(int ID) {
+      switch (ID) {
+        case 1: 
+          return datagroup1;
+        case 2:
+          return datagroup2;
+        case 3:
+          return datagroup3;
+        case 4: 
+          return datagroup4;
+        case 5:
+          return datagroup5;
+      }
+      return null;
+    }
     
     // Labels for each group
     public static final String[] TABLE_HEADERS = new String[]{"Group 1",

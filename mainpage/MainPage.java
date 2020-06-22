@@ -1,8 +1,9 @@
 package mainpage;
-import javafx.scene.control.Label;
+import javafx.event.EventHandler;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TableView;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
@@ -13,17 +14,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
 import general.Storage;
 import graphs.Graphs;
-import javafx.geometry.Pos;
-import table.Set;
 import table.Table;
 import table.TableUtils;
 
 public class MainPage {
-    
+   
     static Pane mainPane;
     //Method Variables
     /*
@@ -38,6 +35,7 @@ public class MainPage {
     //Getter Variables 
     private static ControlPane controlP = new ControlPane();
     private static SidePane sideP = new SidePane();
+    private static Graphs graphP = new Graphs();
     static ScrollPane mainScene;
     static Table table1 = new Table();
     static Table table2 = new Table();
@@ -45,9 +43,12 @@ public class MainPage {
     static Table table4 = new Table();
     static Table table5 = new Table();
     private static VBox tablePane = new VBox();
+    private final int MULTIPLIER = 4;
+    
     
     public MainPage() {
         int height = 2400;
+        int width = 1525;
         Border mainBorder = new Border(new BorderStroke(Color.RED, 
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT));
         Border layoutBorder = new Border(new BorderStroke(Color.BLACK, 
@@ -62,17 +63,26 @@ public class MainPage {
         mainScene = new ScrollPane(mainPane);
         mainScene.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
         mainScene.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+        mainPane.setOnScroll(new EventHandler<ScrollEvent>() {
+            @Override
+            public void handle(ScrollEvent event) {
+                double deltaY = event.getDeltaY()* MULTIPLIER; // *6 to make the scrolling a bit faster
+                double width = mainScene.getContent().getBoundsInLocal().getWidth();
+                double vvalue = mainScene.getVvalue();
+                mainScene.setVvalue(vvalue + -deltaY/width); // deltaY/width to make the scrolling equally fast regardless of the actual width of the component
+            }
+        });
         mainScene.setFitToWidth(true);
         
         //General Pane Set Up
         Pane infoPane = new Pane();
-        infoPane.setPrefSize(2000, 800);
+        infoPane.setPrefSize(width, 700);
         infoPane.setBorder(layoutBorder);
         Pane graphPane = new Pane();
-        graphPane.setPrefSize(2000, 600);
+        graphPane.setPrefSize(width, 500);
         graphPane.setBorder(layoutBorder);
         Pane ppPane = new Pane();
-        ppPane.setPrefSize(2000, 800);
+        ppPane.setPrefSize(width, 700);
         ppPane.setBorder(layoutBorder);
         VBox generalLayout = new VBox();
         generalLayout.setSpacing(10);
@@ -80,25 +90,35 @@ public class MainPage {
         //Side Pane Set Up
         Pane sideData = new Pane();
         ScrollPane sidePane = new ScrollPane(sideData);
-        sidePane.setPrefSize(250, 790);
+        sidePane.setPrefSize(250, 690);
         sidePane.setBorder(upperLayoutBorder);
         sidePane.setHbarPolicy(ScrollBarPolicy.NEVER);
         sidePane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+        sidePane.setCache(false);
         
         Region spacer1 = new Region();
         spacer1.setBorder(mainBorder);
+        spacer1.setPrefSize(10, 690);
         VBox tableHolder = new VBox();
         tablePane = tableHolder;
         ScrollPane tablePane = new ScrollPane(tableHolder);
-        //tableHolder.setPrefSize(1500, 1000); sets the panes scrollable size
-        tablePane.setPrefSize(1380, 790);   
+        tablePane.setPrefSize(1000, 690);   
         tablePane.setBorder(upperLayoutBorder);
-        tablePane.setHbarPolicy(ScrollBarPolicy.NEVER);
+        tablePane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
         tablePane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+        tableHolder.setOnScroll(new EventHandler<ScrollEvent>() {
+            @Override
+            public void handle(ScrollEvent event) {
+                double deltaY = event.getDeltaY()* MULTIPLIER; // *6 to make the scrolling a bit faster
+                double width = tablePane.getContent().getBoundsInLocal().getWidth();
+                double vvalue = tablePane.getVvalue();
+                tablePane.setVvalue(vvalue + -deltaY/width); // deltaY/width to make the scrolling equally fast regardless of the actual width of the component
+            }
+        });
         Region spacer2 =  new Region();
-        spacer2.setPrefSize(10, 790);
+        spacer2.setPrefSize(10, 690);
         Pane controlPane = new Pane();
-        controlPane.setPrefSize(250, 790);
+        controlPane.setPrefSize(250, 690);
         controlPane.setBorder(upperLayoutBorder);
         HBox sideLayout = new HBox();
         
@@ -111,6 +131,7 @@ public class MainPage {
         sideP = information;
         
         Graphs displayInfo = new Graphs(graphPane);
+        graphP = displayInfo;
          
         table1 = new Table(new TableView<>(), Storage.datagroup1, 1);
         table2 = new Table(new TableView<>(), Storage.datagroup2, 2);
@@ -136,8 +157,12 @@ public class MainPage {
         return sideP;
     }
     //Returns the overall pane for the scene
-    public ScrollPane getPane() {
+    public static ScrollPane getPane() {
         return mainScene;
+    }
+    
+    public static Graphs getGraphs() {
+      return graphP;
     }
     
     //Returns table based on index

@@ -1,5 +1,7 @@
 package graphs;
 
+
+
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,7 +19,7 @@ public class DoughnutChartSample extends Application {
 
         ObservableList<PieChart.Data> pieChartData = createData();
 
-        final DistanceGraph chart = new DistanceGraph(pieChartData);
+        final DonutGraph chart = new DonutGraph(pieChartData);
         chart.setTitle("Imported Fruits");
 
         Scene scene = new Scene(new StackPane(chart));
