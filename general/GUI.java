@@ -13,7 +13,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import mainpage.MainPage;
-import praclistpage.PracticeArchieve;
+import practiceArchieve.PracticeArchieve;
 import settingspage.Settings;
 
 public class GUI extends Application{
