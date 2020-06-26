@@ -19,6 +19,39 @@ public class Group {
 	enum Name {
 		set, rounds, reps, distance, description, type, minutes, seconds, intensity
 	}
+	public Group(Object[][] data) {
+		for (int i = 0; i < data[0].length; i++) {
+			set.add((Integer)data[0][i]);
+		}
+		for (int i = 0; i < data[1].length; i++) {
+			rounds.add((Integer)data[1][i]);
+		}
+		for (int i = 0; i < data[2].length; i++) {
+			reps.add((Integer)data[2][i]);
+		}
+		for (int i = 0; i < data[3].length; i++) {
+			distance.add((Integer)data[3][i]);
+		}
+		for (int i = 0; i < data[4].length; i++) {
+			description.add((String)data[4][i]);
+		}
+		for (int i = 0; i < data[5].length; i++) {
+			type.add((Type)data[5][i]);
+		}
+		for (int i = 0; i < data[6].length; i++) {
+			minutes.add((Integer)data[6][i]);
+		}
+		for (int i = 0; i < data[7].length; i++) {
+			seconds.add((Integer)data[7][i]);
+		}
+		for (int i = 0; i < data[8].length; i++) {
+			intensity.add((Integer)data[8][i]);
+		}
+	}
+	
+	public Group() {
+	}
+	
 	public void addRow (int set, int rounds, int reps, int distance, String description, Type type, int minutes, int seconds, int intensity) {
 		this.set.add(new Integer(set));
 		this.rounds.add(new Integer(rounds));

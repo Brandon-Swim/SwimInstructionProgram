@@ -16,10 +16,24 @@ public class SwimWorkout {
 		addGroup(new Group());
 	}
 	
+	public SwimWorkout(int month, int day, int year, boolean gameday, Object[][][] data) {
+		this.day = day;
+		this.month = month;
+		this.year = year; 
+		this.gameday = gameday;
+		for (int i = 0; i < data.length; i++) {
+			addGroup(new Group(data[i]));
+		}
+	}
+	
 	public void addGroup(Group g) {
 		workout.add(g);
 	}
-
+	
+	public Group getGroup(int index) {
+		return workout.get(index);
+	}
+	
 	public int getMonth() {
 		return month;
 	}
