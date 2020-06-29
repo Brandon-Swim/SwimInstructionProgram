@@ -2,6 +2,7 @@ package mainpage;
 
 import java.util.Optional;
 import general.Storage;
+import general.SwimWorkout;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -101,10 +102,29 @@ public class CPListeners {
       alert.setContentText("Are you sure you want to save the workout?");
       Optional<ButtonType> result = alert.showAndWait();
       if (result.get() == ButtonType.OK) {
+        Object[][][] data = new Object[Storage.currentGroup][9][40];
+        for (int i = 1; i <= Storage.currentGroup; i++) {
+          for (int j = 0; j < MainPage.getTable(i).getData().size(); j++) {
+            for (int k = 0; k < MainPage.getTable(i).getData().get(j).size(); k++) {
+              System.out.println("I: " + i + " J: " + j + " K: " + k);
+              data[i - 1][j][k] = MainPage.getTable(i).getData().get(j).get(k);
+            }
+          }
+        }
+        int month = Integer.parseInt(Storage.monthName);
+        int day =  Integer.parseInt(Storage.dayName);
+        int year = 2020;
+        boolean gameDay = false; 
+        SwimWorkout savedWorkout = new SwimWorkout(month, day, year, gameDay, data);
+        //TODO file stuff, error tring to parse string
         GeneratePDF doc = new GeneratePDF();
         doc.createTxtFile();
       } else {
         System.out.println("Cancled"); // TODO
+        System.out.println("This:");
+        MainPage.getGraphs().getDistanceGraph(0).addInnerCircleIfNotPresent();
+        MainPage.getGraphs().getDistanceGraph(0).updateInnerCircleLayout();
+        System.out.println("is being run.");
       }
     }
   };
@@ -261,7 +281,7 @@ public class CPListeners {
           Storage.datagroup4.add(new Set("1", "", "", "", "", "", "", "", ""));
           Storage.datagroup5.add(new Set("1", "", "", "", "", "", "", "", ""));
         }
-        TableEvents.refreshSideData(i);
+        new TableEvents().refreshSideData(i);
         MainPage.getSide().updateSelectedData(i);
       }
     }

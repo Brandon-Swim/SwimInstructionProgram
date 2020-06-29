@@ -28,7 +28,7 @@ public class Graphs {
   private final Border testBorder = new Border(new BorderStroke(Color.RED,
       BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT));
   private ArrayList<GraphData> distanceData = new ArrayList<GraphData>();
-  private ArrayList<DonutGraph> distance = new ArrayList<DonutGraph>(); //TODO
+  private ArrayList<DistanceGraph> distance = new ArrayList<DistanceGraph>(); //TODO
   private ArrayList<DonutGraph> intensity = new ArrayList<DonutGraph>(); //TODO
   private ArrayList<DonutGraph> type = new ArrayList<DonutGraph>(); //TODO
   private ArrayList<GraphData> intensityData = new ArrayList<GraphData>();
@@ -49,9 +49,9 @@ public class Graphs {
       distanceData.add(new GraphData());
       this.distanceData.add(distanceData.get(i));
     }
-    ArrayList<DonutGraph> distance = new ArrayList<DonutGraph>();
+    ArrayList<DistanceGraph> distance = new ArrayList<DistanceGraph>();
     for (int i = 0; i < Storage.AMT_GROUPS; i++) {
-      distance.add(new DonutGraph(distanceData.get(i).getData()));
+      distance.add(new DistanceGraph(distanceData.get(i).getData()));
       distance.get(i).setPrefSize(WIDTH, 500);
       distance.get(i).setBorder(testBorder);
       distance.get(i).setLegendVisible(false);
@@ -165,7 +165,7 @@ public class Graphs {
       vLayout[2].getChildren().add(type.get(index));
   }
   
-  public DonutGraph getDistanceGraph(int ID) {
+  public DistanceGraph getDistanceGraph(int ID) {
      return distance.get(ID);
   }
   

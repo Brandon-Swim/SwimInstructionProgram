@@ -88,6 +88,10 @@ public class Set {
     }
   }
   
+  public int size() {
+    return AMT_COLUMNS;
+  }
+  
   private String cutOff(String str) {
     String temp = str;
     char[] chars = temp.toCharArray();

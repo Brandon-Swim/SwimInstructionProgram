@@ -55,6 +55,7 @@ public class GraphData {
     System.out.println(temp);
   }
   
+  
   public void refreshPane() {
     
   }

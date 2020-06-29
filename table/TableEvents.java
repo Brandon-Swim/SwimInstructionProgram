@@ -54,6 +54,7 @@ public class TableEvents {
               workingDistance(ID);
               workingTime(ID);
               workingIntensity(ID);
+              workoutType(ID); 
               g.getDistanceGraphEvent();
               g.getIntensityGraphEvent();
               g.getTypeGraphEvent();
@@ -81,6 +82,7 @@ public class TableEvents {
               ttlTime(ID);
               workingDistance(ID);
               workingTime(ID);
+              workoutType(ID); 
               g.getDistanceGraphEvent();
               g.getTypeGraphEvent();
               MainPage.getSide().updateSelectedData(ID);
@@ -105,6 +107,7 @@ public class TableEvents {
                   .setRepsCol(t.getNewValue());
               ttlDistance(ID);
               workingDistance(ID);
+              workoutType(ID); 
               g.getDistanceGraphEvent();
               g.getTypeGraphEvent();
               MainPage.getSide().updateSelectedData(ID);
@@ -129,10 +132,12 @@ public class TableEvents {
                   .setDistanceCol(t.getNewValue());
               ttlDistance(ID);
               workingDistance(ID);
+              workoutType(ID); 
               g.getDistanceGraphEvent();
               g.getTypeGraphEvent();
               MainPage.getSide().updateSelectedData(ID);
               MainPage.getTable(ID).getTableView().refresh();
+              MainPage.getGraphs().getDistanceGraph(0).updateInnerCircleLayout();
             } else {
               MainPage.getTable(ID).getTableView().refresh();
             }
@@ -164,6 +169,7 @@ public class TableEvents {
             workingDistance(ID);
             workingTime(ID);
             workingIntensity(ID);
+            workoutType(ID); 
             g.getDistanceGraphEvent();  //TODO
             g.getIntensityGraphEvent();
             g.getTypeGraphEvent();
@@ -244,7 +250,7 @@ public class TableEvents {
   /*
    * Calculates the total distance in the chart
    */
-  private static void ttlDistance(int ID) {
+  private void ttlDistance(int ID) {
     int index = ID - 1;
     int dataSize = MainPage.getTable(ID).getData().size();
     int amtDistanceColumns = 4;
@@ -283,7 +289,7 @@ public class TableEvents {
     }
   }
 
-  private static void ttlTime(int ID) {
+  private void ttlTime(int ID) {
     int index = ID - 1;
     int dataSize = MainPage.getTable(ID).getData().size();
     int amtDistanceColumns = 3;
@@ -330,7 +336,7 @@ public class TableEvents {
     Storage.ttlTimeAmts[index] = tempMin;
   }
 
-  private static void ttlIntensity(int ID) {
+  private void ttlIntensity(int ID) {
     int index = ID - 1;
     int dataSize = MainPage.getTable(ID).getData().size();
     int amtDistanceColumns = 2;
@@ -361,7 +367,7 @@ public class TableEvents {
     Storage.ttlIntensity[index] = tempIntensity;
   }
 
-  private static void workingDistance(int ID) {
+  private void workingDistance(int ID) {
     int index = ID - 1;
     int dataSize = MainPage.getTable(ID).getData().size();
     int amtDistanceColumns = 5;
@@ -399,7 +405,7 @@ public class TableEvents {
     }
   }
 
-  private static void workingTime(int ID) {
+  private void workingTime(int ID) {
     int index = ID - 1;
     int dataSize = MainPage.getTable(ID).getData().size();
     int amtDistanceColumns = 4;
@@ -447,7 +453,7 @@ public class TableEvents {
     Storage.workningTimeAmts[index] = tempMin;
   }
 
-  private static void workingIntensity(int ID) {
+  private void workingIntensity(int ID) {
     int index = ID - 1;
     int dataSize = MainPage.getTable(ID).getData().size();
     int amtDistanceColumns = 3;
@@ -477,13 +483,77 @@ public class TableEvents {
     Storage.workingIntensity[index] = tempIntensity;
   }
   
-  public static void refreshSideData(int ID) {
+  private void workoutType(int ID) {
+    int index = ID - 1;
+    int dataSize = MainPage.getTable(ID).getData().size();
+    int amtDistanceColumns = 5;
+    // only for set, round, rep, distance, and type
+    boolean[] workingDistance =
+        new boolean[] {true, true, true, true, false, true, false, false, false};
+    int[][] temp = new int[dataSize][amtDistanceColumns];
+    try {
+      temp = ListToArray(ID, dataSize, workingDistance);
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.out.println("Incorrect amount of variables selected");
+    }
+    for (int i = 0; i < temp.length; i++) {
+      if (temp[i][SET] != 0 && temp[i][ROUNDS] != 0) {
+        for (int j = i + 1; j < temp.length; j++) {
+          if (temp[j][SET] == temp[i][SET]) {
+            temp[j][ROUNDS] = temp[i][ROUNDS];
+          }
+        }
+      }
+    }
+    int[] typeDistance = new int[Storage.typeSelector.size()];
+    String[] typeNames = new String[Storage.typeSelector.size()];
+    for (int i = 0; i < typeNames.length; i++) {
+      typeNames[i] = Storage.typeSelector.get(i);
+    }
+     //System.out.println(Arrays.deepToString(temp)); //Checks returned array
+    for (int i = 0; i < dataSize; i++) {
+      // Checks for a set Number to be present
+      if (temp[i][SET] != 0) {
+        // Checks for a round Number
+        if (temp[i][ROUNDS] != 0) {
+          for (int j = 0; j < typeDistance.length; j++) {
+            if (MainPage.getTable(ID).getData().get(i).get(TYPE).contentEquals(typeNames[j])) {
+              typeDistance[j] += temp[i][ROUNDS] * temp[i][REPS] * temp[i][DISTANCE];
+            }
+          }
+        } else if (temp[i][ROUNDS] == 0) {
+          for (int j = 0; j < typeDistance.length; j++) {
+            if (MainPage.getTable(ID).getData().get(i).get(TYPE).contentEquals(typeNames[j])) {
+              typeDistance[j] += temp[i][REPS] * temp[i][DISTANCE];
+            }
+          }
+        }
+      }
+    }
+    int maxVal = typeDistance[0];
+    int maxValIndex = 0;
+    for (int i = 0; i < typeDistance.length; i++) {
+      if (typeDistance[i] > maxVal) {
+        maxVal = typeDistance[i];
+        maxValIndex = i;
+      }
+    }
+    if (maxValIndex != -1) {
+      Storage.workoutType[index] = typeNames[maxValIndex];
+    } else {
+      Storage.workoutType[index] = "None";
+    }
+  }
+  
+  public void refreshSideData(int ID) {
     ttlDistance(ID);
     ttlTime(ID);
     ttlIntensity(ID);
     workingDistance(ID);
     workingTime(ID);
     workingIntensity(ID);
+    workoutType(ID); 
   }
 
 

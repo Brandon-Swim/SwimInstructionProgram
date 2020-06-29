@@ -47,10 +47,10 @@ public class TableModifiers {
         if (table.getData().size() != 0) {
           table.getData().remove(table.getData().size() - 1);
           table.getTableView().refresh();
-          TableEvents.refreshSideData(table.getID());
+          new TableEvents().refreshSideData(table.getID());
         }
         if (table.getData().size() == 0) {
-          TableEvents.refreshSideData(table.getID());
+          new TableEvents().refreshSideData(table.getID());
           table.getTableView().refresh();
         }
       }
@@ -79,7 +79,7 @@ public class TableModifiers {
           }
         }
         table.getData().add(index, tempSet2);
-        TableEvents.refreshSideData(table.getID());
+        new TableEvents().refreshSideData(table.getID());
         MainPage.getSide().updateSelectedData(table.getID());
         table.getTableView().refresh();
       }
@@ -92,7 +92,7 @@ public class TableModifiers {
         //Table Updates
         int tempSet = table.getTableView().getSelectionModel().getSelectedIndex();
         table.getData().set(tempSet, new Set("1", "", "", "", "", "", "", "", ""));
-        TableEvents.refreshSideData(table.getID());
+        new TableEvents().refreshSideData(table.getID());
         MainPage.getSide().updateSelectedData(table.getID());;
         table.getTableView().refresh();
         //Graph Updates

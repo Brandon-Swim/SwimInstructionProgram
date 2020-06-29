@@ -54,6 +54,8 @@ public class MainDisplay {
     }
 
     DistanceGraph distance = new DistanceGraph();
+    IntensityGraph intensity = new IntensityGraph();
+    TypeGraph type = new TypeGraph();
     graphPane.setPrefSize(1000, 600);
     graphPane.setBorder(BLACK_BORDER);
     graphPane.getChildren().add(distance.getChart());
@@ -73,6 +75,8 @@ public class MainDisplay {
       public void changed(ObservableValue ov, String oldStr, String newStr) {
         lowerBound = newStr;
         distance.updateDataRange(lowerBound, upperBound);
+        intensity.updateDataRange(lowerBound, upperBound);
+        type.updateDataRange(lowerBound, upperBound);
       }
     });
 
@@ -90,6 +94,8 @@ public class MainDisplay {
       public void changed(ObservableValue ov, String oldStr, String newStr) {
         upperBound = newStr;
         distance.updateDataRange(lowerBound, upperBound);
+        intensity.updateDataRange(lowerBound, upperBound);
+        type.updateDataRange(lowerBound, upperBound);
       }
     });
 
@@ -104,6 +110,8 @@ public class MainDisplay {
       @Override
       public void handle(ActionEvent e) {
         distance.updateDataRange("00/00", "13/32");
+        intensity.updateDataRange("00/00", "13/32");
+        type.updateDataRange("00/00", "13/32");
         lowerDate.getSelectionModel().selectFirst();
         upperDate.getSelectionModel().selectLast();
       }
@@ -119,7 +127,8 @@ public class MainDisplay {
     displayDistanceGraph.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent e) {
-
+        graphPane.getChildren().clear();
+        graphPane.getChildren().add(distance.getChart());
       }
     });
     
@@ -134,7 +143,8 @@ public class MainDisplay {
     displayIntensityGraph.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent e) {
-
+        graphPane.getChildren().clear();
+        graphPane.getChildren().add(intensity.getChart());
       }
     });
     
@@ -148,7 +158,8 @@ public class MainDisplay {
     displayTypeGraph.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent e) {
-
+        graphPane.getChildren().clear();
+        graphPane.getChildren().add(type.getChart());
       }
     });
 
