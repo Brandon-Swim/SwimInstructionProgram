@@ -54,10 +54,7 @@ public class TableEvents {
               workingDistance(ID);
               workingTime(ID);
               workingIntensity(ID);
-<<<<<<< HEAD
-=======
               workoutType(ID); 
->>>>>>> beta
               g.getDistanceGraphEvent();
               g.getIntensityGraphEvent();
               g.getTypeGraphEvent();
@@ -85,10 +82,7 @@ public class TableEvents {
               ttlTime(ID);
               workingDistance(ID);
               workingTime(ID);
-<<<<<<< HEAD
-=======
               workoutType(ID); 
->>>>>>> beta
               g.getDistanceGraphEvent();
               g.getTypeGraphEvent();
               MainPage.getSide().updateSelectedData(ID);
@@ -113,10 +107,7 @@ public class TableEvents {
                   .setRepsCol(t.getNewValue());
               ttlDistance(ID);
               workingDistance(ID);
-<<<<<<< HEAD
-=======
               workoutType(ID); 
->>>>>>> beta
               g.getDistanceGraphEvent();
               g.getTypeGraphEvent();
               MainPage.getSide().updateSelectedData(ID);
@@ -141,18 +132,12 @@ public class TableEvents {
                   .setDistanceCol(t.getNewValue());
               ttlDistance(ID);
               workingDistance(ID);
-<<<<<<< HEAD
-=======
               workoutType(ID); 
->>>>>>> beta
               g.getDistanceGraphEvent();
               g.getTypeGraphEvent();
               MainPage.getSide().updateSelectedData(ID);
               MainPage.getTable(ID).getTableView().refresh();
-<<<<<<< HEAD
-=======
               MainPage.getGraphs().getDistanceGraph(0).updateInnerCircleLayout();
->>>>>>> beta
             } else {
               MainPage.getTable(ID).getTableView().refresh();
             }
@@ -184,10 +169,7 @@ public class TableEvents {
             workingDistance(ID);
             workingTime(ID);
             workingIntensity(ID);
-<<<<<<< HEAD
-=======
             workoutType(ID); 
->>>>>>> beta
             g.getDistanceGraphEvent();  //TODO
             g.getIntensityGraphEvent();
             g.getTypeGraphEvent();
@@ -268,11 +250,7 @@ public class TableEvents {
   /*
    * Calculates the total distance in the chart
    */
-<<<<<<< HEAD
-  private static void ttlDistance(int ID) {
-=======
   private void ttlDistance(int ID) {
->>>>>>> beta
     int index = ID - 1;
     int dataSize = MainPage.getTable(ID).getData().size();
     int amtDistanceColumns = 4;
@@ -311,11 +289,7 @@ public class TableEvents {
     }
   }
 
-<<<<<<< HEAD
-  private static void ttlTime(int ID) {
-=======
   private void ttlTime(int ID) {
->>>>>>> beta
     int index = ID - 1;
     int dataSize = MainPage.getTable(ID).getData().size();
     int amtDistanceColumns = 3;
@@ -362,11 +336,7 @@ public class TableEvents {
     Storage.ttlTimeAmts[index] = tempMin;
   }
 
-<<<<<<< HEAD
-  private static void ttlIntensity(int ID) {
-=======
   private void ttlIntensity(int ID) {
->>>>>>> beta
     int index = ID - 1;
     int dataSize = MainPage.getTable(ID).getData().size();
     int amtDistanceColumns = 2;
@@ -379,36 +349,6 @@ public class TableEvents {
     } catch (Exception e) {
       e.printStackTrace();
       System.out.println("Incorrect amount of variables selected");
-<<<<<<< HEAD
-    }
-    int tempIntensity = 0;
-    int denom = 0;
-    for (int i = 0; i < dataSize; i++) {
-      // Checks for a set to be present
-      if (temp[i][SET] != 0) {
-        if (temp[i][INTENSITY] != 0) {
-          denom += 1;
-          tempIntensity += temp[i][INTENSITY];
-        }
-      }
-    }
-    if (denom != 0) {
-      tempIntensity = tempIntensity / denom;
-    }
-    Storage.ttlIntensity[index] = tempIntensity;
-  }
-
-  private static void workingDistance(int ID) {
-    int index = ID - 1;
-    int dataSize = MainPage.getTable(ID).getData().size();
-    int amtDistanceColumns = 5;
-    // only for set, round, rep, distance, and type
-    boolean[] workingDistance =
-        new boolean[] {true, true, true, true, false, true, false, false, false};
-    int[][] temp = new int[dataSize][amtDistanceColumns];
-    try {
-      temp = ListToArray(ID, dataSize, workingDistance);
-=======
     }
     int tempIntensity = 0;
     int denom = 0;
@@ -474,7 +414,6 @@ public class TableEvents {
     int[][] temp = new int[dataSize][amtDistanceColumns];
     try {
       temp = ListToArray(ID, dataSize, workingTime);
->>>>>>> beta
     } catch (Exception e) {
       e.printStackTrace();
       System.out.println("Incorrect amount of variables selected");
@@ -485,35 +424,6 @@ public class TableEvents {
           if (temp[j][SET] == temp[i][SET]) {
             temp[j][ROUNDS] = temp[i][ROUNDS];
           }
-<<<<<<< HEAD
-        }
-      }
-    }
-     //System.out.println(Arrays.deepToString(temp)); //Checks returned array
-    Storage.workingDistanceAmts[index] = 0;
-    for (int i = 0; i < dataSize; i++) {
-      // Checks for a set Number to be present
-      if (temp[i][SET] != 0 && temp[i][TYPE] != 1) {
-        // Checks for a round Number
-        if (temp[i][ROUNDS] != 0) {
-          Storage.workingDistanceAmts[index] += temp[i][ROUNDS] * temp[i][REPS] * temp[i][DISTANCE];
-        } else if (temp[i][ROUNDS] == 0) {
-          Storage.workingDistanceAmts[index] += temp[i][REPS] * temp[i][DISTANCE];
-        }
-      }
-    }
-  }
-
-  private static void workingTime(int ID) {
-    int index = ID - 1;
-    int dataSize = MainPage.getTable(ID).getData().size();
-    int amtDistanceColumns = 4;
-    // only for set, type, min, and sec
-    boolean[] workingTime = new boolean[] {true, true, false, false, false, true, true, true, false};
-    int[][] temp = new int[dataSize][amtDistanceColumns];
-    try {
-      temp = ListToArray(ID, dataSize, workingTime);
-=======
         }
       }
     }
@@ -583,7 +493,6 @@ public class TableEvents {
     int[][] temp = new int[dataSize][amtDistanceColumns];
     try {
       temp = ListToArray(ID, dataSize, workingDistance);
->>>>>>> beta
     } catch (Exception e) {
       e.printStackTrace();
       System.out.println("Incorrect amount of variables selected");
@@ -597,27 +506,6 @@ public class TableEvents {
         }
       }
     }
-<<<<<<< HEAD
-    //System.out.println(Arrays.deepToString(temp));
-    double tempMin = 0;
-    for (int i = 0; i < dataSize; i++) {
-      // Checks for a set Number to be present
-      if (temp[i][SET] != 0 && temp[i][TYPE] != 1) {
-        // Checks for a round Number
-        if (temp[i][ROUNDS] != 0) {
-          if (temp[i][MINUTES] != 0) {
-            tempMin += temp[i][MINUTES] * temp[i][ROUNDS];
-          }
-          if (temp[i][SECONDS] != 0) {
-            tempMin += ((double)(temp[i][SECONDS] * temp[i][ROUNDS])/ 60.0);
-          }
-        } else if (temp[i][ROUNDS] == 0) {
-          if (temp[i][MINUTES] != 0) {
-            tempMin += temp[i][MINUTES];
-          }
-          if (temp[i][SECONDS] != 0) {
-            tempMin += ((double) temp[i][SECONDS] / 60.0);
-=======
     int[] typeDistance = new int[Storage.typeSelector.size()];
     String[] typeNames = new String[Storage.typeSelector.size()];
     for (int i = 0; i < typeNames.length; i++) {
@@ -639,47 +527,10 @@ public class TableEvents {
             if (MainPage.getTable(ID).getData().get(i).get(TYPE).contentEquals(typeNames[j])) {
               typeDistance[j] += temp[i][REPS] * temp[i][DISTANCE];
             }
->>>>>>> beta
           }
         }
       }
     }
-<<<<<<< HEAD
-    Storage.workningTimeAmts[index] = tempMin;
-  }
-
-  private static void workingIntensity(int ID) {
-    int index = ID - 1;
-    int dataSize = MainPage.getTable(ID).getData().size();
-    int amtDistanceColumns = 3;
-    // only for set, type, and intensity
-    boolean[] workingIntensity = new boolean[] {true, false, false, false, false, true, false, false, true};
-    int[][] temp = new int[dataSize][amtDistanceColumns];
-    try {
-      temp = ListToArray(ID, dataSize, workingIntensity);
-    } catch (Exception e) {
-      e.printStackTrace();
-      System.out.println("Incorrect amount of variables selected");
-    }
-    int tempIntensity = 0;
-    int denom = 0;
-    for (int i = 0; i < dataSize; i++) {
-      // Checks for a set to be present
-      if (temp[i][SET] != 0 && temp[i][TYPE] != 1) {
-        if (temp[i][INTENSITY] != 0) {
-          denom += 1;
-          tempIntensity += temp[i][INTENSITY];
-        }
-      }
-    }
-    if (denom != 0) {
-      tempIntensity = tempIntensity / denom;
-    }
-    Storage.workingIntensity[index] = tempIntensity;
-  }
-  
-  public static void refreshSideData(int ID) {
-=======
     int maxVal = typeDistance[0];
     int maxValIndex = 0;
     for (int i = 0; i < typeDistance.length; i++) {
@@ -696,17 +547,13 @@ public class TableEvents {
   }
   
   public void refreshSideData(int ID) {
->>>>>>> beta
     ttlDistance(ID);
     ttlTime(ID);
     ttlIntensity(ID);
     workingDistance(ID);
     workingTime(ID);
     workingIntensity(ID);
-<<<<<<< HEAD
-=======
     workoutType(ID); 
->>>>>>> beta
   }
 
 
