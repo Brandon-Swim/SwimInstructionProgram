@@ -18,8 +18,6 @@ public class GeneralTab extends Tabs {
     pane.setBorder(BLUE_BORDER);
     event = new EventHandler<ActionEvent>() {
       public void handle(ActionEvent e) {
-        System.out.println("General Tab");
-        System.out.println(Settings.getMainLayout().getChildren().size());
         Settings.getMainLayout().getChildren().remove(1);
         Settings.getMainLayout().getChildren().add(pane);
       }
