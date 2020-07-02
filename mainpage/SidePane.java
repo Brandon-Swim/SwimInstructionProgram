@@ -94,6 +94,8 @@ public class SidePane {
                 
                 Storage.sideLabel[5] = "Working Intensity: " 
                     + Storage.workingIntensity[0] + "%";
+                
+                Storage.sideLabel[6] = "Workout Type: " + Storage.workoutType[0];
                 break;
             case 2:
                 Storage.sideLabel[0] = "TTL Distance: " + 
@@ -116,6 +118,9 @@ public class SidePane {
                 Storage.sideLabel[5] = "Working Intensity: " 
                     + Storage.workingIntensity[0] + "|" 
                     + Storage.workingIntensity[1] + "%";
+                
+                Storage.sideLabel[6] = "Workout Type: " + Storage.workoutType[0] + "|"
+                    + Storage.workoutType[1];
                 break;
             case 3:
                 Storage.sideLabel[0] = "TTL Distance: " + 
@@ -141,6 +146,12 @@ public class SidePane {
                     + Storage.workingIntensity[0] + "|" 
                     + Storage.workingIntensity[1] + "|" 
                     + Storage.workingIntensity[2] + "|" + "%";
+                
+                
+                Storage.sideLabel[6] = "Workout Type: " 
+                + Storage.workoutType[0] + "|"
+                + Storage.workoutType[1] + "|"
+                + Storage.workoutType[2];
                 break;
             case 4:
                 Storage.sideLabel[0] = "TTL Distance: " + 
@@ -170,6 +181,12 @@ public class SidePane {
                     + Storage.workingIntensity[1] + "|" 
                     + Storage.workingIntensity[2] + "|" 
                     + Storage.workingIntensity[3] + "|" + "%";
+                
+                Storage.sideLabel[6] = "Workout Type: " 
+                + Storage.workoutType[0] + "|"
+                + Storage.workoutType[1] + "|"
+                + Storage.workoutType[2] + "|"
+                + Storage.workoutType[3];
                 break;
             case 5:
                 Storage.sideLabel[0] = "TTL Distance: " + 
@@ -202,6 +219,13 @@ public class SidePane {
                     + Storage.workingIntensity[2] + "|" 
                     + Storage.workingIntensity[3] + "|" 
                     + Storage.workingIntensity[4] + "|" + "%";
+                
+                Storage.sideLabel[6] = "Workout Type: " 
+                + Storage.workoutType[0] + "|"
+                + Storage.workoutType[1] + "|"
+                + Storage.workoutType[2] + "|"
+                + Storage.workoutType[3] + "|"
+                + Storage.workoutType[4];
                 break;
         }
         for (int i = 0; i < Storage.sideLabel.length; i++) {

@@ -18,6 +18,7 @@ public class Storage {
     public static int[] workingDistanceAmts = new int[AMT_GROUPS];
     public static double[] workningTimeAmts = new double[AMT_GROUPS];
     public static int[] workingIntensity = new int[AMT_GROUPS];
+    public static String[] workoutType = new String[] {"None","None","None","None","None"};
     /* 
      * Displays total distance
      * Displays total time
@@ -41,7 +42,7 @@ public class Storage {
         "Working Distance: " + workingDistanceAmts[0] + " yds",
         "Working Time: 0 mins 0 sec",
         "Working Intensity: " + workingIntensity[0] + "%",
-        "T Type Counter", 
+        "Workout Type: None", 
         "T Season Distance",
         "T Practices left in the week", 
         "T Practices til Comp", 

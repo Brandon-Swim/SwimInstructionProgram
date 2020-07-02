@@ -13,7 +13,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import mainpage.MainPage;
-import praclistpage.PracticeArchieve;
+import practiceArchieve.PracticeArchieve;
 import settingspage.Settings;
 
 public class GUI extends Application{
@@ -47,10 +47,11 @@ public class GUI extends Application{
         Tab tab3 = new Tab("Imported Practices" , importTab.getPane());
         Tab tab4 = new Tab("Settings", settingsTab.getPane());
 
+        tabs.getTabs().add(tab4);
         tabs.getTabs().add(tab1);
         tabs.getTabs().add(tab2);
         tabs.getTabs().add(tab3);
-        tabs.getTabs().add(tab4);
+        //tabs.getTabs().add(tab4);
         
         Label header = new Label("Practice Builder");
         header.setFont(Font.font("Arial", 48));

@@ -11,36 +11,43 @@ import javafx.scene.shape.Circle;
 // TODO find a new way to display this caus this doesnt work
 public class DistanceGraph extends PieChart {
     private final Circle innerCircle;
-    
+    private int count = 0;
     
     public DistanceGraph(ObservableList<Data> pieData) {
         super(pieData);
+<<<<<<< HEAD
         
+=======
+>>>>>>> beta
         innerCircle = new Circle();
         
         // just styled in code for demo purposes,
         // use a style class instead to style via css.
         innerCircle.setFill(Color.WHITESMOKE);
-        innerCircle.setStroke(Color.WHITE);
+        innerCircle.setStroke(Color.BLACK);
         innerCircle.setStrokeWidth(3);
     }
-
-    @Override
+    
     protected void layoutChartChildren(double top, double left, double contentWidth, double contentHeight) {
         super.layoutChartChildren(top, left, contentWidth, contentHeight);
-
+        //System.out.println("Count: " + count);
+        //count++;
         addInnerCircleIfNotPresent();
         updateInnerCircleLayout();
     }
-
-    private void addInnerCircleIfNotPresent() {
+    
+    
+    public void addInnerCircleIfNotPresent() {
         if (getData().size() > 0) {
             Node pie = getData().get(0).getNode();
             if (pie.getParent() instanceof Pane) {
                 Pane parent = (Pane) pie.getParent();
-
                 if (!parent.getChildren().contains(innerCircle)) {
                     parent.getChildren().add(innerCircle);
+                    System.out.println("Added");
+                } else {
+                  parent.getChildren().remove(innerCircle); //TODO possible problem
+                  parent.getChildren().add(innerCircle);
                 }
             }
         }
@@ -66,10 +73,9 @@ public class DistanceGraph extends PieChart {
                 maxY = bounds.getMaxY();
             }
         }
-
         innerCircle.setCenterX(minX + (maxX - minX) / 2);
         innerCircle.setCenterY(minY + (maxY - minY) / 2);
-
         innerCircle.setRadius((maxX - minX) / 4);
+        innerCircle.setFill(Color.AQUA);
     }
 }
