@@ -1,4 +1,3 @@
-package general;
 import java.util.ArrayList;
 //TODO: getter for particular cell
 public class Group {
@@ -12,11 +11,11 @@ public class Group {
 	private ArrayList<Integer> minutes = new ArrayList<Integer>();
 	private ArrayList<Integer> seconds = new ArrayList<Integer>();
 	private ArrayList<Integer> intensity = new ArrayList<Integer>();
-	
+
 	enum Type {
 		Warm_Up, Fly, Free, Back, Breast, IM, Drill, Kick, Starts, Sprint, Loosen, N_A_V
 	}
-	
+
 	enum Name {
 		set, rounds, reps, distance, description, type, minutes, seconds, intensity
 	}
@@ -49,10 +48,10 @@ public class Group {
 			intensity.add((Integer)data[8][i]);
 		}
 	}
-	
+
 	public Group() {
 	}
-	
+
 	public void addRow (int set, int rounds, int reps, int distance, String description, Type type, int minutes, int seconds, int intensity) {
 		this.set.add(new Integer(set));
 		this.rounds.add(new Integer(rounds));
@@ -64,13 +63,13 @@ public class Group {
 		this.seconds.add(new Integer(seconds));
 		this.intensity.add(new Integer(intensity));
 	}
-	
+
 	public void createRow (int numRows) {
 		for (int i = 0; i < numRows; i++) {
 			addRow(0, 1, 0, 0, "", Type.N_A_V, 0, 0, 0);
 		}
 	}
-	
+
 	public void editCell(int row, Name column, Object element) {
 		if (row >= intensity.size()) {
 			System.out.println("uh-oh");
@@ -97,7 +96,7 @@ public class Group {
 			intensity.set(row, (Integer)element);
 		}
 	}
-	
+
 	public Object getCell(int row, Name column) {
 		switch (column) {
 		case set:
@@ -128,7 +127,7 @@ public class Group {
 		}
 		return sum;
 	}
-	
+
 	public String totalTime() {
 		int minutes = 0;
 		int seconds = 0;
@@ -140,7 +139,7 @@ public class Group {
 		seconds = seconds % 60;
 		return minutes + ":" + seconds;
 	}
-	
+
 	public double avgIntensity() {
 		int avg = 0;
 		int sum = 0;
@@ -158,7 +157,7 @@ public class Group {
 		}
 		return sum;
 	}
-	
+
 	public String workingTime() {
 		int minutes = 0;
 		int seconds = 0;
@@ -170,10 +169,10 @@ public class Group {
 		}
 		minutes += seconds / 60;
 		seconds = seconds % 60;
-		
+
 		return minutes + ":" + seconds;
 	}
-	
+
 	public double workingIntensity() {
 		int avg = 0;
 		int sum = 0;
@@ -182,9 +181,23 @@ public class Group {
 				avg += rounds.get(i).intValue()* reps.get(i).intValue() * intensity.get(i).intValue();
 				sum += rounds.get(i).intValue()* reps.get(i).intValue() * distance.get(i).intValue();
 			}
-			
+
 		}
 		return avg / sum;
+	}
+
+	public String dataDump() {
+		String toReturn = "";
+		toReturn += set.toString() + "\n";
+		toReturn += rounds.toString() + "\n";
+		toReturn += reps.toString() + "\n";
+		toReturn += distance.toString() + "\n";
+		toReturn += description.toString() + "\n";
+		toReturn += type.toString() + "\n";
+		toReturn += minutes.toString() + "\n";
+		toReturn += seconds.toString() + "\n";
+		toReturn += intensity.toString() + "\n";
+		return toReturn;
 	}
 
 }

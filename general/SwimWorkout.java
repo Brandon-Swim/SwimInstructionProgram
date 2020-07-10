@@ -1,4 +1,3 @@
-package general;
 import java.util.ArrayList;
 
 public class SwimWorkout {
@@ -25,6 +24,17 @@ public class SwimWorkout {
 		for (int i = 0; i < data.length; i++) {
 			addGroup(new Group(data[i]));
 		}
+	}
+	
+	public String dataDump() {
+		String toReturn = "";
+		toReturn += month + "/" + day + "/" + year + "\n";
+		toReturn += description + "\n";
+		toReturn += gameday + "\n";
+		for (int i = 0; i < workout.size(); i++) {
+			toReturn += workout.get(i).dataDump();
+		}
+		return toReturn;
 	}
 	
 	public void addGroup(Group g) {
