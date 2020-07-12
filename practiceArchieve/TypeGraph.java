@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
+import background.Group;
 import general.Storage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -104,7 +105,7 @@ public class TypeGraph {
 
 
   private void addData(ObservableList<XYChart.Series<String, Number>> series) throws IOException {
-    for (String str: Storage.typeSelector) {
+    for (String str: new Group().getTypeOptions()) {
       series.get(0).getData().add(new XYChart.Data<String, Number>(str, RAND_GEN.nextInt(RANGE)));
     }
   }

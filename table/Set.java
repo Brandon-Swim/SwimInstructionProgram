@@ -20,33 +20,36 @@ public class Set {
    * Array list of the columns index: 0 - Set 1 - Rounds 2 - Reps 3 - Distance 4 - Description 5 -
    * Type 6 - Minutes 7 - Seconds 8 - Intensity
    */
-  private ArrayList<SimpleStringProperty> columns;
+  private SimpleStringProperty[] columns;
 
   public Set() {
-
+    columns = new SimpleStringProperty[AMT_COLUMNS];
+    for (int i = 0; i < AMT_COLUMNS; i++) {
+      columns[i] = new SimpleStringProperty();
+    }
   }
 
   public Set(String col1, String col2, String col3, String col4, String col5, String col6,
       String col7, String col8, String col9) {
+    this();
     String[] columnNames = new String[] {col1, col2, col3, col4, col5, col6, col7, col8, col9};
-    columns = new ArrayList<SimpleStringProperty>();
     for (int i = 0; i < AMT_COLUMNS; i++) {
-      columns.add(new SimpleStringProperty(columnNames[i]));
+      columns[i].set(columnNames[i]);
     }
   }
 
 
   public String printSet() {
     String temp = "";
-    temp += "Set: " + columns.get(SET).get() + "\n";
-    temp += "Round: " + columns.get(ROUNDS).get() + "\n";
-    temp += "Rep: " + columns.get(REPS).get() + "\n";
-    temp += "Distance: " + columns.get(DISTANCE).get() + "\n";
-    temp += "Description: " + columns.get(DESCRIPTION).get() + "\n";
-    temp += "Type: " + columns.get(TYPE).get() + "\n";
-    temp += "Min: " + columns.get(MINUTES).get() + "\n";
-    temp += "Sec: " + columns.get(SECONDS).get() + "\n";
-    temp += "Intensity: " + columns.get(INTENSITY).get() + "\n";
+    temp += "Set: " + columns[SET].get() + "\n";
+    temp += "Round: " + columns[ROUNDS].get() + "\n";
+    temp += "Rep: " + columns[REPS].get() + "\n";
+    temp += "Distance: " + columns[DISTANCE].get() + "\n";
+    temp += "Description: " + columns[DESCRIPTION].get() + "\n";
+    temp += "Type: " + columns[TYPE].get() + "\n";
+    temp += "Min: " + columns[MINUTES].get() + "\n";
+    temp += "Sec: " + columns[SECONDS].get() + "\n";
+    temp += "Intensity: " + columns[INTENSITY].get() + "\n";
     System.out.println(temp);
     return temp;
   }
@@ -55,15 +58,15 @@ public class Set {
   public String toString() {
     String output = new String();
     String temp = new String();
-    for (int i = 0; i < columns.size(); i++) {
+    for (int i = 0; i < columns.length; i++) {
       if (i != DESCRIPTION) {
-        if (i != columns.size() - 1) {
-          temp += columns.get(i).get() + " | ";
+        if (i != columns.length - 1) {
+          temp += columns[i].get() + " | ";
         } else {
-          temp += columns.get(i).get() + "\n";
+          temp += columns[i].get() + "\n";
         }
       } else {
-        temp += cutOff(columns.get(i).get());
+        temp += cutOff(columns[i].get());
       }
     }
     System.out.println(temp);
@@ -108,7 +111,7 @@ public class Set {
   public String get(int index) {
     for (int i = 0; i < AMT_COLUMNS; i++) {
       if (index == i) {
-        return columns.get(i).get();
+        return columns[i].get();
       }
     }
     return "";
@@ -117,59 +120,59 @@ public class Set {
   public void set(int index, String value) {
     for (int i = 0; i < AMT_COLUMNS; i++) {
       if (index == i) {
-        columns.get(i).set(value);
+        columns[i].set(value);
       }
     }
   }
 
   // Editing the Set Column
   public String getSetCol() {
-    return columns.get(SET).get();
+    return columns[SET].get();
   }
 
   public void setSetCol(String col1) {
-    columns.get(SET).set(col1);
+    columns[SET].set(col1);
   }
 
   // Editing the Rounds Column
   public String getRoundsCol() {
-    return columns.get(ROUNDS).get();
+    return columns[ROUNDS].get();
   }
 
   public void setRoundsCol(String col2) {
-    columns.get(ROUNDS).set(col2);
+    columns[ROUNDS].set(col2);
   }
 
   // Editing the Rep Column
   public String getRepsCol() {
-    return columns.get(REPS).get();
+    return columns[REPS].get();
   }
 
   public void setRepsCol(String col3) {
-    columns.get(REPS).set(col3);
+    columns[REPS].set(col3);
   }
 
   // Editing the Distance Column
   public String getDistanceCol() {
-    return columns.get(DISTANCE).get();
+    return columns[DISTANCE].get();
   }
 
   public void setDistanceCol(String col4) {
-    columns.get(DISTANCE).set(col4);
+    columns[DISTANCE].set(col4);
   }
 
   // Editing the Description Column
   public String getDescriptionCol() {
-    return columns.get(DESCRIPTION).get();
+    return columns[DESCRIPTION].get();
   }
 
   public void setDescriptionCol(String col5) {
-    columns.get(DESCRIPTION).set(col5);
+    columns[DESCRIPTION].set(col5);
   }
 
   // Editing the Integer Column
   public SimpleStringProperty typeProperty() {
-    return this.columns.get(TYPE);
+    return this.columns[TYPE];
   }
 
   public String getTypeCol() {
@@ -182,28 +185,28 @@ public class Set {
 
   // Editing the Minute Column
   public String getMinCol() {
-    return columns.get(MINUTES).get();
+    return columns[MINUTES].get();
   }
 
   public void setMinCol(String col7) {
-    columns.get(MINUTES).set(col7);
+    columns[MINUTES].set(col7);
   }
 
   // Editing the Seconds Column
   public String getSecCol() {
-    return columns.get(SECONDS).get();
+    return columns[SECONDS].get();
   }
 
   public void setSecCol(String col8) {
-    columns.get(SECONDS).set(col8);
+    columns[SECONDS].set(col8);
   }
 
   // Editing the Intensity Column
   public String getIntensityCol() {
-    return columns.get(INTENSITY).get();
+    return columns[INTENSITY].get();
   }
 
   public void setIntensityCol(String col9) {
-    columns.get(INTENSITY).set(col9);
+    columns[INTENSITY].set(col9);
   }
 }
