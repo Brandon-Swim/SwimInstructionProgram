@@ -4,7 +4,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
-import javafx.scene.control.TableView;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -18,48 +17,60 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import general.Storage;
+import java.util.ArrayList;
+import background.Group;
+import background.SwimWorkout;
+import graphs.GraphPane;
 import graphs.Graphs;
 import table.Table;
-import table.TableUtils;
 
 public class MainPage {
+  private final Border mainBorder = new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID,
+      CornerRadii.EMPTY, BorderWidths.DEFAULT));
+  private final Border layoutBorder = new Border(new BorderStroke(Color.BLACK,
+      BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT));
+  private final Border upperLayoutBorder = new Border(new BorderStroke(Color.BLUE,
+      BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT));
+  private static final int HEIGHT = 2400;
+  private static final int WIDTH = 1525;
+  private final Background BACKGROUND =
+      new Background(new BackgroundFill(Color.rgb(255, 255, 255), CornerRadii.EMPTY, Insets.EMPTY));
 
-  static Pane mainPane;
+
+  private static Pane mainPane;
   // Method Variables
   /*
    * Panes for laying out in the main Pane 0-Upper Pane 1-Middle Pane 2-Lower Pane 3-Side Pane
    * within the upper pane 4-Table Pane within the upper pane 5-Control Pane within the upper pane
    */
   // Getter Variables
-  private static ControlPane controlP = new ControlPane();
-  private static SidePane sideP = new SidePane();
-  private static Graphs graphP = new Graphs();
+  private static ControlPane controlPane;
+  private static SidePane sideP;
+  private static GraphPane midPane;
   static ScrollPane mainScene;
-  static Table table1 = new Table();
-  static Table table2 = new Table();
-  static Table table3 = new Table();
-  static Table table4 = new Table();
-  static Table table5 = new Table();
-  private static VBox tablePane = new VBox();
+  protected ArrayList<Graphs> graphs = new ArrayList<Graphs>();
+  protected ArrayList<Table> tables = new ArrayList<Table>();
+  protected VBox tableLayout = new VBox();
   private final int MULTIPLIER = 4;
-
+  protected SwimWorkout workout;
 
   public MainPage() {
-    int height = 2400;
-    int width = 1525;
-    Border mainBorder = new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID,
-        CornerRadii.EMPTY, BorderWidths.DEFAULT));
-    Border layoutBorder = new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,
-        CornerRadii.EMPTY, BorderWidths.DEFAULT));
-    Border upperLayoutBorder = new Border(new BorderStroke(Color.BLUE, BorderStrokeStyle.SOLID,
-        CornerRadii.EMPTY, BorderWidths.DEFAULT));
 
+  }
+
+
+  public MainPage(SwimWorkout workout) {
+    this();
+    for (int i = 0; i < workout.size(); i++) {
+      addGraph(workout.getGroup(i));
+      addTable(workout.getGroup(i));
+      tableLayout.getChildren().addAll(tables.get(i).getHeader(), tables.get(i).getTableView());
+    }
+    this.workout = workout;
     mainPane = new Pane();
     mainPane.setBorder(mainBorder);
-    mainPane.setPrefSize(1800, height); // TODO fix
-    mainPane.setBackground(new Background(
-        new BackgroundFill(Color.rgb(255, 255, 255), CornerRadii.EMPTY, Insets.EMPTY)));
+    mainPane.setPrefSize(1800, HEIGHT); // TODO fix
+    mainPane.setBackground(BACKGROUND);
 
     mainScene = new ScrollPane(mainPane);
     mainScene.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
@@ -77,85 +88,66 @@ public class MainPage {
     });
     mainScene.setFitToWidth(true);
 
-    // General Pane Set Up
-    Pane infoPane = new Pane();
-    infoPane.setPrefSize(width, 700);
-    infoPane.setBorder(layoutBorder);
-    Pane graphPane = new Pane();
-    graphPane.setPrefSize(width, 500);
-    graphPane.setBorder(layoutBorder);
-    Pane ppPane = new Pane();
-    ppPane.setPrefSize(width, 700);
-    ppPane.setBorder(layoutBorder);
+    // General Pane Set Up (good)
+    Pane topPane = new Pane();
+    topPane.setPrefSize(WIDTH, 700);
+    topPane.setBorder(layoutBorder);
+    midPane = new GraphPane(graphs);
+    Pane lowerPane = new Pane();
+    lowerPane.setPrefSize(WIDTH, 700);
+    lowerPane.setBorder(layoutBorder);
     VBox generalLayout = new VBox();
     generalLayout.setSpacing(10);
-
-    // Side Pane Set Up
-    Pane sideData = new Pane();
-    ScrollPane sidePane = new ScrollPane(sideData);
-    sidePane.setPrefSize(250, 690);
-    sidePane.setBorder(upperLayoutBorder);
-    sidePane.setHbarPolicy(ScrollBarPolicy.NEVER);
-    sidePane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
-    sidePane.setCache(false);
 
     Region spacer1 = new Region();
     spacer1.setBorder(mainBorder);
     spacer1.setPrefSize(10, 690);
-    VBox tableHolder = new VBox();
-    tablePane = tableHolder;
-    ScrollPane tablePane = new ScrollPane(tableHolder);
-    tablePane.setPrefSize(1000, 690);
-    tablePane.setBorder(upperLayoutBorder);
-    tablePane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
-    tablePane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
-    tableHolder.setOnScroll(new EventHandler<ScrollEvent>() {
+
+    ScrollPane tableScrollPane = new ScrollPane(tableLayout);
+    tableScrollPane.setPrefSize(1000, 690);
+    tableScrollPane.setMaxHeight(690);
+    tableScrollPane.setBorder(upperLayoutBorder);
+    tableScrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+    tableScrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+    tableLayout.setOnScroll(new EventHandler<ScrollEvent>() {
       @Override
       public void handle(ScrollEvent event) {
         double deltaY = event.getDeltaY() * MULTIPLIER; // *6 to make the scrolling a bit faster
-        double width = tablePane.getContent().getBoundsInLocal().getWidth();
-        double vvalue = tablePane.getVvalue();
-        tablePane.setVvalue(vvalue + -deltaY / width); // deltaY/width to make the scrolling equally
-                                                       // fast regardless of the actual width of the
-                                                       // component
+        double width = tableScrollPane.getContent().getBoundsInLocal().getWidth();
+        double vvalue = tableScrollPane.getVvalue();
+        tableScrollPane.setVvalue(vvalue + -deltaY / width); // deltaY/width to make the scrolling
+                                                             // equally
+        // fast regardless of the actual width of the
+        // component
       }
     });
     Region spacer2 = new Region();
     spacer2.setPrefSize(10, 690);
-    Pane controlPane = new Pane();
-    controlPane.setPrefSize(250, 690);
-    controlPane.setBorder(upperLayoutBorder);
-    HBox sideLayout = new HBox();
+    // TODO ControlPane
+    HBox topLayout = new HBox();
 
-    generalLayout.getChildren().addAll(infoPane, graphPane, ppPane);
-    sideLayout.getChildren().addAll(sidePane, spacer1, tablePane, spacer2, controlPane);
-    mainPane.getChildren().add(generalLayout); // Sets main layout
-    infoPane.getChildren().add(sideLayout); // Sets side data layout
+    controlPane = new ControlPane(workout, tables, graphs, tableLayout);
+    sideP = new SidePane();
+    topLayout.getChildren().addAll(sideP.getPane(), spacer1, tableScrollPane, spacer2,
+        controlPane.getPane());
+    topPane.getChildren().add(topLayout);
+    generalLayout.getChildren().addAll(topPane, midPane.getPane(), lowerPane);
+    mainPane.getChildren().add(generalLayout);
 
-    SidePane information = new SidePane(sideData);
-    sideP = information;
-
-    Graphs displayInfo = new Graphs(graphPane);
-    graphP = displayInfo;
-
-    table1 = new Table(new TableView<>(), Storage.datagroup1, 1);
-    table2 = new Table(new TableView<>(), Storage.datagroup2, 2);
-    table3 = new Table(new TableView<>(), Storage.datagroup3, 3);
-    table4 = new Table(new TableView<>(), Storage.datagroup4, 4);
-    table5 = new Table(new TableView<>(), Storage.datagroup5, 5);
-
-    TableUtils.installCopyPasteHandler(table1.getTableView());
-
-    ControlPane controller = new ControlPane(controlPane);
-    controlP = controller;
-
-    table1.addTable(tableHolder); // Adds the first table to the pane
   }
-
+  
   // Getters
   // Gets the controlPane
   public static ControlPane getControl() {
-    return controlP;
+    return controlPane;
+  }
+
+  public SwimWorkout getWorkout() {
+    return workout;
+  }
+  
+  public static GraphPane getGraphPane() {
+    return midPane;
   }
 
   // gets the sidePane
@@ -164,34 +156,45 @@ public class MainPage {
   }
 
   // Returns the overall pane for the scene
-  public static ScrollPane getPane() {
+  public ScrollPane getScrollPane() {
     return mainScene;
   }
 
-  public static Graphs getGraphs() {
-    return graphP;
+  public void addGraph(Group g) {
+    graphs.add(new Graphs(g));
+  }
+  
+  public Graphs getGraph(int index) {
+    return graphs.get(index);
   }
 
+  public void remGraph(int index) {
+    graphs.remove(index);
+  }
+  
+  public int getGraphSize() {
+    return graphs.size();
+  }
+  
   // Returns table based on index
-  public static Table getTable(int ID) {
-    switch (ID) {
-      case 1:
-        return table1;
-      case 2:
-        return table2;
-      case 3:
-        return table3;
-      case 4:
-        return table4;
-      case 5:
-        return table5;
-      default:
-        return null;
-    }
+  public Table getTable(int index) {
+    return tables.get(index);
+  }
+
+  public void addTable(Group g) {
+    tables.add(new Table(g, graphs));
+  }
+
+  public void remTable(int index) {
+    tables.remove(index);
+  }
+
+  public int getTablesSize() {
+    return tables.size();
   }
 
   // Returns table layout
-  public static VBox getTableLayout() {
-    return tablePane;
+  public VBox getTableLayout() {
+    return tableLayout;
   }
 }

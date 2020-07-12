@@ -1,4 +1,4 @@
-package general;
+package gui;
 /*
  * This class displays the welcome message for the user.
  * The message will introduce the user to the program and
@@ -9,6 +9,7 @@ package general;
 
 import java.io.File;
 import java.util.Scanner;
+import background.Master;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -42,8 +43,8 @@ public class WelcomePage{
         but1.setBorder(welcomeBorder);
         EventHandler<ActionEvent> buttonHandler = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                GUI.getStage().setScene(GUI.mainPage);
-                GUI.getStage().setMaximized(true);
+                Master.getStage().setScene(Master.mainPage);
+                Master.getStage().setMaximized(true);
             }
         };
         but1.setOnAction(buttonHandler);
@@ -70,9 +71,6 @@ public class WelcomePage{
     }
     public Scene setScene() {
         return introduction;
-    }
-    public static void main(String[] args) {
-        GUI.main(args);  
     }
     public static String fileReader(String fileName) {
         String fileContents = "";
