@@ -15,7 +15,7 @@ public class SwimWorkout {
   public SwimWorkout() {
     month = 0;
     day = 0;
-    year = 0;
+    year = 2020;
     name = "";
     description = "";
     gameday = false;
@@ -59,6 +59,33 @@ public class SwimWorkout {
     System.out.println(workout.get(index).toString());
     System.out.println("_________________________");
   }
+  
+  
+  public String dataDump() {
+    String toReturn = "";
+    toReturn += month + "/" + day + "/" + year + "\n";
+    toReturn += name + "\n";
+    toReturn += description + "\n";
+    toReturn += gameday + "\n";
+    for (int i = 0; i < workout.size(); i++) {
+      toReturn += workout.get(i).dataDump();
+    }
+    return toReturn;
+  }
+  
+  @Override
+  public String toString() {
+    String toReturn = "";
+    toReturn += "Date: " + month + "/" + day + "/" + year + "\n";
+    toReturn += "Name: " + name + "\n";
+    toReturn += "Description: " + description + "\n";
+    for (int i = 0; i < workout.size(); i++) {
+      toReturn += "Group " + (i +1) + "\n";
+      toReturn += workout.get(i).toString();
+    }
+    return toReturn;
+  }
+  
   
   public void clear() {
     for (int i = workout.size() - 1; i > 0; i--) {

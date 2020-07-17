@@ -18,6 +18,7 @@ import table.Table;
 import java.util.ArrayList;
 import java.util.Optional;
 import background.Group;
+import background.IOFiles;
 import background.SwimWorkout;
 import graphs.Graphs;
 
@@ -200,20 +201,37 @@ public class WorkoutControls {
               alert.setContentText("Are you sure you want to save the workout?");
               Optional<ButtonType> result = alert.showAndWait();
               if (result.get() == ButtonType.OK) {
-                EmailFile email = new EmailFile(workout);
+                IOFiles.saveToFiles(workout); // Saves the date, and dumps data
+                // Creates a readable txt File of the workout and a pdf file
+                EmailFile email = new EmailFile(IOFiles.readableWorkout(workout));
+                if (workout.getName().contentEquals("")) { 
+                  email.setSubjectLine("Swim Workout");
+                } else {
+                  email.setSubjectLine(workout.getName());
+                }
                 email.setBody(workout.getDescription());
-                email.setSubjectLine(workout.getName());
-                email.sendEmail();
-                Alert inform = new Alert(AlertType.INFORMATION);
-                inform.setTitle("Save to file");
-                inform.setHeaderText("SAVED!");
-                Label alertText = new Label("File Saved as " + email.getSubjectLine() + " and emailed to "
-                    + email.getRecipient() + ".");
-                alertText.setWrapText(true);
-                inform.getDialogPane().setContent(alertText);
-                inform.showAndWait();
+                if (email.sendEmail()) {
+                  Alert inform = new Alert(AlertType.INFORMATION);
+                  inform.setTitle("Save to file");
+                  inform.setHeaderText("SAVED!");
+                  Label alertText = new Label("File Saved as " + email.getSubjectLine()
+                      + " and emailed to " + email.getRecipient() + ".");
+                  alertText.setWrapText(true);
+                  inform.getDialogPane().setContent(alertText);
+                  inform.showAndWait();
+                } else {
+                  Alert inform = new Alert(AlertType.ERROR);
+                  inform.setTitle("Save to file");
+                  inform.setHeaderText("ERROR!");
+                  Label alertText =
+                      new Label("Error: something went wrong when trying to save the file.");
+                  alertText.setWrapText(true);
+                  inform.getDialogPane().setContent(alertText);
+                  inform.showAndWait();
+                }
+
               } else {
-                System.out.println("Saved");
+                System.out.println("Not Saved");
               }
             }
           });

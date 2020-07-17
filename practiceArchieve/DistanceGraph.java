@@ -11,9 +11,6 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Label;
 
 public class DistanceGraph {
   private final String DEST = "C:\\Users\\Brandon\\.eclipse\\Practice_Builder\\";
@@ -43,44 +40,35 @@ public class DistanceGraph {
     yAxis.setLabel("Distance (yds");
   }
 
-  public void updateDataRange(String lowerBound, String upperBound) {
-    try {
-      if (lowerBound != null && !lowerBound.contentEquals("") && upperBound != null
-          && !upperBound.contentEquals("") && lowerBound.compareTo(upperBound) >= 0) {
-        System.out.println("Error");
-        throw new InputMismatchException();
-      }
-    } catch (InputMismatchException e) {
-      Alert alert = new Alert(AlertType.ERROR);
-      Label text = new Label("Error: Lower bound of " + lowerBound + " and upper bound of "
-          + upperBound + "\n are not acceptable bounds. Please selected acceptable bounds");
-      text.setWrapText(true);
-      alert.setTitle("Date Range Error");
-      alert.getDialogPane().setContent(text);
-      alert.showAndWait();
-      return;
+  public void updateDataRange(String lowerBound, String upperBound) throws InputMismatchException {
+    if (lowerBound != null && !lowerBound.contentEquals("") && upperBound != null
+        && !upperBound.contentEquals("") && lowerBound.compareTo(upperBound) >= 0) {
+      throw new InputMismatchException();
     }
     chart.setAnimated(true);
     series.get(0).getData().clear();
     String date = null;
     Scanner fileInput = null;
-    File dates = new File(DEST + "dates.txt");
+    File dates = new File("TxtFiles//dates.txt");
     try {
       fileInput = new Scanner(dates);
       while (fileInput.hasNextLine()) {
         date = fileInput.nextLine();
+        // Checks to see if both lower bound and upper bound are not empty
         if (lowerBound != null && !lowerBound.contentEquals("") && upperBound != null
             && !upperBound.contentEquals("")) {
           if (date.compareTo(lowerBound) >= 0 && date.compareTo(upperBound) <= 0) {
             series.get(0).getData()
                 .add(new XYChart.Data<String, Number>(date, RAND_GEN.nextInt(5777)));
           }
+          // Checks to see if there is a lower bound but there is no upper bound
         } else if (lowerBound != null && !lowerBound.contentEquals("")
             && (upperBound == null || upperBound.contentEquals(""))) {
           if (date.compareTo(lowerBound) >= 0) {
             series.get(0).getData()
                 .add(new XYChart.Data<String, Number>(date, RAND_GEN.nextInt(5777)));
           }
+          // Checks to see if there is a upper bound but there is no lower bound
         } else if (upperBound != null && upperBound.contentEquals("")
             && (lowerBound == null || !lowerBound.contentEquals(""))) {
           if (date.compareTo(upperBound) <= 0) {
@@ -90,7 +78,7 @@ public class DistanceGraph {
         }
       }
     } catch (IOException e) {
-      System.out.println("Erroe opening the file");
+      System.out.println("Error opening the file");
       e.printStackTrace();
     } finally {
       fileInput.close();
@@ -103,7 +91,7 @@ public class DistanceGraph {
   private void addData(ObservableList<XYChart.Series<String, Number>> series) throws IOException {
     String date = null;
     Scanner fileInput = null;
-    File dates = new File(DEST + "dates.txt");
+    File dates = new File("TxtFiles//dates.txt");
     fileInput = new Scanner(dates);
     while (fileInput.hasNextLine()) {
       date = fileInput.nextLine();

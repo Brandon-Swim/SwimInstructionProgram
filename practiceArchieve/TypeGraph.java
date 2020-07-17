@@ -6,20 +6,15 @@ import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 import background.Group;
-import general.Storage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.Alert.AlertType;
 
 public class TypeGraph {
 
-  private final String DEST = "C:\\Users\\Brandon\\.eclipse\\Practice_Builder\\";
   private final int SEED = 1459;
   private final int RANGE = 10;
   private final CategoryAxis xAxis;
@@ -47,28 +42,17 @@ public class TypeGraph {
     yAxis.setLabel("Frequency");
   }
   
-  public void updateDataRange(String lowerBound, String upperBound) {
-    try {
+  public void updateDataRange(String lowerBound, String upperBound) throws InputMismatchException {
       if (lowerBound != null && !lowerBound.contentEquals("") && upperBound != null
           && !upperBound.contentEquals("") && lowerBound.compareTo(upperBound) >= 0) {
         System.out.println("Error");
         throw new InputMismatchException();
       }
-    } catch (InputMismatchException e) {
-      Alert alert = new Alert(AlertType.ERROR);
-      Label text = new Label("Error: Lower bound of " + lowerBound + " and upper bound of "
-          + upperBound + "\n are not acceptable bounds. Please selected acceptable bounds");
-      text.setWrapText(true);
-      alert.setTitle("Date Range Error");
-      alert.getDialogPane().setContent(text);
-      alert.showAndWait();
-      return;
-    }
     chart.setAnimated(true);
     series.get(0).getData().clear();
     String date = null;
     Scanner fileInput = null;
-    File dates = new File(DEST + "dates.txt");
+    File dates = new File("TxtFiles//dates.txt");
     try {
       fileInput = new Scanner(dates);
       while (fileInput.hasNextLine()) {

@@ -144,11 +144,9 @@ public class SelectionList {
         if ((double) new_val >= 1.0) {
           new_val = 0.99;
           selectorScrollPane.setVvalue((double)new_val);
-          System.out.println("After Max: " + selectorScrollPane.getVvalue());
         } else if ((double) new_val <= 0) {
           selectorScrollPane.setVvalue(0.01);
         }
-        System.out.println(new_val);
       }
     });
 
@@ -163,7 +161,7 @@ public class SelectionList {
     String date = null;
     Scanner fileInput = null;
     VBox layout = new VBox();
-    File dates = new File(DEST + "dates.txt");
+    File dates = new File("TxtFiles//dates.txt");
     fileInput = new Scanner(dates);
     while (fileInput.hasNextLine()) {
       date = fileInput.nextLine();

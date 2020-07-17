@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Group {
   private static ArrayList<String> typeOptions = new ArrayList<String>();
-  private static final String[] defaultTypes = new String[] {"Warm Up", "Loosen", "Free", "Back",
+  public static final String[] defaultTypes = new String[] {"Warm Up", "Loosen", "Free", "Back",
       "Breast", "Fly", "IM", "Kick", "Pull", "Sprint"};
 
   // private static final int AMT_COLUMNS = 9;
@@ -55,19 +55,21 @@ public class Group {
       intensity.add((Integer) data[8][i]);
     }
   }
+
   public Group() {
     for (String str : defaultTypes) {
       typeOptions.add(str);
     }
   }
-  
-  
+
+
   public Group(int ID) {
     this();
     this.ID = ID;
     size = 0;
-    addRow(1,0,2,200,"Default Row", "Free", 0, 0, 50);
-    addRow(2,0,2,0,"Default Row", "Back", 0, 0, 100);
+    // TODO remove after done processing
+    addRow(1, 0, 2, 200, "Default Row", "Free", 0, 0, 50);
+    addRow(2, 0, 2, 0, "Default Row", "Back", 0, 0, 100);
     addRow(0, 0, 0, 0, "New Row", "", 0, 0, 0);
   }
 
@@ -87,22 +89,15 @@ public class Group {
   }
 
 
-  @Override
-  public String toString() {
-    String str = "";
-    for (int i = 0; i < size; i++) {
-      str += this.set.get(i).toString() + ", ";
-      str += this.rounds.get(i).toString() + ", ";
-      str += this.reps.get(i).toString() + ", ";
-      str += this.distance.get(i).toString() + ", ";
-      str += this.description.get(i).toString() + ", ";
-      str += this.type.get(i).toString() + ", ";
-      str += this.minutes.get(i).toString() + ", ";
-      str += this.seconds.get(i).toString() + ", ";
-      str += this.intensity.get(i).toString() + "\n";
-    }
-    return str;
-  }
+  /*
+   * @Override public String toString() { String str = ""; for (int i = 0; i < size; i++) { str +=
+   * this.set.get(i).toString() + ", "; str += this.rounds.get(i).toString() + ", "; str +=
+   * this.reps.get(i).toString() + ", "; str += this.distance.get(i).toString() + ", "; str +=
+   * this.description.get(i).toString() + ", "; str += this.type.get(i).toString() + ", "; str +=
+   * this.minutes.get(i).toString() + ", "; str += this.seconds.get(i).toString() + ", "; str +=
+   * this.intensity.get(i).toString() + "\n"; } return str; }
+   */
+
 
   public void remRow() {
     if (size() != 0) {
@@ -129,15 +124,15 @@ public class Group {
       addRow(0, 0, 0, 0, "", "", 0, 0, 0);
     }
   }
-  
+
   public int typeSize() {
     return typeOptions.size();
   }
-  
+
   public ArrayList<String> getTypeOptions() {
     return typeOptions;
   }
-  
+
   public String getType(int index) {
     return type.get(index);
   }
@@ -224,7 +219,7 @@ public class Group {
     }
     return tempRow;
   }
-  
+
   public void setRow(int row, Object[] values) throws ArrayIndexOutOfBoundsException {
     if (row >= intensity.size()) {
       throw new ArrayIndexOutOfBoundsException();
@@ -299,6 +294,39 @@ public class Group {
     typeOptions.remove(type);
   }
 
+
+  public String dataDump() {
+    String toReturn = "";
+    toReturn += set.toString() + "\n";
+    toReturn += rounds.toString() + "\n";
+    toReturn += reps.toString() + "\n";
+    toReturn += distance.toString() + "\n";
+    toReturn += description.toString() + "\n";
+    toReturn += type.toString() + "\n";
+    toReturn += minutes.toString() + "\n";
+    toReturn += seconds.toString() + "\n";
+    toReturn += intensity.toString() + "\n";
+    return toReturn;
+  }
+
+  @Override
+  public String toString() {
+    String toReturn = "";
+    for (int i = 0; i < size; i++) {
+      toReturn += "Set: " + set.get(i) + " Rounds:" + rounds.get(i) + " Reps: " + reps.get(i)
+          + " Distance: " + distance.get(i) + " Description: " + description.get(i) + " Type: "
+          + type.get(i) + " On: " + minutes.get(i) + ":" + seconds.get(i) + " Intensity: "
+          + intensity.get(i) + "\n";
+    }
+    toReturn += "Total Distance: " + totalDistance() + "\n";
+    toReturn += "Total Time: " + totalTime() + "\n";
+    toReturn += "Average Intensity: " + avgIntensity() + "\n";
+    toReturn += "Working Distance: " + workingDistance() + "\n";
+    toReturn += "Working Time: " + workingTime() + "\n";
+    toReturn += "Working Intensity: " + workingIntensity() + "\n";
+    return toReturn;
+  }
+
   private void updateRoundsCalc() {
     for (int i = 0; i < set.size(); i++) {
       for (int j = i + 1; j < set.size(); j++) {
@@ -323,7 +351,7 @@ public class Group {
     }
     return sum;
   }
-  
+
   public int typeDistance(String type) {
     int sum = 0;
     String tempType = "";
@@ -338,7 +366,7 @@ public class Group {
     }
     return sum;
   }
-  
+
   public int setIntensity(int setNum) {
     int sum = 0;
     int amount = -1;
@@ -351,13 +379,13 @@ public class Group {
       }
     }
     if (amount > 0) {
-      return sum/amount;
+      return sum / amount;
     } else {
       return sum;
     }
   }
-    
-  
+
+
   public int totalDistance() {
     int sum = 0;
     for (int i = 0; i < intensity.size(); i++) {
@@ -412,7 +440,8 @@ public class Group {
   public int workingDistance() {
     int sum = 0;
     for (int i = 0; i < intensity.size(); i++) {
-      if (set.get(i) != 0 && type.get(i) != defaultTypes[0] && type.get(i) != defaultTypes[1])
+      if (set.get(i) != 0 && !type.get(i).contentEquals(defaultTypes[0])
+          && !type.get(i).contentEquals(defaultTypes[1]))
         sum += roundsCalc.get(i).intValue() * reps.get(i).intValue() * distance.get(i).intValue();
     }
     return sum;
@@ -421,7 +450,8 @@ public class Group {
   public int workingTime() {
     int[] time = new int[] {0, 0};
     for (int i = 0; i < intensity.size(); i++) {
-      if (set.get(i) != 0 && type.get(i) != defaultTypes[0] && type.get(i) != defaultTypes[1]) {
+      if (set.get(i) != 0 && !type.get(i).contentEquals(defaultTypes[0])
+          && !type.get(i).contentEquals(defaultTypes[1])) {
         time[0] +=
             roundsCalc.get(i).intValue() * reps.get(i).intValue() * minutes.get(i).intValue();
         time[1] +=
@@ -451,8 +481,8 @@ public class Group {
     int sum = 0;
     int amount = 0;
     for (int i = 0; i < intensity.size(); i++) {
-      if (set.get(i) != 0 && intensity.get(i) != 0 && type.get(i) != "Warm Up"
-          && type.get(i) != "Loosen") {
+      if (set.get(i) != 0 && intensity.get(i) != 0 && !type.get(i).contentEquals(defaultTypes[0])
+          && !type.get(i).contentEquals(defaultTypes[1])) {
         sum += intensity.get(i).intValue();
         amount++;
       }

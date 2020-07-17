@@ -45,7 +45,6 @@ public class ControlPane {
 
   public ControlPane(SwimWorkout workout, ArrayList<Table> tables, ArrayList<Graphs> graphs,
       VBox tablelayout) {
-    super();
     VBox layoutGeneral = new VBox(); // Contains everything vertically
     FlowPane layoutTitle = new FlowPane(); // layout for name, month, day
     VBox layoutRows = new VBox(); // layout for groups
@@ -137,9 +136,6 @@ public class ControlPane {
 
   // Getters for action events
   // Returns the radio button at the selected index for the graph selector
-  public RadioButton getRadioButton(int index) {
-    return graphs[index];
-  }
 
   public Pane getPane() {
     return controlPane;

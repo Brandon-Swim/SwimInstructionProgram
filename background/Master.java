@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -57,11 +58,12 @@ public class Master extends Application {
     tab3 = new Tab("Imported Practices", importTab.getPane());
     tab4 = new Tab("Settings", settingsTab.getPane());
 
-    tabScene.getTabs().add(tab2);
+    tabScene.getTabs().add(tab3);
     tabScene.getTabs().add(tab1);
     //tabScene.getTabs().add(tab2);
-    tabScene.getTabs().add(tab3);
+    tabScene.getTabs().add(tab2);
     tabScene.getTabs().add(tab4);
+    tabScene.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
     VBox tabLayout = new VBox(tabScene);
 
     header = new Label("Practice Builder");

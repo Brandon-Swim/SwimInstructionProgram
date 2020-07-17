@@ -3,15 +3,18 @@ package practiceArchieve;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
@@ -70,15 +73,26 @@ public class MainDisplay {
     for (String str : dates) {
       lowerDate.getItems().add(str);
     }
-    lowerDate.valueProperty().addListener(new ChangeListener<String>() {
+    ChangeListener<String> lowerDateEvent = new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue ov, String oldStr, String newStr) {
         lowerBound = newStr;
-        distance.updateDataRange(lowerBound, upperBound);
-        intensity.updateDataRange(lowerBound, upperBound);
-        type.updateDataRange(lowerBound, upperBound);
+        try {
+          distance.updateDataRange(lowerBound, upperBound);
+          intensity.updateDataRange(lowerBound, upperBound);
+          type.updateDataRange(lowerBound, upperBound);
+        } catch (InputMismatchException ex) {
+          Alert alert = new Alert(AlertType.ERROR);
+          Label text = new Label("Error: Lower bound of " + lowerBound + " and upper bound of "
+              + upperBound + "\n are not acceptable bounds. Please selected acceptable bounds");
+          text.setWrapText(true);
+          alert.setTitle("Date Range Error");
+          alert.getDialogPane().setContent(text);
+          alert.showAndWait();
+        }
       }
-    });
+    };
+    lowerDate.valueProperty().addListener(lowerDateEvent);
 
     Label dateLabel = new Label("To");
     dateLabel.setPrefSize(40, 50);
@@ -89,15 +103,26 @@ public class MainDisplay {
     for (String str : dates) {
       upperDate.getItems().add(str);
     }
-    upperDate.valueProperty().addListener(new ChangeListener<String>() {
+    ChangeListener<String> upperDateEvent = new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue ov, String oldStr, String newStr) {
         upperBound = newStr;
-        distance.updateDataRange(lowerBound, upperBound);
-        intensity.updateDataRange(lowerBound, upperBound);
-        type.updateDataRange(lowerBound, upperBound);
+        try {
+          distance.updateDataRange(lowerBound, upperBound);
+          intensity.updateDataRange(lowerBound, upperBound);
+          type.updateDataRange(lowerBound, upperBound);
+        } catch (InputMismatchException ex) {
+          Alert alert = new Alert(AlertType.ERROR);
+          Label text = new Label("Error: Lower bound of " + lowerBound + " and upper bound of "
+              + upperBound + "\n are not acceptable bounds. Please selected acceptable bounds");
+          text.setWrapText(true);
+          alert.setTitle("Date Range Error");
+          alert.getDialogPane().setContent(text);
+          alert.showAndWait();
+        }
       }
-    });
+    };
+    upperDate.valueProperty().addListener(upperDateEvent);
 
     Region sp2 = new Region();
     sp2.setPrefSize(5, 5);
@@ -109,11 +134,26 @@ public class MainDisplay {
     refreshDates.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent e) {
-        distance.updateDataRange("00/00", "13/32");
-        intensity.updateDataRange("00/00", "13/32");
-        type.updateDataRange("00/00", "13/32");
+        try {
+          distance.updateDataRange("00/00", "99/99");
+          intensity.updateDataRange("00/00", "99/99");
+          type.updateDataRange("00/00", "99/99");
+        } catch (InputMismatchException ex) {
+          Alert alert = new Alert(AlertType.ERROR);
+          Label text = new Label("Error: Lower bound of " + lowerBound + " and upper bound of "
+              + upperBound + "\n are not acceptable bounds. Please selected acceptable bounds");
+          text.setWrapText(true);
+          alert.setTitle("Date Range Error");
+          alert.getDialogPane().setContent(text);
+          alert.showAndWait();
+        }
+        lowerDate.valueProperty().removeListener(lowerDateEvent);
         lowerDate.getSelectionModel().selectFirst();
+        lowerDate.valueProperty().addListener(lowerDateEvent);
+        upperDate.valueProperty().removeListener(upperDateEvent);
         upperDate.getSelectionModel().selectLast();
+        upperDate.valueProperty().addListener(upperDateEvent);
+
       }
     });
 
@@ -131,7 +171,7 @@ public class MainDisplay {
         graphPane.getChildren().add(distance.getChart());
       }
     });
-    
+
 
     Region sp4 = new Region();
     sp4.setPrefSize(5, 5);
@@ -147,7 +187,7 @@ public class MainDisplay {
         graphPane.getChildren().add(intensity.getChart());
       }
     });
-    
+
     Region sp5 = new Region();
     sp5.setPrefSize(5, 5);
 
@@ -173,7 +213,7 @@ public class MainDisplay {
   private void createDatesArray() throws IOException {
     String date = null;
     Scanner fileInput = null;
-    File d = new File(DEST + "dates.txt");
+    File d = new File("TxtFiles//dates.txt");
     fileInput = new Scanner(d);
     while (fileInput.hasNextLine()) {
       date = fileInput.nextLine();

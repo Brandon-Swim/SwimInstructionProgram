@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
+import com.itextpdf.kernel.pdf.PdfDocument;
 import background.SwimWorkout;
 import javax.activation.*;
 
@@ -22,50 +23,37 @@ public class EmailFile {
 
   private String subjectLine;
   private String body;
-  private File attachment;
+  private File attachmentTxt;
+  private PdfDocument attachmentPdf;
 
-
-  public static void main(String[] args) {
-    EmailFile testFile = new EmailFile(new SwimWorkout());
-    testFile.sendEmail();
-  }
 
   public EmailFile() {
     recipient = "bchelstrom@wisc.edu";
     subjectLine = "Add Subject Line";
     body = "body";
     try {
-      this.attachment = null;
+      this.attachmentTxt = null;
+      this.attachmentPdf = null;
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
   public EmailFile(File attachment) {
-    this.attachment = attachment;
-  }
-
-  // TODO Temporary
-  public EmailFile(SwimWorkout workout) {
     this();
+    this.attachmentTxt = attachment;
     try {
-      attachment = new File(DEST + "TestWorkout.txt");
-      System.out.println(attachment.getName());
-      FileOutputStream output = new FileOutputStream(attachment);
-      PrintWriter fileOutput = new PrintWriter(output, true);
-      fileOutput.println("This is sent to the file");
-      fileOutput.flush();
-      fileOutput.close();
+      this.attachmentPdf = GeneratePDF.createPdf(this.attachmentTxt);
     } catch (IOException e) {
-      System.out.println("An error occurred.");
       e.printStackTrace();
     }
   }
 
-  public void sendEmail() {
-    if (attachment == null) {
-      System.out.println("No file to send");
-      return;
+  public boolean sendEmail() {
+    if (attachmentTxt == null || attachmentPdf == null) {
+      System.out.println(
+          "No file to send. Txt: " + (attachmentTxt == null) + ", Pdf: " + (attachmentPdf == null));
+      return false;
     }
     // 1) get the session object
     Properties properties = System.getProperties();
@@ -84,7 +72,8 @@ public class EmailFile {
     try {
       MimeMessage message = new MimeMessage(session);
       message.setFrom(new InternetAddress(user));
-      message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
+      message.addRecipient(Message.RecipientType.TO
+          , new InternetAddress(recipient));
       message.setSubject(subjectLine);
 
       // 3) create MimeBodyPart object and set your message text
@@ -93,9 +82,9 @@ public class EmailFile {
 
       // 4) create new MimeBodyPart object and set DataHandler object to this object
       MimeBodyPart messageBodyPart2 = new MimeBodyPart();
-      
-      String filename = attachment.getName();// change accordingly
-      DataSource source = new FileDataSource("TxtFiles\\" + filename);
+
+      String filename = findFileName(attachmentTxt.getName());// change accordingly
+      DataSource source = new FileDataSource("PdfFiles\\" + filename);
       messageBodyPart2.setDataHandler(new DataHandler(source));
       messageBodyPart2.setFileName(filename);
 
@@ -110,10 +99,17 @@ public class EmailFile {
 
       // 7) send message
       Transport.send(message);
-      System.out.println("message sent....");
+      return true;
     } catch (MessagingException ex) {
       ex.printStackTrace();
+      return false;
     }
+  }
+ 
+  private static String findFileName(String fileName) {
+    String[] address = fileName.split("//");
+    String[] rawAddress = address[address.length - 1].split(".txt");
+    return rawAddress[0] + ".pdf";
   }
 
   public void setSubjectLine(String str) {
